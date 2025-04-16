@@ -38,6 +38,38 @@ export class HitzorduakPage implements OnInit {
   secondCell: { time: string, seat: number } | null = null;
   highlightedCells: { time: string, seat: number }[] = [];
 
+  filtroBusqueda: string = '';
+  hitzorduArrayFiltrado: any[] = [];
+  
+  filtrarCitas() {
+    const texto = this.filtroBusqueda?.toLowerCase() || '';
+  
+    if (!texto.trim()) {
+      // Si no hay texto, mostrar todas las citas
+      this.hitzorduArrayFiltrado = [...this.hitzorduArray];
+      return 
+    }
+  
+    this.hitzorduArrayFiltrado = this.hitzorduArray.filter((cita: any) => {
+      const cliente = cita.izena?.toLowerCase() || '';
+      const langile = cita.langilea?.izena?.toLowerCase() || '';
+      const tratamiento = cita.etxekoa === 'E' ? 'etxekoa' : 'kanpokoa';
+      const asiento = String(cita.eserlekua);
+      const servicios = (cita.zerbitzuak || [])
+        .map((s: any) => s.izena?.toLowerCase())
+        .join(' ');
+  
+      return (
+        cliente.includes(texto) ||
+        langile.includes(texto) ||
+        tratamiento.includes(texto) ||
+        asiento.includes(texto) ||
+        servicios.includes(texto)
+      );
+    });
+  }
+  
+  
   servicioSeleccionado(): boolean {
     return this.tratamenduArray.some(katTrat => 
       katTrat.zerbitzuak.some((trat:any) => trat.selected)
@@ -279,7 +311,7 @@ export class HitzorduakPage implements OnInit {
 // ---------------------------------------------------------------------- CARGA DE DATOS --------------------------------------------------------------------------------
 
   // Función: cargarHitzordu
-  cargarHitzordu() {
+  async cargarHitzordu() {
     this.hitzorduArray = [];
     this.hitzorduak = [];
     
@@ -301,6 +333,7 @@ export class HitzorduakPage implements OnInit {
         this.loading = false;
       }
     );
+  this.hitzorduArrayFiltrado = [...this.hitzorduArray]; 
   }
 
   // Función: cargar_asientos

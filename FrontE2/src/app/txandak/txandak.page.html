@@ -90,20 +90,12 @@
           <ion-col size="12">
             <ion-item>
               <ion-label>{{ 'txandakPage.filtrarTipo' | translate }}</ion-label>
-              <ion-select
-                [(ngModel)]="selectedType"
-                (ionChange)="filterTxandas()"
-              >
-                <ion-select-option value="all"
-                  >{{ 'txandakPage.todas' | translate }}</ion-select-option
-                >
-                <ion-select-option value="G"
-                  >{{ 'txandakPage.garbiketa' | translate }}</ion-select-option
-                >
-                <ion-select-option value="M"
-                  >{{ 'txandakPage.mahaia' | translate }}</ion-select-option
-                >
+              <ion-select [(ngModel)]="selectedType" (ionChange)="filterTxandas()" interface="dropdown">
+                <ion-select-option value="all">{{ 'txandakPage.todas' | translate }}</ion-select-option>
+                <ion-select-option value="G">{{ 'txandakPage.garbiketa' | translate }}</ion-select-option>
+                <ion-select-option value="M">{{ 'txandakPage.mahaia' | translate }}</ion-select-option>
               </ion-select>
+              
             </ion-item>
           </ion-col>
         </ion-row>

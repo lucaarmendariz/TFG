@@ -16,6 +16,65 @@
     <ion-content class="ion-padding">
       <div class="flexbox">
         <div>
+          <!-- Barra de búsqueda -->
+<div class="busqueda-container">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Buscar por cliente, langile, servicio, tratamiento o asiento"
+    [(ngModel)]="filtroBusqueda"
+    (input)="filtrarCitas()"
+  />
+</div>
+
+<!-- Tabla de Citas -->
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Cliente</th>
+      <th>Langile</th>
+      <th>Servicios</th>
+      <th>Tratamiento</th>
+      <th>Asiento</th>
+      <th>Hora inicio</th>
+      <th>Hora fin</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cita of hitzorduArrayFiltrado">
+      <td>{{ cita.izena }}</td>
+      <td>{{ cita.langilea?.izena || '—' }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let s of cita.zerbitzuak">{{ s.izena }}</li>
+        </ul>
+      </td>
+      <td>
+        <span
+          class="badge"
+          [ngClass]="cita.etxekoa === 'E' ? 'badge-primary' : 'badge-secondary'"
+        >
+          {{ cita.etxekoa === 'E' ? 'Etxekoa' : 'Kanpokoa' }}
+        </span>
+      </td>
+      <td>{{ cita.eserlekua }}</td>
+      <td>{{ cita.hasieraOrdua }}</td>
+      <td>{{ cita.amaieraOrdua }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning" (click)="cargar_cita_selec(cita)">
+          ✏️
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="eliminar_cita()">
+          🗑️
+        </button>
+        <button class="btn btn-sm btn-info" (click)="asignar_cita()">
+          ✅ Asignar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
           <ion-item>
             <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
             <ion-input [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
