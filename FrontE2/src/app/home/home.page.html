@@ -1,0 +1,57 @@
+  <ion-content [fullscreen]="true">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button class="logout" (click)="logout()">
+            <ion-icon color="light" name="log-out-outline"size="large"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+          <ion-select-option value="es">Español</ion-select-option>
+          <ion-select-option value="eu">Euskera</ion-select-option>
+        </ion-select>
+      </ion-toolbar>
+    </ion-header>
+
+    <div class="ion-text-center">
+      <img src="assets/IMP_Logotipoa.png" alt="Santurtzi Logo" class="logo" />
+    </div>
+    <div class="content">
+      <div class="ion-text-center">
+        <ion-list>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.hitzorduak' | translate }}" iconIzena="calendar-number" routerLink="/hitzorduak"></app-home-botoiak-konponentea>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.txandak' | translate }}" iconIzena="repeat" routerLink="/txandak"></app-home-botoiak-konponentea>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.historiala' | translate }}" iconIzena="albums" routerLink="/historiala"></app-home-botoiak-konponentea>
+          </ion-list>
+      </div>
+
+      <ion-card class="ion-text-center">
+        <ion-icon size="large" name="cube" color="dark"></ion-icon>
+        <h4><b>{{ 'menu.inbentario' | translate }}</b></h4>
+        <ion-grid>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.materialak' | translate }}" iconIzena="cut" routerLink="/materialak"></app-home-botoiak-konponentea>
+          </ion-col>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.produktuak' | translate }}" iconIzena="color-fill" routerLink="/produktuak"></app-home-botoiak-konponentea>
+          </ion-col>
+        </ion-grid>
+      </ion-card>
+
+      <ion-card class="ion-text-center" *ngIf="!ikasle">
+          <ion-icon size="large" name="cog" color="dark"></ion-icon>
+          <h4><b>{{ 'menu.parametrizacion' | translate }}</b></h4>
+        <ion-grid>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.zerbitzuak' | translate }}" iconIzena="albums" routerLink="/tratamenduak"></app-home-botoiak-konponentea>
+          </ion-col>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.ikasleak' | translate }}" iconIzena="people" routerLink="/ikasleak"></app-home-botoiak-konponentea>
+          </ion-col>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.grafikoak' | translate }}" iconIzena="people" routerLink="/grafikoak"></app-home-botoiak-konponentea>
+          </ion-col>
+        </ion-grid>
+      </ion-card>
+    </div>
+  </ion-content>

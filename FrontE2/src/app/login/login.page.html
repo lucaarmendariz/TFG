@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true" class="ion-padding ion-justify-content-evenly">
+  <div class="logo-container">
+    <img src="assets/IMP_Logotipoa.png" alt="Santurtzi Logo" class="logo" />
+  </div>
+
+  <div class="login-container ion-padding">
+    <ion-card *ngIf="loginMessage" [color]="loginMessageType === 'error' ? 'danger' : 'success'">
+      <ion-card-content>
+        <p>{{ loginMessage }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Select de idioma estilo simple -->
+    <div class="language-selector">
+      <span (click)="selectLanguage('es')" [class.selected]="selectedLanguage === 'es'">es</span> |
+      <span (click)="selectLanguage('eu')" [class.selected]="selectedLanguage === 'eu'">eu</span>
+    </div>
+
+    <ion-list>
+      <ion-item [class.invalid]="submitted && !username">
+        <ion-label position="stacked">{{ "login.user" | translate }}:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="text" placeholder="{{ 'login.user' | translate }}" [(ngModel)]="username" [class.invalid]="submitted && !username" ></ion-input>
+      </ion-item>
+      <ion-item [class.invalid]="submitted && !password">
+        <ion-label position="stacked">{{ "login.password" | translate }}:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="password" placeholder="{{ 'login.password' | translate }}" [(ngModel)]="password" [class.invalid]="submitted && !password"></ion-input>
+      </ion-item>
+    </ion-list>
+  
+    
+  
+    <ion-button expand="block" class="login-button" (click)="onLogin()">
+      <b>{{ 'login.boton' | translate }}</b>
+    </ion-button>
+  </div>
+  
+  
+  
+</ion-content>

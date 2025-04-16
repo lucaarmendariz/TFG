@@ -1,0 +1,65 @@
+<app-header></app-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ 'graficos.title' | translate }}</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [fullscreen]="true">
+    <ng-container *ngFor="let taldea of langileak">
+      <!-- Categoría -->
+      <ion-card>
+        <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
+          <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
+          <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+        </ion-item>
+  
+        <!-- Lista de productos dentro de la categoría -->
+        <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
+          <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)">
+            <ion-label> {{ langile.izena }}</ion-label>
+            <ion-label> {{ langile.abizenak }} </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+    </ng-container>
+  
+    <ion-modal [isOpen]="isGraphOpen" (ionModalDidDismiss)="closeGraphModal()" trigger="openGraphModal">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>📊 {{ 'graficos.graf' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeGraphModal()">
+                <ion-icon name="close-circle-outline"></ion-icon> Cerrar
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+      
+        <ion-content class="ion-padding">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>📈 {{ 'graficos.analisis' | translate }} </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <canvas #graph *ngIf="isGraphOpen" id="myChart"></canvas>
+            </ion-card-content>
+          </ion-card>
+          <ion-button expand="full" color="success" (click)="descargarGrafico()">
+            <ion-icon name="download-outline"></ion-icon> Descargar PDF
+          </ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    
+    
+  </ion-content>
+</ion-content>

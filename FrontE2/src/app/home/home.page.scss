@@ -1,0 +1,211 @@
+.logo {
+  width: 350px;
+  height: auto;
+  padding: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+ion-icon{
+  color: #616161;
+  margin-top: 10px;
+}
+
+b{
+  color: black;
+}
+
+// ion-button {
+//   background-color: #00d2d3; /* Turquesa brillante */
+//   color: white; /* Texto blanco */
+//   font-weight: bold;
+//   border-radius: 8px;
+//   padding: 12px 20px;
+//   text-transform: uppercase;
+//   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+// }
+
+// ion-button:hover {
+//   background-color: #00b0b1; /* Sombra más oscura al pasar el mouse */
+//   transition: background-color 0.3s ease;
+// }
+
+// ion-content{
+//   --background: #E4FEFF;
+// }
+
+.content{
+  background-color: #2c9aa2;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 450px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+ion-list{
+  background-color: #2c9aa2;
+}
+
+ion-card {
+  --background: #E4FEFF;
+  margin-top: 25px;
+}
+
+// // Colores
+// $color-light-blue: #E4FEFF;
+// $color-medium-blue: #88E4E8;
+// $color-dark-teal: #00C7BE;
+// $color-light-teal: #63D6F5;
+// $color-white: #FFFFFF;
+// $color-black: #000000;
+// $color-light-gray: #E9E9E9;
+// $color-light-blue-alt: #C4E7F1;
+
+// // Estructura general
+// ion-content {
+//   background-color: $color-white;
+//   padding: 16px;
+// }
+
+// ion-header {
+//   background-color: $color-light-teal;
+//   color: $color-white;
+//   --ion-toolbar-background: $color-light-teal;
+//   --ion-toolbar-color: $color-white;
+// }
+
+// ion-toolbar {
+//   --ion-toolbar-background: $color-light-teal;
+//   --ion-toolbar-color: $color-white;
+// }
+
+// .Headeraaa {
+//   background-color: $color-light-teal;
+//   color: white;
+//   ;
+// }
+
+// .ikasle-item {
+//   --background: white; /* Color de fondo normal */
+//   transition: background-color 0.3s ease-in-out;
+// }
+
+// .ikasle-item:hover {
+//   --background: rgba(0, 0, 0, 0.1); /* Se oscurece al pasar el ratón */
+// }
+
+
+// ion-segment-button {
+//   color: $color-black;
+// }
+
+// ion-segment-button[aria-selected="true"] {
+//   background-color: $color-medium-blue;
+//   color: $color-white;
+// }
+
+// ion-segment-button {
+//   font-weight: bold;
+// }
+
+// ion-list {
+//   margin-top: 20px;
+// }
+
+// ion-item {
+//   background-color: $color-white;
+//   border-radius: 8px;
+//   margin-bottom: 8px;
+//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// ion-label {
+//   font-weight: bold;
+// }
+
+// .Botoiak {
+//   --background: $color-dark-teal;
+//   --color: $color-light-teal;
+// }
+
+// .Botoiak:hover {
+//   --background: $color-black;  
+// }
+
+
+// ion-searchbar {
+//   margin-bottom: 20px;
+// }
+
+// ion-card {
+//   margin-top: 16px;
+// }
+
+// ion-card-header {
+//   background-color: $color-light-blue;
+//   color: $color-black;
+// }
+
+// ion-card-title {
+//   font-size: 1.25rem;
+//   font-weight: bold;
+// }
+
+// ion-row {
+//   padding: 8px 0;
+// }
+
+// ion-col {
+//   font-weight: 600;
+// }
+
+// ion-modal {
+//   --background: $color-light-blue-alt;
+//   --color: $color-black;
+// }
+
+// ion-item ion-label {
+//   font-size: 0.9rem;
+//   color: $color-black;
+// }
+
+// ion-input, ion-select {
+//   --padding-start: 12px;
+// }
+
+// ion-item ion-label {
+//   font-size: 1rem;
+//   color: $color-black;
+// }
+
+// ion-select {
+//   font-weight: bold;
+// }
+
+
+
+// ion-card-content {
+//   background-color: $color-white;
+//   padding: 16px;
+// }
+
+// ion-row {
+//   padding: 8px 0;
+// }
+
+// ion-col {
+//   padding: 8px 0;
+// }
+
+// ion-item ion-label {
+//   color: $color-black;
+// }
+
+// ion-label {
+//   color: $color-black;
+// }
+
+// ion-segment-content {
+//   background-color: $color-white;
+// }

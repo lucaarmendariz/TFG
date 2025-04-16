@@ -1,0 +1,7 @@
+{
+  "name": "FrontE2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

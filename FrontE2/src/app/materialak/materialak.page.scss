@@ -1,0 +1,46 @@
+// Colores
+$color-light-blue: #E4FEFF;
+$color-medium-blue: #88E4E8;
+$color-dark-teal: #00C7BE;
+$color-light-teal: #63D6F5;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-light-gray: #E9E9E9;
+$color-light-blue-alt: #C4E7F1;
+
+.etiketa {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.tarjetaVerde{
+  border: 1px solid #5fb84d;
+  background-color: $color-light-blue;
+  border-radius: 10px; 
+}
+
+.tarjetaRoja{
+  border: 1px solid red;
+  background-color: $color-light-blue;
+  border-radius: 10px; 
+}
+
+ion-header {
+  background-color: $color-light-teal;
+  color: $color-white;
+  --ion-toolbar-background: $color-light-teal;
+  --ion-toolbar-color: $color-white;
+}
+
+ion-segment-button {
+  color: $color-black;
+}
+
+ion-card-header{
+  background-color: $color-light-blue;
+}
+
+ion-card-content{
+  color: #000000;
+}

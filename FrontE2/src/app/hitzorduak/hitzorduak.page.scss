@@ -1,0 +1,148 @@
+.table-container {
+  background-color: transparent;
+  overflow:scroll;
+  height:500px;
+}
+
+table {
+  width: 500px;
+  height: 500px;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+}
+
+td:first-child,
+th:first-child {
+  position: sticky;
+  left: 0;
+  width: 500px;
+  max-width: 500px;
+  z-index: 2; 
+}
+
+td:first-child{
+  background: magenta;
+}
+
+th:first-child{
+  background-color: #beb3b370 ;
+}
+
+td:not(:first-child),
+th:not(:first-child) {
+  min-width: 200px;
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.bg-pink-light{
+  background-color:#FFD9EC !important;
+}
+
+.bg-blue-green-light{
+  background-color:#BBF0E8 !important;
+}
+
+.bg-grey-blue-light{
+  background-color:#B0BEC5 !important;
+}
+
+.selected {
+  border: 2px solid #ff4081; /* Borde de color rosa */
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5); /* Sombra que da el efecto de "brillo" */
+  background-color: rgba(255, 64, 129, 0.1); /* Fondo suave con un toque de color */
+}
+
+.highlighted {
+  background-color: #f0f8ff2d; /* Color de fondo para la selección */
+  border: 1px solid #00bfff;
+}
+
+ion-item {
+  --background: transparent;
+}
+
+ion-list {
+  background-color: rgb(255,255,255,0);
+}
+
+
+ion-card-header{
+  background-color: transparent;
+}
+
+.flexbox {
+  background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+  padding: 20px;
+}
+
+/* Cabecera de la tabla */
+table thead th {
+  background-color: #ffffff; /* Fondo blanco sólido */
+  font-weight: bold;
+  color: #333; /* Color de texto oscuro */
+}
+
+/* Primera columna */
+table tbody td:first-child {
+  background-color: #ffffff; /* Fondo blanco sólido */
+  font-weight: bold;
+  color: #333; /* Color de texto oscuro */
+}
+
+/* Celdas con citas */
+table tbody td.ng-star-inserted {
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo ligero y opaco */
+  color: #333; /* Color de texto oscuro */
+  border-radius: 5px;
+}
+
+/* Botones */
+// ion-button {
+//   background-color: #ff6f61 !important; /* Color de fondo de botones */
+//   color: white; /* Color de texto en botones */
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombras suaves para los botones */
+// }
+// ion-button:hover {
+//   background-color: #ff4c3b; /* Cambiar color de fondo al pasar el ratón */
+// }
+
+
+// Colores
+// $color-light-blue: #E4FEFF;
+// $color-medium-blue: #88E4E8;
+// $color-dark-teal: #00C7BE;
+// $color-light-teal: #63D6F5;
+// $color-white: #FFFFFF;
+// $color-black: #000000;
+// $color-light-gray: #E9E9E9;
+// $color-light-blue-alt: #C4E7F1;
+
+// Estructura general
+// ion-content {
+// background-color: $color-white;
+// padding: 16px;
+// }
+
+// ion-header {
+// background-color: $color-light-teal;
+// color: $color-white;
+// --ion-toolbar-background: $color-light-teal;
+// --ion-toolbar-color: $color-white;
+// }
+
+ion-card{
+  width: auto;
+  height: auto;
+  // max-width: 90%;
+  // max-height: 90%;
+  height: 100%;
+}
+
