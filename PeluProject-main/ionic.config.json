@@ -1,7 +1,0 @@
-{
-  "name": "PeluProject",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
