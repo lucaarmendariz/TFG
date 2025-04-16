@@ -1,0 +1,59 @@
+<ion-card [ngClass]="{
+  'pendiente': cita?.estado === 'Pendiente',
+  'en-proceso': cita?.estado === 'En proceso',
+  'finalizado': cita?.estado === 'Finalizado'
+}">
+<ion-card-header>
+  <ion-card-title>Cliente: {{ cita?.izena }}</ion-card-title>
+</ion-card-header>
+
+<ion-card-content>
+  <ion-item>
+    <ion-label>Alumno:</ion-label>
+    <ion-select placeholder="Seleccionar" interface="popover" [(ngModel)]="cita.alumno" (ionChange)="onAlumnoSeleccionado()">
+      <ion-select-option *ngFor="let alumno of alumnos" [value]="alumno.izena">
+        {{ alumno.izena }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Servicios:</ion-label>
+    <ion-text>{{ cita?.deskribapena || 'Sin descripción' }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Hora:</ion-label>
+    <ion-text>{{ cita?.hasieraOrdua || 'No especificada' }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Estado:</ion-label>
+    <ion-text>{{ cita?.estado }}</ion-text>
+  </ion-item>
+
+  <div *ngIf="cita.alumno" class="button-container">
+    <ion-item *ngIf="cita.estado === 'En proceso'">
+      <ion-label>Tiempo:</ion-label>
+      <ion-text>{{ tiempoFormato }}</ion-text>
+    </ion-item>
+
+    <ion-button expand="block" color="success" *ngIf="cita.estado === 'Pendiente'" (click)="startTimer()">
+      Iniciar
+    </ion-button>
+
+    <ion-button expand="block" color="primary" *ngIf="cita.estado === 'En proceso'" (click)="finalizarServicio()">
+      Finalizar
+    </ion-button>
+
+    <ion-item *ngIf="cita.estado === 'Finalizado'">
+      <ion-label>Duración Total:</ion-label>
+      <ion-text>{{ cita.duracionTotal }}</ion-text>
+    </ion-item>
+
+    <ion-button expand="block" color="secondary" *ngIf="mostrarBotonTicket" (click)="descargarTicket()">
+      Generar Ticket
+    </ion-button>
+  </div>
+</ion-card-content>
+</ion-card>

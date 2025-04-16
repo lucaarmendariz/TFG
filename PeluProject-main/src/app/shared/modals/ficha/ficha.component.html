@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isEditing ? 'Editar' : 'Añadir' }} Ficha Cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="ficha.izena" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Apellido</ion-label>
+    <ion-input [(ngModel)]="ficha.abizena" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Teléfono</ion-label>
+    <ion-input [(ngModel)]="ficha.telefonoa"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>¿Azal Sentikorra?</ion-label>
+    <ion-checkbox [(ngModel)]="ficha.azalSentikorra" color="primary"></ion-checkbox>
+  </ion-item>
+  
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" color="primary" (click)="saveFicha()">Guardar</ion-button>
+</ion-footer>

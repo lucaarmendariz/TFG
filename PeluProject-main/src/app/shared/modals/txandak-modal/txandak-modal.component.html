@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Añadir Turno</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="guardarTurno()">
+    
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="nuevoTurno.data" name="data"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Tipo de Turno</ion-label>
+      <ion-select [(ngModel)]="nuevoTurno.mota" name="mota" placeholder="Selecciona el tipo">
+        <ion-select-option value="G">Limpieza 🧹</ion-select-option>
+        <ion-select-option value="M">Recepción 🏨</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Empleado</ion-label>
+      <ion-select [(ngModel)]="nuevoTurno.langilea.id" name="langilea.id" placeholder="Selecciona un empleado">
+        <ion-select-option *ngFor="let empleado of empleados" [value]="empleado.id">
+          {{ empleado.izena }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div class="boton-centrado">
+      <ion-button expand="full" type="submit" color="primary">
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Guardar Turno
+      </ion-button>
+    </div>
+    
+  </form>
+</ion-content>

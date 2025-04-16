@@ -1,0 +1,60 @@
+<ion-app>
+  <app-barra-navegacion></app-barra-navegacion>
+
+  <ion-content>
+    <app-nav-bar></app-nav-bar>
+
+    <!-- Selector de Grupo con espacio reducido -->
+    <ion-item>
+      <ion-label>Filtrar Grupo:</ion-label>
+      <ion-select [(ngModel)]="grupoSeleccionado" (ionChange)="filtrarTrabajadores()">
+        <ion-select-option value="todos">Todos</ion-select-option>
+        <ion-select-option *ngFor="let grupo of grupos" [value]="grupo.kodea">
+          {{ grupo.izena }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list>
+      <ion-card *ngFor="let trabajador of trabajadoresFiltrados">
+        <ion-card-header>
+          <ion-card-title>{{ trabajador.izena }} {{ trabajador.abizenak }}</ion-card-title>
+          <ion-card-subtitle>{{ trabajador.taldeak?.izena || "Sin grupo" }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-button expand="full" color="primary" (click)="openTrabajadorModal(trabajador)">
+                  <ion-icon slot="start" name="create-outline"></ion-icon> Editar
+                </ion-button>
+              </ion-col>
+              <ion-col size="6">
+                <ion-button expand="full" color="danger" (click)="deleteTrabajador(trabajador.id)">
+                  <ion-icon slot="start" name="trash-outline"></ion-icon> Eliminar
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <!-- Botón flotante con opciones -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="primary">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button color="secondary" (click)="openGrupoModal()">
+          <ion-icon name="people"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="tertiary" (click)="openTrabajadorModal()">
+          <ion-icon name="person-add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+
+  </ion-content>
+</ion-app>

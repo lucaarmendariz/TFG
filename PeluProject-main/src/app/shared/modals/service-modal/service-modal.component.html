@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isEditing ? 'Editar Servicio' : 'Añadir Servicio' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre del servicio</ion-label>
+    <ion-input [(ngModel)]="item.nombre" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Categoría</ion-label>
+    <ion-select [(ngModel)]="item.categoria" required>
+      <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+        {{ categoria.izena }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="full" color="secondary" (click)="openKategoriaModal()">Añadir Categoria</ion-button>
+
+  <ion-item>
+    <ion-label position="floating">Precio interno (€)</ion-label>
+    <ion-input type="number" [(ngModel)]="item.etxekoPrezioa" min="0" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Precio externo (€)</ion-label>
+    <ion-input type="number" [(ngModel)]="item.kanpokoPrezioa" min="0" required></ion-input>
+  </ion-item>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" color="primary" (click)="saveItem()">Guardar</ion-button>
+</ion-footer>

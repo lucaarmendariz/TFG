@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isEditing ? 'Editar Trabajador' : 'Añadir Trabajador' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre *</ion-label>
+    <ion-input [(ngModel)]="trabajador.izena" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Apellidos *</ion-label>
+    <ion-input [(ngModel)]="trabajador.abizenak" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Grupo</ion-label>
+    <ion-select [(ngModel)]="trabajador.taldeak">
+      <ion-select-option *ngFor="let grupo of grupos" [value]="grupo">
+        {{ grupo.izena }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Botón para crear un nuevo grupo desde el modal -->
+  <ion-button expand="full" color="secondary" (click)="openGrupoModal()">Añadir Grupo</ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" color="primary" (click)="saveTrabajador()">Guardar</ion-button>
+</ion-footer>

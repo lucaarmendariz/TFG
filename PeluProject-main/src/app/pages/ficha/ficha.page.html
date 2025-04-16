@@ -1,0 +1,35 @@
+<ion-app>
+  <app-barra-navegacion></app-barra-navegacion>
+  
+  <ion-content class="full-height">
+    <app-nav-bar></app-nav-bar>
+    
+    <div class="tab-container">
+      <!-- Barra de búsqueda -->
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterItems()" placeholder="Buscar..." class="searchbar-custom">
+      </ion-searchbar>
+
+      <!-- Botón flotante para agregar (FAB) -->
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="primary" (click)="openModal()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- Lista de clientes -->
+      <ion-list>
+        <ion-card *ngFor="let cliente of bezeroak">
+          <ion-card-header>
+            <ion-card-title>{{ cliente.izena }} {{ cliente.abizena }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Teléfono:</strong> {{ cliente.telefonoa }}</p>
+            <p><strong>Sensibilidad:</strong> {{ cliente.azalSentikorra ? 'Alta' : 'Baja' }}</p>
+            <p><strong>Creado:</strong> {{ cliente.sortzeData }}</p>
+          </ion-card-content>
+          <ion-button expand="full" (click)="openModal(cliente)">Editar</ion-button>
+        </ion-card>
+      </ion-list>
+    </div>
+  </ion-content>
+</ion-app>

@@ -1,0 +1,44 @@
+<ion-app>
+  <app-barra-navegacion></app-barra-navegacion>
+
+  <ion-content>
+    <app-nav-bar></app-nav-bar>
+
+    <!-- Grid con tres columnas -->
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="4" *ngFor="let servicio of servicios">
+          <ion-card class="servicio-card">
+            <!-- Etiqueta del precio arriba a la derecha -->
+            <div class="price-tag">
+              {{ servicio.etxekoPrezioa }} € / {{ servicio.kanpokoPrezioa }} €
+            </div>
+            
+            <ion-card-header>
+              <ion-card-title>{{ servicio.nombre }}</ion-card-title>
+              <ion-card-subtitle>{{ servicio.categoria }}</ion-card-subtitle>
+            </ion-card-header>
+    
+            <div class="button-container">
+              <ion-button fill="solid" color="primary" (click)="openModal(servicio)">
+                <ion-icon name="create-outline"></ion-icon> Editar
+              </ion-button>
+              <ion-button fill="solid" color="danger" (click)="deleteServicio(servicio.id)">
+                <ion-icon name="trash-outline"></ion-icon> Eliminar
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    
+
+    <!-- Botón flotante para agregar servicio --> 
+    <ion-fab *ngIf="admin" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="primary" (click)="openModal()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
+</ion-app>

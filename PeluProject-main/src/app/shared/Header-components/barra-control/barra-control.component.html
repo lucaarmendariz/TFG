@@ -1,0 +1,33 @@
+<div class="barracontrol">
+  <!-- Grupo Asignado Automáticamente (Deshabilitado) -->
+  <div style="margin-right: 10px; color: white; font-weight: bold; font-size: 16px;">
+    {{ grupoSeleccionado ? grupoSeleccionado.izena : 'Sin grupo asignado' }}
+  </div>
+  
+
+  <!-- Selector de Trabajadores por Grupo -->
+  <div style="display: flex; align-items: center; margin-right: 10px;">
+    <ion-select
+      [(ngModel)]="trabajadorSeleccionado"
+      interface="popover"
+      style="margin-right: 10px; color: white;"
+    >
+      <ion-select-option *ngFor="let trabajador of trabajadoresFiltrados" [value]="trabajador.id">
+        {{ trabajador.izena }} {{ trabajador.abizenak }}
+      </ion-select-option>
+    </ion-select>
+  </div>
+
+  <!-- Botones de navegación de fechas -->
+  <div style="display: flex; align-items: center; margin-right: 10px;">
+    <ion-button fill="clear" color="light" size="small" (click)="retrocederFecha()">
+      <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+    </ion-button>
+    <ion-label style="color: white; font-size: 16px;">{{ fechaActual }}</ion-label> 
+    <ion-button fill="clear" color="light" size="small" (click)="avanzarFecha()">
+      <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-button color="primary" size="small" shape="round" (click)="abrirPopup()">Añadir Cita</ion-button>
+</div>

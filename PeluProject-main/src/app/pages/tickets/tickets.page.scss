@@ -1,0 +1,11 @@
+.ticket-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh; /* Ocupa el 70% de la pantalla */
+  }
+  ion-card {
+    width: 90%;
+    max-width: 400px; /* Evita que el ticket sea demasiado grande */
+  }
+  
