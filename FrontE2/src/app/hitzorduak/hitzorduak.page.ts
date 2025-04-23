@@ -6,8 +6,12 @@ import autoTable from 'jspdf-autotable';
 import 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+import { BezeroService } from '../zerbitzuak/bezero.service';
+import { ClienteCreationModalPage } from '../cliente-creation-modal/cliente-creation-modal.page';
+import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page'; 
+
 
 @Component({
   selector: 'app-hitzorduak',
@@ -33,6 +37,12 @@ export class HitzorduakPage implements OnInit {
   dataSelec!: any;
   todayDate!: any;
   selectedLanguage: string = 'es';
+
+  bezeroak: any[] = [];  // Lista de clientes
+  crearNombre: string = '';
+  crearApellido: string = '';
+  crearTelefono: string = '';
+  crearPiel: boolean = false;
 
   firstCell: { time: string, seat: number } | null = null;
   secondCell: { time: string, seat: number } | null = null;
@@ -122,6 +132,22 @@ export class HitzorduakPage implements OnInit {
     return this.highlightedCells.some(cell => cell.time === time && cell.seat === seat);
   }
 
+  async abrirNuevaCitaModal() {
+    const modal = await this.modalController.create({
+      component: NuevaCitaModalPage,
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        const cita = result.data;
+        console.log('Cita confirmada:', cita);
+        // Aquí puedes hacer algo con los datos de la cita (como almacenarlos en el backend)
+      }
+    });
+
+    await modal.present();
+  }
+
   async reservar_cita(eserlekua: number, time: string) {
     if (this.citaEditar.hasieraOrduaErreala) {
       return;
@@ -150,7 +176,9 @@ export class HitzorduakPage implements OnInit {
         if (this.citaCrear.hasieraOrdua < time) {
           this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
           this.secondCell = { time, seat: eserlekua };
-          this.updateHighlightedCells();
+          this.abrirNuevaCitaModal();
+        
+          return;
         } else {
           this.citaCrear.hasieraOrdua = time;
           this.firstCell = { time, seat: eserlekua };
@@ -208,6 +236,7 @@ export class HitzorduakPage implements OnInit {
         this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
         this.secondCell = { time, seat: eserlekua };
         this.updateHighlightedCells();
+        
       } else {
         this.citaEditar.hasieraOrdua = time;
         this.firstCell = { time, seat: eserlekua };
@@ -215,6 +244,96 @@ export class HitzorduakPage implements OnInit {
       }
     }
   }
+
+  async mostrarModalNuevaCita() {
+    // Cargar los bezeros disponibles
+    await this.bezeroService.cargarClientes();
+  
+    const alert = await this.alertController.create({
+      header: 'Nueva Cita',
+      inputs: [
+        {
+          name: 'cliente',
+          type: 'text',
+          placeholder: 'Elige un cliente',
+          
+        },
+        {
+          name: 'descripcion',
+          type: 'text',
+          placeholder: 'Descripción',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Nuevo Cliente',  // Aquí el botón para abrir la modal
+          handler: async () => {
+            const modal = await this.modalController.create({
+              component: ClienteCreationModalPage  // Aquí abres la modal para crear un nuevo cliente
+            });
+  
+            // Al cerrar la modal, puedes obtener los datos del cliente y realizar alguna acción
+            modal.onDidDismiss().then((result) => {
+              if (result.data) {
+                // Aquí puedes trabajar con los datos del cliente (por ejemplo, actualizar la alerta o procesar la cita)
+                console.log('Nuevo cliente creado:', result.data);
+                // Podrías actualizar la lista de clientes, etc.
+              }
+            });
+  
+            await modal.present();  // Presentas la modal
+            return false;  // Evitas que la alerta se cierre automáticamente
+          },
+        },
+        {
+          text: 'Confirmar',
+          handler: async (data) => {
+            // Si se selecciona un cliente, obtenemos los datos
+            const clienteId = data.cliente;
+            const clienteSeleccionado = this.bezeroak.find(bezero => bezero.id === clienteId);
+  
+            if (!clienteSeleccionado) {
+              // Si no se seleccionó un cliente, hay que crear uno nuevo
+              console.error("No se seleccionó un cliente.");
+              return;
+            }
+  
+            // Aquí usamos los datos del cliente seleccionado o creado
+            const cliente = clienteSeleccionado;
+            const descripcion = data.descripcion;
+            const esCentro = data.esCentro === 'si';  // La casilla de verificación 'esCentro' se enviará como 'si' si está marcada
+  
+            // Asumiendo que `this.citaCrear` tiene los datos correctos
+            this.citaCrear = {
+              data: this.citaCrear.data,  // Los otros campos que no se modifican
+              hasieraOrdua: this.citaCrear.hasieraOrdua,
+              amaieraOrdua: this.citaCrear.amaieraOrdua,
+              eserlekua: this.citaCrear.eserlekua,
+              izena: `${cliente.izena} ${cliente.abizena}`,  // Actualiza con el nombre completo del cliente
+              telefonoa: cliente.telefonoa,  // Utiliza el teléfono del cliente
+              deskribapena: descripcion,
+              etxekoa: esCentro ? "E" : "K",  // Se ajusta dependiendo de si es del centro o no
+            };
+  
+            // Llamamos a createCita después de configurar los datos
+            await this.createCita();  // Llamada a la función createCita
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+  
+  
+  
+  
+  
 
   async mostrarAlertaCambioAsiento(): Promise<boolean> {
     return new Promise(async (resolve) => {
@@ -285,7 +404,9 @@ export class HitzorduakPage implements OnInit {
     return solapamiento;
   }
 
-  constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, private http: HttpClient) {
+  constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, 
+    private http: HttpClient, private modalController: ModalController, private alertController: AlertController,     private bezeroService: BezeroService, // Inyectamos el servicio
+  ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -298,6 +419,10 @@ export class HitzorduakPage implements OnInit {
     this.cargar_alumnos();
     this.cargarTratamenduak();
     this.filtrarCitas();
+    this.bezeroService.bezeroak$.subscribe(clientes => {
+      this.bezeroak = clientes;
+    });
+    this.bezeroService.cargarClientes();
   }
 
   // Función: lortuData

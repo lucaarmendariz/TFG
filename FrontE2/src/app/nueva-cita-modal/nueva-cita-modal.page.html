@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva Cita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancelar()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Selección de cliente existente -->
+  <ion-item>
+    <ion-label position="floating">Selecciona un cliente</ion-label>
+    <ion-select [(ngModel)]="clienteId" placeholder="Selecciona un cliente">
+      <ion-select-option *ngFor="let bezero of bezeroak" [value]="bezero.id">
+        {{ bezero.izena }} {{ bezero.abizena }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Descripción de la cita -->
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-input [(ngModel)]="descripcion" placeholder="Descripción de la cita" type="text"></ion-input>
+  </ion-item>
+
+  <!-- ¿Pertenece al centro? -->
+  <ion-item>
+    <ion-label>¿Pertenece al centro?</ion-label>
+    <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
+  </ion-item>
+
+  <!-- Botón para crear un nuevo cliente -->
+  <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
+
+  <ion-button expand="full" (click)="confirmarCita()" [disabled]="!clienteId || !descripcion">
+    Confirmar Cita
+  </ion-button>
+</ion-content>

@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs/internal/observable/of';
-import { catchError } from 'rxjs/operators';
 import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
