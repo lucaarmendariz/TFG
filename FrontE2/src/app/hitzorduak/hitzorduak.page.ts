@@ -58,7 +58,6 @@ export class HitzorduakPage implements OnInit {
       const servicios = (cita.zerbitzuak || [])
         .map((s: any) => s.izena?.toLowerCase())
         .join(' ');
-  
       return (
         cliente.includes(texto) ||
         langile.includes(texto) ||
@@ -67,6 +66,13 @@ export class HitzorduakPage implements OnInit {
         servicios.includes(texto)
       );
     });
+    console.log('Citas cargadas:', this.hitzorduArray);
+
+  }
+
+  limpiarBusqueda() {
+    this.filtroBusqueda = '';
+    this.filtrarCitas();
   }
   
   
@@ -116,7 +122,7 @@ export class HitzorduakPage implements OnInit {
     return this.highlightedCells.some(cell => cell.time === time && cell.seat === seat);
   }
 
-  async reserbar_cita(eserlekua: number, time: string) {
+  async reservar_cita(eserlekua: number, time: string) {
     if (this.citaEditar.hasieraOrduaErreala) {
       return;
     }
@@ -291,6 +297,7 @@ export class HitzorduakPage implements OnInit {
     this.getHoursInRange();
     this.cargar_alumnos();
     this.cargarTratamenduak();
+    this.filtrarCitas();
   }
 
   // Función: lortuData
@@ -315,7 +322,7 @@ export class HitzorduakPage implements OnInit {
     this.hitzorduArray = [];
     this.hitzorduak = [];
     
-    this.http.get(`${environment.url}hitzorduak/date/${this.dataSelec}`, {
+    await this.http.get(`${environment.url}hitzorduak/date/${this.dataSelec}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -325,6 +332,8 @@ export class HitzorduakPage implements OnInit {
         this.hitzorduak = datuak.filter((hitzordu: any) => hitzordu.ezabatzeData === null);
         const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
         this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => hitzordu.data.includes(eguna));
+        this.hitzorduArrayFiltrado = [...this.hitzorduArray]; 
+
       },
       (error) => {
         console.error("Error al cargar citas:", error);
@@ -333,7 +342,6 @@ export class HitzorduakPage implements OnInit {
         this.loading = false;
       }
     );
-  this.hitzorduArrayFiltrado = [...this.hitzorduArray]; 
   }
 
   // Función: cargar_asientos
