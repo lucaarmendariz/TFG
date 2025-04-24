@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <app-header></app-header>
+  <app-header title="Citas"></app-header>
   <div class="ion-page" id="main-content">
     <ion-header>
       <ion-toolbar>
@@ -106,15 +106,18 @@
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
                       <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)"
                         [attr.rowspan]="rowspanManagement(time, idx + 1)"
-                        [ngClass]="{ 'highlighted': isCellHighlighted(time, idx + 1) }">
+                        [ngClass]="{ 'highlighted': isCellHighlighted(time, idx + 1) }"
+                        (dragover)="onDragOver($event)"
+                        (drop)="onDrop($event, time, idx + 1)">
                         <ng-container *ngIf="getCitasAtTimeAndSeat(time, idx + 1).length > 0; else emptySeat">
                           <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)"
                             (click)="cargar_cita_selec(cita)" [ngClass]="{
-                                      'bg-grey-blue-light': cita.prezioTotala,
-                                      'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
-                                      'bg-pink-light': !cita.langilea && !cita.prezioTotala,
-                                      'selected': cita.id === citaEditar.id
-                                    }">
+                              'bg-grey-blue-light': cita.prezioTotala,
+                              'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
+                              'bg-pink-light': !cita.langilea && !cita.prezioTotala,
+                              'selected': cita.id === citaEditar.id
+                            }" [attr.id]="'card-' + cita.id" draggable="true"
+                            (dragstart)="onDragStart($event, cita)">
                             <ion-card-header>
                               <ion-card-title>{{ cita.izena }}</ion-card-title>
                             </ion-card-header>
@@ -133,6 +136,7 @@
               </tbody>
             </table>
           </div>
+                    
         </div>
         <div>
           <ion-segment>

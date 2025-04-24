@@ -28,7 +28,6 @@ export class CitaService {
   }
 
   getCita() {
-    console.log(this.cita);
     return this.cita; // Devuelve toda la info, incluyendo nombre y descripción
   }
 

@@ -248,6 +248,128 @@ export class HitzorduakPage implements OnInit {
       }
     }
   }
+// Método llamado cuando se inicia el arrastre
+onDragStart(event: DragEvent, cita: any) {
+  // Almacenamos la cita que se está arrastrando en el evento
+  event.dataTransfer?.setData('cita', JSON.stringify(cita));
+}
+
+// Método llamado cuando se arrastra sobre una celda
+onDragOver(event: DragEvent) {
+  // Evitamos el comportamiento por defecto para permitir el drop
+  event.preventDefault();
+}
+
+// Método llamado cuando se suelta la carta
+async onDrop(event: DragEvent, time: string, seat: number) {
+  event.preventDefault();
+
+  // Recuperamos la cita que se está arrastrando
+  const citaJson = event.dataTransfer?.getData('cita');
+  if (citaJson) {
+    const cita = JSON.parse(citaJson);
+
+    // Verificamos si existe alguna superposición en el asiento y la hora
+    const hora = time;
+    const asiento = seat;
+
+    // Verificamos si la cita tiene superposición con otras ya existentes
+    const superposicion = this.verificarSuperposicion(
+      asiento, 
+      hora, 
+      this.dataSelec, 
+      cita.hasieraOrdua, 
+      cita.amaieraOrdua, 
+      cita.id
+    );
+
+    if (superposicion) {
+      // Si hay superposición, mostramos una alerta y evitamos mover la cita
+      const confirmar = await this.mostrarAlertaSuperposicion();
+      if (!confirmar) {
+        return; // Si el usuario no confirma, no movemos la cita
+      }
+    }
+
+    // Si la cita tiene un id, significa que ya existe y la debemos actualizar
+    if (cita.id) {
+      // Llamamos al método para editar la cita
+      await this.editarSitioCita(cita, hora, asiento);
+    }
+
+    // Recargamos las citas después de mover la cita
+    await this.cargarHitzordu();
+  }
+}
+
+// Método para mostrar la alerta de superposición
+async mostrarAlertaSuperposicion(): Promise<boolean> {
+  // Muestra un mensaje de alerta al usuario y espera su respuesta
+  // Aquí puedes personalizar cómo quieres mostrar la alerta (puedes usar un modal, un pop-up, etc.)
+  const alert = await this.alertController.create({
+    header: '¡Advertencia!',
+    message: 'Esta cita tiene una superposición con otra. ¿Estás seguro de que quieres continuar?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          return false;
+        }
+      },
+      {
+        text: 'Aceptar',
+        handler: () => {
+          return true;
+        }
+      }
+    ]
+  });
+  
+  await alert.present();
+  const result = await alert.onDidDismiss();
+  return result.role === 'accept';
+}
+
+// Método para editar una cita
+async editarSitioCita(cita: any, time: string, seat: number) {
+  cita.hasieraOrdua = time;
+  cita.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1]; // Nueva hora de finalización
+  cita.eserlekua = seat;
+
+  // Llamar a la API para actualizar la cita
+  const etxeko = cita.etxekoa ? "E" : "K";
+  const json_data = {
+    id: cita.id,
+    data: cita.data,
+    hasieraOrdua: cita.hasieraOrdua,
+    amaieraOrdua: cita.amaieraOrdua,
+    eserlekua: cita.eserlekua,
+    izena: cita.izena,
+    telefonoa: cita.telefonoa,
+    deskribapena: cita.deskribapena,
+    etxekoa: etxeko
+  };
+
+  this.http.put(`${environment.url}hitzorduak`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async () => {
+      await this.cargarHitzordu(); // Recargar citas después de la actualización
+      this.limpiar_campos(); // Limpiar campos si es necesario
+    },
+    (error) => {
+      console.error("Error al editar la cita:", error);
+      throw new Error("No se ha editado la cita.");
+    }
+  );
+}
+
+  
+  
 
   async mostrarAlertaCambioAsiento(): Promise<boolean> {
     return new Promise(async (resolve) => {
