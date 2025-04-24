@@ -1,7 +1,7 @@
 .table-container {
   background-color: transparent;
   overflow:scroll;
-  height:500px;
+  margin: 20px;
 }
 
 table {
@@ -78,10 +78,7 @@ ion-card-header{
   background-color: transparent;
 }
 
-.flexbox {
-  background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
-  padding: 20px;
-}
+
 
 /* Cabecera de la tabla */
 table thead th {
@@ -183,4 +180,20 @@ ion-label {
   justify-content: center;
   width: 100%;
 }
+
+.alargada-card {
+  height: 250px; /* Ajusta según la altura que quieras */
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto asegura que el contenido dentro de la card se distribuya bien */
+  padding: 20px;
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid #000; /* Puedes cambiar el color y el grosor */
+  margin: 20px 0;
+}
+
 

@@ -51,6 +51,8 @@ export class HitzorduakPage implements OnInit {
 
   filtroBusqueda: string = '';
   hitzorduArrayFiltrado: any[] = [];
+
+  segmentoActivo: string = 'cita'; 
   
   filtrarCitas() {
     const texto = this.filtroBusqueda?.toLowerCase() || '';
@@ -86,6 +88,18 @@ export class HitzorduakPage implements OnInit {
     this.filtrarCitas();
   }
   
+  mostrarFormulario = false;
+
+abrirFormularioEdicion(cita: any) {
+  this.citaEditar = { ...cita }; // Clonamos para no alterar directamente
+  this.mostrarFormulario = true;
+}
+
+cerrarFormulario() {
+  this.mostrarFormulario = false;
+  this.citaEditar = {};
+}
+
   
   servicioSeleccionado(): boolean {
     return this.tratamenduArray.some(katTrat => 
@@ -162,17 +176,6 @@ export class HitzorduakPage implements OnInit {
         this.limpiar_campos();
       }
   
-      if (this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, 0)) {
-        this.resetSelection();
-        this.citaCrear.data = this.dataSelec;
-        this.citaCrear.hasieraOrdua = time;
-        this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-        this.citaCrear.eserlekua = eserlekua;
-        this.firstCell = { time, seat: eserlekua };
-        this.highlightedCells = [{ time, seat: eserlekua }];
-        return;
-      }
-  
       if (this.citaCrear.data) {
         if (this.citaCrear.hasieraOrdua < time) {
           this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
@@ -225,17 +228,6 @@ export class HitzorduakPage implements OnInit {
         return;
       }
   
-      if (this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaEditar.hasieraOrdua, this.citaEditar.amaieraOrdua, this.citaEditar.id)) {
-        this.resetSelection();
-        this.citaEditar.data = this.dataSelec;
-        this.citaEditar.hasieraOrdua = time;
-        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-        this.citaEditar.eserlekua = eserlekua;
-        this.firstCell = { time, seat: eserlekua };
-        this.highlightedCells = [{ time, seat: eserlekua }];
-        return;
-      }
-  
       if (this.citaEditar.hasieraOrdua < time) {
         this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
         this.secondCell = { time, seat: eserlekua };
@@ -260,69 +252,65 @@ onDragOver(event: DragEvent) {
   event.preventDefault();
 }
 
-// Método llamado cuando se suelta la carta
+// Método llamado cuando se suelta la cita (drag and drop)
 async onDrop(event: DragEvent, time: string, seat: number) {
   event.preventDefault();
 
-  // Recuperamos la cita que se está arrastrando
   const citaJson = event.dataTransfer?.getData('cita');
   if (citaJson) {
     const cita = JSON.parse(citaJson);
 
-    // Verificamos si existe alguna superposición en el asiento y la hora
-    const hora = time;
-    const asiento = seat;
+    // Calcular la duración original de la cita en milisegundos
+    const inicioOriginal = new Date(`${cita.data}T${cita.hasieraOrdua}`);
+    const finOriginal = new Date(`${cita.data}T${cita.amaieraOrdua}`);
+    const duracionMs = finOriginal.getTime() - inicioOriginal.getTime();
 
-    // Verificamos si la cita tiene superposición con otras ya existentes
-    const superposicion = this.verificarSuperposicion(
-      asiento, 
-      hora, 
-      this.dataSelec, 
-      cita.hasieraOrdua, 
-      cita.amaieraOrdua, 
-      cita.id
+    // Nueva hora de inicio
+    const nuevaHoraInicio = new Date(`${cita.data}T${time}`);
+    // Nueva hora de fin manteniendo la duración original
+    const nuevaHoraFin = new Date(nuevaHoraInicio.getTime() + duracionMs);
+
+    // Verificamos si ya existe una cita que se solape en ese rango
+    const citaExistente = this.hitzorduArray.find(c => 
+      c.id !== cita.id && // Ignoramos la misma cita
+      c.eserlekua === seat &&
+      (
+        nuevaHoraInicio < new Date(`${c.data}T${c.amaieraOrdua}`) &&
+        nuevaHoraFin > new Date(`${c.data}T${c.hasieraOrdua}`)
+      )
     );
 
-    if (superposicion) {
-      // Si hay superposición, mostramos una alerta y evitamos mover la cita
-      const confirmar = await this.mostrarAlertaSuperposicion();
-      if (!confirmar) {
-        return; // Si el usuario no confirma, no movemos la cita
-      }
+    if (citaExistente) {
+      this.mostrarAlertaSuperposicion();
+      return;
     }
 
-    // Si la cita tiene un id, significa que ya existe y la debemos actualizar
+    // Si no hay superposición, editamos la cita
     if (cita.id) {
-      // Llamamos al método para editar la cita
-      await this.editarSitioCita(cita, hora, asiento);
+      await this.editarSitioCita(cita, time, seat); // ✅ FIXED: se pasa `time` correctamente
     }
 
-    // Recargamos las citas después de mover la cita
     await this.cargarHitzordu();
   }
 }
 
+
+
+
 // Método para mostrar la alerta de superposición
 async mostrarAlertaSuperposicion(): Promise<boolean> {
   // Muestra un mensaje de alerta al usuario y espera su respuesta
-  // Aquí puedes personalizar cómo quieres mostrar la alerta (puedes usar un modal, un pop-up, etc.)
   const alert = await this.alertController.create({
     header: '¡Advertencia!',
-    message: 'Esta cita tiene una superposición con otra. ¿Estás seguro de que quieres continuar?',
+    message: "Lo sentimos, no se puede asignar la cita en este asiento y horario. El asiento ya está ocupado en este momento. Por favor, elige otro horario o asiento disponible.",
     buttons: [
       {
-        text: 'Cancelar',
+        text: 'Vale, gracias',
         role: 'cancel',
         handler: () => {
           return false;
         }
       },
-      {
-        text: 'Aceptar',
-        handler: () => {
-          return true;
-        }
-      }
     ]
   });
   
@@ -331,13 +319,26 @@ async mostrarAlertaSuperposicion(): Promise<boolean> {
   return result.role === 'accept';
 }
 
-// Método para editar una cita
-async editarSitioCita(cita: any, time: string, seat: number) {
-  cita.hasieraOrdua = time;
-  cita.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1]; // Nueva hora de finalización
-  cita.eserlekua = seat;
 
-  // Llamar a la API para actualizar la cita
+
+
+// Método para editar una cita
+async editarSitioCita(cita: any, nuevaHoraInicioStr: string, nuevoAsiento: number) {
+  // Calculamos la duración original
+  const inicioOriginal = new Date(`${cita.data}T${cita.hasieraOrdua}`);
+  const finOriginal = new Date(`${cita.data}T${cita.amaieraOrdua}`);
+  const duracionMs = finOriginal.getTime() - inicioOriginal.getTime();
+
+  // Nueva hora de inicio como Date
+  const nuevaHoraInicio = new Date(`${cita.data}T${nuevaHoraInicioStr}`);
+  // Nueva hora de fin manteniendo la duración
+  const nuevaHoraFin = new Date(nuevaHoraInicio.getTime() + duracionMs);
+
+  // Actualizamos la cita con los nuevos valores
+  cita.hasieraOrdua = nuevaHoraInicioStr;
+  cita.amaieraOrdua = nuevaHoraFin.toTimeString().slice(0, 5);
+  cita.eserlekua = nuevoAsiento;
+
   const etxeko = cita.etxekoa ? "E" : "K";
   const json_data = {
     id: cita.id,
@@ -367,6 +368,7 @@ async editarSitioCita(cita: any, time: string, seat: number) {
     }
   );
 }
+
 
   
   
@@ -413,32 +415,6 @@ async editarSitioCita(cita: any, time: string, seat: number) {
     });
   }  
 
-  // Función para verificar si dos rangos de tiempo se solapan
-  verificarSuperposicion(eserlekua: number, time: string, eguna: any, horaIniCita:any, horaFinCita:any,   id: number | null) {
-    let horaInicio;
-    let horaFin;
-    if (horaIniCita > time || !horaIniCita) {
-      horaInicio = time;
-      horaFin = horaFinCita;
-    } else {
-      horaInicio = horaIniCita;
-      horaFin = time;
-    }
-    const citasDelDia = this.hitzorduak.filter((hitzordu: any) => 
-      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && 
-      hitzordu.data === eguna && 
-      hitzordu.eserlekua === eserlekua &&
-      (id ? hitzordu.id !== id : true)
-    );
-    const solapamiento = citasDelDia.some((cita: any) => {
-      const citaInicio = cita.hasieraOrdua;
-      const citaFin = cita.amaieraOrdua;
-      return (
-        (horaInicio < citaFin && horaFin > citaInicio)
-      );
-    });
-    return solapamiento;
-  }
 
   constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, 
     private http: HttpClient, private modalController: ModalController, private alertController: AlertController,     
@@ -771,16 +747,6 @@ eliminar_cita() {
     const day = ('0' + today.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }  
-
-  cargar_cita_selec(citaSelec:any) {
-    if(this.citaEditar.id == citaSelec.id){
-      this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
-      return;
-    }
-    this.citaEditar = citaSelec;
-    this.citaEditar.etxekoa = citaSelec.etxekoa == "E" ? true : false;
-    this.resetSelection();
-  }
 
   actualizarServiciosSeleccionados(servicio:any, extra:boolean, color:boolean) {
     if (servicio.selected) {
