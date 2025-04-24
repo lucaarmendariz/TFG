@@ -1,43 +1,41 @@
-<ion-modal trigger="add-bezero">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>añadir cliente</ion-title>
-      </ion-toolbar>
-    </ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>añadir cliente</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-    <ion-content>
-      <form #form="ngForm" (ngSubmit)="crearBezero()" novalidate>
-        <!-- Nombre del cliente -->
-        <ion-item>
-          <ion-label position="stacked">nombre</ion-label>
-          <ion-input [(ngModel)]="crearNombre" name="nombre" placeholder="Izena" required #nombre="ngModel"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">nombre</ion-text>
-        
-        <!-- Apellido del cliente -->
-        <ion-item>
-          <ion-label position="stacked">apellico</ion-label>
-          <ion-input [(ngModel)]="crearApellido" name="apellido" placeholder="Apellido" required #apellido="ngModel"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">apellico</ion-text>
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="crearBezero()" novalidate>
+    <!-- Nombre del cliente -->
+    <ion-item>
+      <ion-label position="stacked">nombre</ion-label>
+      <ion-input [(ngModel)]="crearNombre" name="nombre" placeholder="Izena" required #nombre="ngModel"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">nombre</ion-text>
 
-        <!-- Teléfono del cliente -->
-        <ion-item>
-          <ion-label position="stacked">tlf</ion-label>
-          <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">tlf</ion-text>
+    <!-- Apellido del cliente -->
+    <ion-item>
+      <ion-label position="stacked">apellico</ion-label>
+      <ion-input [(ngModel)]="crearApellido" name="apellido" placeholder="Apellido" required
+        #apellido="ngModel"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">apellico</ion-text>
 
-        <!-- Piel del cliente -->
-        <ion-item>
-          <ion-label position="stacked">piel</ion-label>
-          <ion-checkbox [(ngModel)]="crearPiel" name="piel" #piel="ngModel"></ion-checkbox>
-        </ion-item>
+    <!-- Teléfono del cliente -->
+    <ion-item>
+      <ion-label position="stacked">tlf</ion-label>
+      <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$"
+        #telefono="ngModel"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">tlf</ion-text>
 
-        <!-- Botón para crear el cliente -->
-        <ion-button expand="full" type="submit" [disabled]="form.invalid">crear</ion-button>
-      </form>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+    <!-- Piel del cliente -->
+    <ion-item>
+      <ion-label position="stacked">piel</ion-label>
+      <ion-checkbox [(ngModel)]="crearPiel" name="piel" #piel="ngModel"></ion-checkbox>
+    </ion-item>
+
+    <!-- Botón para crear el cliente -->
+    <ion-button expand="full" type="submit" [disabled]="form.invalid">crear</ion-button>
+  </form>
+</ion-content>

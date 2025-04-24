@@ -26,14 +26,14 @@
     <ion-content class="ion-padding">
       <div class="flexbox">
         <div>
-          <!-- Barra de búsqueda -->
+          <!-- Barra de búsqueda
           <div class="busqueda-container">
             <input type="text" class="form-control"
               placeholder="Buscar por cliente, langile, servicio, tratamiento o asiento" [(ngModel)]="filtroBusqueda"
               (input)="filtrarCitas()" />
           </div>
 
-          <!-- Tabla de Citas -->
+          
           <table class="table table-striped mt-3">
             <thead>
               <tr>
@@ -46,7 +46,7 @@
                 <th>Hora fin</th>
                 <th>Acciones</th>
               </tr>
-            </thead>
+            </thead> 
             <tbody>
               <tr *ngFor="let cita of hitzorduArrayFiltrado">
                 <td>{{ cita.izena }}</td>
@@ -77,7 +77,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
 
           <div class="table-container">
             <table class="h-100 w-100" *ngIf="!loading">
