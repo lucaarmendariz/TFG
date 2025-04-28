@@ -68,13 +68,13 @@
                           (dragover)="onDragOver($event)" (drop)="onDrop($event, time, idx + 1)">
                           <ng-container *ngIf="getCitasAtTimeAndSeat(time, idx + 1).length > 0; else emptySeat">
                             <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)"
-                              (dblclick)="abrirFormularioEdicion(cita)" [ngClass]="{
-                                'bg-grey-blue-light': cita.prezioTotala,
-                                'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
-                                'bg-pink-light': !cita.langilea && !cita.prezioTotala,
+                              (click)="abrirFormularioEdicion(cita)" [ngClass]="{
+                                'bg-rojo': cita.prezioTotala,
+                                'bg-naranja': cita.langilea && !cita.prezioTotala,
+                                'bg-azul': !cita.langilea && !cita.prezioTotala,
                                 'selected': cita.id === citaEditar.id
                               }" [attr.id]="'card-' + cita.id" draggable="true"
-                              (dragstart)="onDragStart($event, cita)">
+                              (dragstart)="!cita.prezioTotala && !cita.langilea && onDragStart($event, cita)">
                               <ion-card-header>
                                 <ion-card-title>{{ cita.izena }}</ion-card-title>
                               </ion-card-header>
@@ -95,11 +95,12 @@
             </div>
           </div>
           <div>
-            <ion-modal [isOpen]="mostrarFormulario" (didDismiss)="cerrarFormulario()" [backdropDismiss]="false">
+            <ion-modal [isOpen]="mostrarFormulario" (didDismiss)="cerrarFormulario()" [backdropDismiss]="false"
+              cssClass="modal-grande">
               <ng-template>
                 <ion-header>
                   <ion-toolbar>
-                    <ion-title>{{ 'citas.modal.editar' | translate }}</ion-title>
+                    <ion-title>{{ 'citas.modal.gestionar' | translate }}</ion-title>
                     <ion-buttons slot="end">
                       <ion-button (click)="cerrarFormulario()">
                         <ion-icon name="close"></ion-icon>

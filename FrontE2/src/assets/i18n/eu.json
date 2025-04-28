@@ -49,7 +49,8 @@
             "vacio": "Ez daude produktuak aukeratuta",
             "filtroCat": "Kategoriaren Izenaz Filtratu",
             "filtroProd": "Produktuaren Izenaz Filtratu",
-            "stockBajo": "Stock Gutxiko Produktuak"
+            "stockBajo": "Stock Gutxiko Produktuak",
+            "gestionar" : "Hitzordua gestionatu"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -152,7 +153,8 @@
             "cambioAsiento": "Eserleku Aldaketa",
             "messageCambioAsiento": "Eserlekuz aldatu nahi duzu?",
             "cambioDia": "Egun aldaketa",
-            "messageCambioDia": "Egunez aldatu nahi duzu?"
+            "messageCambioDia": "Egunez aldatu nahi duzu?",
+            "gestionar" : "Hitzordua gestionatu"
         },
         "validaciones": {
             "fecha": "Data derrigorrezkoa da",

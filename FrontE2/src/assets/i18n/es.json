@@ -49,7 +49,8 @@
       "vacio": "No hay productos seleccionados",
       "filtroCat": "Filtrar por Nombre de Categoria",
       "filtroProd": "Filtrar por Nombre de Producto",
-      "stockBajo": "Productos Bajo Stock"
+      "stockBajo": "Productos Bajo Stock",
+      "gestionar" : "Gestion de cita"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -152,7 +153,8 @@
       "cambioAsiento": "Cambio Asiento",
       "messageCambioAsiento": "¿Desea cambiar el asiento?",
       "cambioDia": "Cambio Dia",
-      "messageCambioDia": "¿Desea cambiar de Dia?"
+      "messageCambioDia": "¿Desea cambiar de Dia?",
+      "gestionar" : "Gestion de cita"
     },
     "validaciones": {
       "fecha": "La fecha es obligatoria",

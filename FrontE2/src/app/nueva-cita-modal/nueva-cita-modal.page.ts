@@ -35,6 +35,7 @@ export class NuevaCitaModalPage implements OnInit {
   telefonoa: string = '';
   piel: boolean = false;
 
+
   constructor(
     private modalController: ModalController,
     private bezeroService: BezeroService,
@@ -59,40 +60,34 @@ export class NuevaCitaModalPage implements OnInit {
   }
   
 
-  // Confirmar cita y devolver los datos
   async confirmarCita() {
-    // Verificar que se ha seleccionado un cliente
-    const clienteSeleccionado = this.bezeroak.find((bezero) => bezero.id === this.clienteId);
+  const clienteSeleccionado = this.bezeroak.find((bezero) => bezero.id === this.clienteId);
 
-    if (!clienteSeleccionado) {
-      console.error('No se seleccionó un cliente.');
-      return;
-    }
-
-    // Asignar los datos de la cita
-    this.citaCrear.izena = clienteSeleccionado.izena;
-    this.citaCrear.telefonoa = clienteSeleccionado.telefonoa;
-    this.citaCrear.deskribapena = this.descripcion;
-    this.citaCrear.etxekoa = this.esCentro;
-
-    this.citaService.setCitaIzenaDesc(this.citaCrear.izena, this.citaCrear.deskribapena);
-
-console.log(this.citaService.getCita());
-
-    // Asegurarse de que todos los datos de la cita estén completos
-    if (!this.citaCrear.data || !this.citaCrear.hasieraOrdua || !this.citaCrear.amaieraOrdua || !this.citaCrear.eserlekua) {
-      console.error('Faltan datos para la cita.');
-      return;
-    }
-
-    // Llamar a la función para crear la cita
-    try {
-      this.createCita();  // Llamar a tu función para hacer el POST
-      this.modalController.dismiss();  // Cerrar la modal si todo va bien
-    } catch (error) {
-      console.error("Error al crear la cita:", error);
-    }
+  if (!clienteSeleccionado) {
+    console.error('No se seleccionó un cliente.');
+    return;
   }
+
+  this.citaCrear.izena = clienteSeleccionado.izena;
+  this.citaCrear.telefonoa = clienteSeleccionado.telefonoa;
+  this.citaCrear.deskribapena = this.descripcion;
+  this.citaCrear.etxekoa = this.esCentro;
+
+  this.citaService.setCitaIzenaDesc(this.citaCrear.izena, this.citaCrear.deskribapena);
+
+  if (!this.citaCrear.data || !this.citaCrear.hasieraOrdua || !this.citaCrear.amaieraOrdua || !this.citaCrear.eserlekua) {
+    console.error('Faltan datos para la cita.');
+    return;
+  }
+
+  try {
+    this.createCita();
+    this.modalController.dismiss(null, 'confirm'); // <- CONFIRM role
+  } catch (error) {
+    console.error("Error al crear la cita:", error);
+  }
+}
+
 
   // Crear un nuevo cliente
   async crearNuevoCliente() {
@@ -148,8 +143,7 @@ console.log(this.citaService.getCita());
     );
   }
 
-  // Cerrar la modal sin hacer nada
   cancelar() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(null, 'cancel'); // <- CANCEL role
   }
 }

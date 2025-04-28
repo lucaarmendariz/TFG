@@ -42,16 +42,16 @@ th {
   font-weight: bold;
 }
 
-.bg-pink-light{
-  background-color:#FFD9EC !important;
+.bg-rojo {
+  background-color: grey;
 }
 
-.bg-blue-green-light{
-  background-color:#BBF0E8 !important;
+.bg-naranja {
+  background-color: yellow;
 }
 
-.bg-grey-blue-light{
-  background-color:#B0BEC5 !important;
+.bg-azul {
+  background-color: lightblue;
 }
 
 .selected {
@@ -196,4 +196,28 @@ hr {
   margin: 20px 0;
 }
 
+
+.modal-grande {
+  --width: 90vw;
+  --height: 90vh;
+  --max-width: 100%;
+  --max-height: 100%;
+  --border-radius: 16px; // opcional, para que no quede cuadrado
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.card-grid ion-card {
+  width: 300px; /* Ajusta según tus necesidades */
+  flex-shrink: 0;
+}
+
+ion-card{
+  background-color: grey;
+}
 
