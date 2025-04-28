@@ -123,85 +123,87 @@
                     </ion-segment-button>
                   </ion-segment>
 
-                  <!-- Segment content -->
                   <div *ngIf="segmentoActivo === 'editatu'">
-                    <form #editCitaForm="ngForm" (ngSubmit)="editar_cita()" (ngSubmit)="editCitaForm.resetForm()"
-                      novalidate>
-                      <!-- Formulario de edición de cita -->
+                    <form #editCitaForm="ngForm" (ngSubmit)="editar_cita()" novalidate>
+                  
+                      <!-- Selección de Cliente -->
                       <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.data" name="fecha" type="date" disabled="true" required
-                          #fecha="ngModel"></ion-input>
+                        <ion-label position="stacked">Cliente</ion-label>
+                        <ion-select [(ngModel)]="citaEditar.telefonoa" name="telefonoa" (ionChange)="cambiarCliente($event)" interface="popover">
+                          <ion-select-option *ngFor="let cliente of bezeroak" [value]="cliente.telefonoa">
+                            {{ cliente.izena }} - {{ cliente.abizena }}
+                          </ion-select-option>
+                        </ion-select>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="fecha.invalid && fecha.touched">{{ "citas.validaciones.fecha" |
-                        translate }}</ion-text>
-
+                  
+                      <!-- CAMPOS SOLO INFORMATIVOS -->
                       <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.horaInicio" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.hasieraOrdua" name="horaInicio" type="time" disabled="true"
-                          required #horaInicio="ngModel"></ion-input>
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.fecha" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.data || '-' }}</ion-text>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="horaInicio.invalid && horaInicio.touched">{{
-                        "citas.validaciones.horaInicio" | translate }}</ion-text>
-
+                  
+                      <ion-item >
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.horaInicio" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.hasieraOrdua || '-' }}</ion-text>
+                      </ion-item>
+                  
                       <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.horaFin" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.amaieraOrdua" name="horaFin" type="time" disabled="true"
-                          required #horaFin="ngModel"></ion-input>
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.horaFin" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.amaieraOrdua || '-' }}</ion-text>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="horaFin.invalid && horaFin.touched">{{
-                        "citas.validaciones.horaFin" | translate }}</ion-text>
-
+                  
                       <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.asiento" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.eserlekua" name="asiento" required
-                          #asiento="ngModel"></ion-input>
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.asiento" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.eserlekua !== null ? citaEditar.eserlekua : '-' }}</ion-text>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="asiento.invalid && asiento.touched">{{
-                        "citas.validaciones.asiento" | translate }}</ion-text>
-
+                  
                       <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.cliente" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.izena" name="cliente" required
-                          #cliente="ngModel"></ion-input>
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.cliente" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.izena || '-' }}</ion-text>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="cliente.invalid && cliente.touched">{{
-                        "citas.validaciones.cliente" | translate }}</ion-text>
-
+                  
+                      <ion-item>
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-label>{{ "citas.modal.telefono" | translate }}</ion-label>
+                        <ion-text>{{ citaEditar.telefonoa || '-' }}</ion-text>
+                      </ion-item>
+                  
+                      <!-- CAMPOS EDITABLES -->
                       <ion-item>
                         <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.deskribapena" name="descripcion" required
-                          #descripcion="ngModel"></ion-input>
+                        <ion-input [(ngModel)]="citaEditar.deskribapena" name="descripcion" required #descripcion="ngModel"></ion-input>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">{{
-                        "citas.validaciones.descripcion" | translate }}</ion-text>
-
-                      <ion-item>
-                        <ion-label position="stacked">{{ "citas.modal.telefono" | translate }}</ion-label>
-                        <ion-input [(ngModel)]="citaEditar.telefonoa" name="telefono" pattern="^[0-9]{9,}$"
-                          #telefono="ngModel"></ion-input>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{
-                        "citas.validaciones.telefono" | translate }}</ion-text>
-
-                      <ion-item>
+                      <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">
+                        {{ "citas.validaciones.descripcion" | translate }}
+                      </ion-text>
+                  
+                      <ion-item lines="none">
                         <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
-                        <ion-checkbox [(ngModel)]="citaEditar.etxekoa" name="casa" required
-                          #casa="ngModel"></ion-checkbox>
+                        <ion-checkbox slot="start" [(ngModel)]="citaEditar.etxekoa" (ionChange)="citaEditar.etxekoa = $event.detail.checked" name="casa" required #casa="ngModel"></ion-checkbox>
                       </ion-item>
-                      <ion-text color="danger" *ngIf="casa.invalid && casa.touched">{{ "citas.validaciones.seleccion" |
-                        translate }}</ion-text>
-
-                      <ion-button type="submit"
-                        [disabled]="editCitaForm.invalid || (citaEditar.langilea && !citaEditar.prezioTotala)">
-                        {{ "citas.botones.guardar" | translate }}
-                      </ion-button>
-                      <ion-button color="danger" (click)="eliminar_cita()"
-                        [disabled]="editCitaForm.invalid || (citaEditar.langilea && !citaEditar.prezioTotala)">
-                        {{ "citas.botones.borrar" | translate }}
-                      </ion-button>
+                      <ion-text color="danger" *ngIf="casa.invalid && casa.touched">
+                        {{ "citas.validaciones.seleccion" | translate }}
+                      </ion-text>
+                  
+                      <!-- BOTONES -->
+                      <div class="ion-text-center ion-padding">
+                        <ion-button type="submit" (click)="editar_cita()" [disabled]="editCitaForm.invalid || (citaEditar.langilea && !citaEditar.prezioTotala)">
+                          {{ "citas.botones.guardar" | translate }}
+                        </ion-button>
+                        <ion-button color="danger" (click)="eliminar_cita()" [disabled]="editCitaForm.invalid || (citaEditar.langilea && !citaEditar.prezioTotala)">
+                          {{ "citas.botones.borrar" | translate }}
+                        </ion-button>
+                      </div>
+                  
                     </form>
                   </div>
+                  
+                  
 
                   <div *ngIf="segmentoActivo === 'asignatu'">
                     <!-- Formulario para asignar cita -->

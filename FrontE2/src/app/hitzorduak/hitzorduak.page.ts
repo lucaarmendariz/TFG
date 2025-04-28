@@ -10,8 +10,8 @@ import { HeaderComponent } from '../components/header/header.component';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { BezeroService } from '../zerbitzuak/bezero.service';
-import { ClienteCreationModalPage } from '../cliente-creation-modal/cliente-creation-modal.page';
 import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page';
+import { ReactiveFormsModule } from '@angular/forms'; // Importar ReactiveFormsModule
 
 
 @Component({
@@ -33,8 +33,17 @@ export class HitzorduakPage implements OnInit {
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
   citaCrear: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-  citaEditar: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-  idLangile: any = null;
+  citaEditar: any = {
+    data: null,
+    hasieraOrdua: null,
+    amaieraOrdua: null,
+    eserlekua: 0,
+    izena: '',
+    telefonoa: '',
+    deskribapena: '',
+    etxekoa: false
+    };
+    idLangile: any = null;
   dataSelec!: any;
   todayDate!: any;
   selectedLanguage: string = 'es';
@@ -85,7 +94,17 @@ export class HitzorduakPage implements OnInit {
 
   }
 
- 
+  cambiarCliente(event: any) {
+    const telefonoSeleccionado = event.target.value;
+    const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
+  
+    if (clienteSeleccionado) {
+      this.citaEditar.izena = clienteSeleccionado.izena;
+      this.citaEditar.abizena = clienteSeleccionado.abizena;
+      this.citaEditar.telefonoa = clienteSeleccionado.telefonoa;
+    }
+  }
+  
 
   limpiarBusqueda() {
     this.filtroBusqueda = '';
@@ -371,8 +390,8 @@ export class HitzorduakPage implements OnInit {
       }
     }).subscribe(
       async () => {
-        await this.cargarHitzordu(); // Recargar citas después de la actualización
-        this.limpiar_campos(); // Limpiar campos si es necesario
+        await this.cargarHitzordu(); 
+        this.limpiar_campos(); 
       },
       (error) => {
         console.error("Error al editar la cita:", error);
@@ -689,6 +708,7 @@ export class HitzorduakPage implements OnInit {
   // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
 
   editar_cita() {
+    console.log(this.citaEditar.etxeko);
     const etxeko = this.citaEditar.etxekoa ? "E" : "K";
     const json_data = {
       "id": this.citaEditar.id,
