@@ -181,10 +181,9 @@
                       <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">
                         {{ "citas.validaciones.descripcion" | translate }}
                       </ion-text>
-                  
-                      <ion-item lines="none">
+                      <ion-item>
                         <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
-                        <ion-checkbox slot="start" [(ngModel)]="citaEditar.etxekoa" (ionChange)="citaEditar.etxekoa = $event.detail.checked" name="casa" required #casa="ngModel"></ion-checkbox>
+                        <ion-checkbox [(ngModel)]="citaEditar.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                       </ion-item>
                       <ion-text color="danger" *ngIf="casa.invalid && casa.touched">
                         {{ "citas.validaciones.seleccion" | translate }}
