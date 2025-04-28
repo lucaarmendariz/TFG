@@ -33,16 +33,8 @@ export class HitzorduakPage implements OnInit {
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
   citaCrear: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-  citaEditar: any = {
-    data: null,
-    hasieraOrdua: null,
-    amaieraOrdua: null,
-    eserlekua: 0,
-    izena: '',
-    telefonoa: '',
-    deskribapena: '',
-    etxekoa: false
-    };
+  citaEditar: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
+
     idLangile: any = null;
   dataSelec!: any;
   todayDate!: any;
@@ -708,7 +700,6 @@ export class HitzorduakPage implements OnInit {
   // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
 
   editar_cita() {
-    console.log(this.citaEditar.etxeko);
     const etxeko = this.citaEditar.etxekoa ? "E" : "K";
     const json_data = {
       "id": this.citaEditar.id,
