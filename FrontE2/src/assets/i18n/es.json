@@ -154,7 +154,8 @@
       "messageCambioAsiento": "¿Desea cambiar el asiento?",
       "cambioDia": "Cambio Dia",
       "messageCambioDia": "¿Desea cambiar de Dia?",
-      "gestionar" : "Gestion de cita"
+      "gestionar" : "Gestion de cita",
+      "alumnoAsignado": "Esta cita ya tiene un alumno asignado"
     },
     "validaciones": {
       "fecha": "La fecha es obligatoria",

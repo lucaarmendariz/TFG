@@ -217,7 +217,30 @@ hr {
   flex-shrink: 0;
 }
 
-ion-card{
-  background-color: grey;
+
+ion-badge {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 10px;
 }
 
+ion-badge[color='secondary'] {
+  background-color: #8e8e8e; /* Gris para En espera */
+}
+
+ion-badge[color='warning'] {
+  background-color: #ff9800; /* Naranja para En proceso */
+}
+
+ion-badge[color='success'] {
+  background-color: #4caf50; /* Verde para Finalizada */
+}
+
+ion-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Número de líneas antes de truncar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}

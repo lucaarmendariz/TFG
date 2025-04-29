@@ -1,6 +1,7 @@
+import { Ikaslea } from './../txandak/txandak.page';
 import { CitaService } from './../zerbitzuak/zitak.service.ts.service';
 import { formatDate } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -106,9 +107,14 @@ export class HitzorduakPage implements OnInit {
   mostrarFormulario = false;
 
   abrirFormularioEdicion(cita: any) {
+    console.log(cita);
+    this.cargarHitzordu();
     this.citaEditar = { ...cita }; // Clonamos para no alterar directamente
+    console.log(cita.etxekoa);
+    console.log(this.citaEditar.etxekoa);
     this.mostrarFormulario = true;
   }
+
 
   async cerrarFormulario() {
     this.mostrarFormulario = false;
@@ -123,6 +129,17 @@ export class HitzorduakPage implements OnInit {
       katTrat.zerbitzuak.some((trat: any) => trat.selected)
     );
   }
+
+  esAlumnoOcupado(idLangile: number): boolean {
+    return this.hitzorduArray.some(cita =>
+      
+      cita.id !== this.citaEditar.id && // ignorar la cita que estás editando
+      cita.data === this.citaEditar.data &&
+      cita.hasieraOrdua === this.citaEditar.hasieraOrdua &&
+      cita.langilea?.id === idLangile
+    );
+  }
+  
 
   preciosValidos(): boolean {
     return this.tratamenduSelec.every(katTrat =>
@@ -439,7 +456,7 @@ export class HitzorduakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController,
+  constructor(private changeDetector: ChangeDetectorRef, private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController,
     private http: HttpClient, private modalController: ModalController, private alertController: AlertController,
     private bezeroService: BezeroService, private citaService: CitaService,
   ) {
@@ -466,8 +483,52 @@ export class HitzorduakPage implements OnInit {
   
     // También asegúrate de que citaEditar ya esté definido
     this.citaEditar = this.citaService.getCita();
+    this.hitzorduArray.forEach(cita => {
+      if (cita.langilea && !cita.prezioTotala) {
+        this.startTimer(cita);
+      }
+    });
+
+    this.tratamenduArray.forEach(servicio => {
+      if (!servicio.selected) {
+        servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
+      }
+    });
+  }
+  timeElapsedMap: { [key: string]: string } = {};
+  private intervals: { [key: string]: any } = {};
+  
+  ngOnDestroy() {
+    // Limpiar todos los intervalos al destruir el componente
+    Object.values(this.intervals).forEach(interval => clearInterval(interval));
+  }
+  
+  startTimer(cita: any) {
+    if (this.intervals[cita.id]) return; // Si ya tiene cronómetro, no duplicar
+  
+    const startTime = Date.now();
+  
+    this.intervals[cita.id] = setInterval(() => {
+      const now = Date.now();
+      const diff = now - startTime;
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      this.timeElapsedMap[cita.id] = `${this.pad(minutes)}:${this.pad(seconds)}`;
+    }, 1000);
   }
 
+  stopTimer(cita: any) {
+    const intervalId = this.intervals[cita.id];
+    if (intervalId) {
+      clearInterval(intervalId);
+      delete this.intervals[cita.id];
+    }
+  }
+
+  pad(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
+  }
+  
   // Función: lortuData
   lortuData(): string {
     const gaur = new Date();
@@ -713,6 +774,8 @@ export class HitzorduakPage implements OnInit {
       "etxekoa": etxeko
     };
 
+    console.log(etxeko);
+
     this.http.put(`${environment.url}hitzorduak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -740,7 +803,7 @@ export class HitzorduakPage implements OnInit {
 
   eliminar_cita() {
     const json_data = { "id": this.citaEditar.id };
-
+    
     this.http.delete(`${environment.url}hitzorduak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -791,24 +854,51 @@ export class HitzorduakPage implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  precioTotal: number = 0;
+  dineroCliente: number = 0;
+  cambio: number = 0;
+
+  // Función para actualizar el precio total de los servicios seleccionados
   actualizarServiciosSeleccionados(servicio: any, extra: boolean, color: boolean) {
     if (servicio.selected) {
       if (!extra) {
         servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
       }
+      this.precioTotal += servicio.precio;
+    } else {
+      this.precioTotal -= servicio.precio;
     }
     servicio.color = color;
+    // Detectar cambios en el precio total
+    this.calcularCambio();
+
     const index = this.serviciosSeleccionados.findIndex(s => s.id === servicio.id);
     if (servicio.selected && index === -1) {
       this.serviciosSeleccionados.push(servicio);
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
-    console.log(this.serviciosSeleccionados)
   }
+
+  // Función para calcular el cambio
+  calcularCambio() {
+    if (this.dineroCliente >= this.precioTotal) {
+      this.cambio = this.dineroCliente - this.precioTotal;
+    } else {
+      this.cambio = 0; // Si el cliente no ha dado suficiente dinero
+    }
+  }
+
+  // Función que se ejecuta al ingresar el dinero recibido
+  actualizarDineroCliente(event: any) {
+    this.dineroCliente = event.target.value;
+    this.calcularCambio(); // Actualiza el cambio al ingresar dinero
+  }
+  
 
   asignar_cita() {
     const json_data = { "id": this.citaEditar.id };
+    this.startTimer(this.citaEditar);
 
     this.http.put(`${environment.url}hitzorduak/asignar/${this.idLangile}`, json_data, {
       headers: {
@@ -831,6 +921,8 @@ export class HitzorduakPage implements OnInit {
   // Función: generar_ticket
   generar_ticket() {
     const color = this.serviciosSeleccionados.some(s => s.color === true);
+
+   this.stopTimer(this.citaEditar);
 
     const json_data = this.serviciosSeleccionados.map(servicio => ({
       "hitzordua": { "id": this.citaEditar.id },
@@ -892,6 +984,13 @@ export class HitzorduakPage implements OnInit {
     );
     this.cerrarFormulario();
   }
+
+
+  
+  
+  
+  
+  
 
   descargar_ticket(datuak: any) {
     const pdf = new jsPDF();

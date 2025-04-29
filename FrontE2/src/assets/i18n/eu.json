@@ -154,7 +154,9 @@
             "messageCambioAsiento": "Eserlekuz aldatu nahi duzu?",
             "cambioDia": "Egun aldaketa",
             "messageCambioDia": "Egunez aldatu nahi duzu?",
-            "gestionar" : "Hitzordua gestionatu"
+            "gestionar" : "Hitzordua gestionatu",
+            "alumnoAsignado": "Hitzordu honek badauka ikaslea"
+
         },
         "validaciones": {
             "fecha": "Data derrigorrezkoa da",
