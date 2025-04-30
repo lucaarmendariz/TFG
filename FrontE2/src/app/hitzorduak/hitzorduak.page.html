@@ -155,9 +155,10 @@
                       <ion-item>
                         <ion-label position="stacked">Cliente</ion-label>
                         <ion-select [(ngModel)]="citaEditar.telefonoa" name="telefonoa"
-                          (ionChange)="cambiarCliente($event)" interface="popover">
+                          (ngModelChange)="cambiarCliente($event)" interface="popover">
+
                           <ion-select-option *ngFor="let cliente of bezeroak" [value]="cliente.telefonoa">
-                            {{ cliente.izena }} - {{ cliente.abizena }}
+                            {{ cliente.izena }} {{ cliente.abizena }}
                           </ion-select-option>
                         </ion-select>
                       </ion-item>
@@ -265,7 +266,7 @@
                       <ion-text color="danger" *ngIf="!citaValida()">
                         {{ "citas.validaciones.selectCita" | translate }}
                       </ion-text>
-                  
+
                       <ion-grid>
                         <ion-row>
                           <ion-col size="12" size-md="6" *ngFor="let katTrat of tratamenduArray">
@@ -282,7 +283,8 @@
                                     <ion-label style="color: black;">
                                       <div style="display: flex; justify-content: space-between; width: 100%;">
                                         <span>{{ trat.izena }}</span>
-                                        <span *ngIf="trat.precio !== undefined">{{ trat.precio | currency:'EUR' }}</span>
+                                        <span *ngIf="trat.precio !== undefined">{{ trat.precio | currency:'EUR'
+                                          }}</span>
                                       </div>
                                     </ion-label>
                                   </ion-item>
@@ -292,7 +294,7 @@
                           </ion-col>
                         </ion-row>
                       </ion-grid>
-                  
+
                       <!-- Mostrar el precio total -->
                       <ion-card>
                         <ion-card-header>
@@ -305,7 +307,7 @@
                           </div>
                         </ion-card-content>
                       </ion-card>
-                  
+
                       <!-- Input para ingresar el dinero que el cliente ha dado -->
                       <ion-card>
                         <ion-card-header>
@@ -314,13 +316,13 @@
                         <ion-card-content>
                           <ion-item>
                             <ion-label position="floating">Monto recibido</ion-label>
-                            <ion-input style="color: black;" type="number" [(ngModel)]="dineroCliente" name="dineroCliente"
-                            (ionInput)="actualizarDineroCliente($event)"
-                              [min]="precioTotal" required></ion-input>
+                            <ion-input style="color: black;" type="number" [(ngModel)]="dineroCliente"
+                              name="dineroCliente" (ionInput)="actualizarDineroCliente($event)" [min]="precioTotal"
+                              required></ion-input>
                           </ion-item>
                         </ion-card-content>
                       </ion-card>
-                  
+
                       <!-- Mostrar el cambio que se debe devolver -->
                       <ion-card>
                         <ion-card-header>
@@ -333,8 +335,9 @@
                           </div>
                         </ion-card-content>
                       </ion-card>
-                  
-                      <ion-button type="submit" [disabled]="ticketForm.invalid || !citaValida() || !citaEditar.langilea">
+
+                      <ion-button type="submit"
+                        [disabled]="ticketForm.invalid || !citaValida() || !citaEditar.langilea">
                         {{ "citas.botones.generar" | translate }}
                       </ion-button>
                       <ion-text color="danger" *ngIf="!citaEditar.langilea && citaValida()">
@@ -342,8 +345,8 @@
                       </ion-text>
                     </form>
                   </div>
-                  
-                  
+
+
                 </ion-content>
               </ng-template>
             </ion-modal>

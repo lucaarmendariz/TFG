@@ -54,7 +54,7 @@ export class HitzorduakPage implements OnInit {
   filtroBusqueda: string = '';
   hitzorduArrayFiltrado: any[] = [];
 
-  segmentoActivo: string = 'cita'; 
+  segmentoActivo: string = 'editatu'; 
 
   filtrarCitas() {
     const texto = this.filtroBusqueda?.toLowerCase() || '';
@@ -87,8 +87,7 @@ export class HitzorduakPage implements OnInit {
 
   }
 
-  cambiarCliente(event: any) {
-    const telefonoSeleccionado = event.target.value;
+  cambiarCliente(telefonoSeleccionado: string) {
     const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
   
     if (clienteSeleccionado) {
@@ -96,7 +95,11 @@ export class HitzorduakPage implements OnInit {
       this.citaEditar.abizena = clienteSeleccionado.abizena;
       this.citaEditar.telefonoa = clienteSeleccionado.telefonoa;
     }
+  
+    console.log(clienteSeleccionado);
+    console.log(this.citaEditar.izena);
   }
+  
   
 
   limpiarBusqueda() {
@@ -107,12 +110,10 @@ export class HitzorduakPage implements OnInit {
   mostrarFormulario = false;
 
   abrirFormularioEdicion(cita: any) {
-    console.log(cita);
     this.cargarHitzordu();
     this.citaEditar = { ...cita }; // Clonamos para no alterar directamente
-    console.log(cita.etxekoa);
-    console.log(this.citaEditar.etxekoa);
     this.mostrarFormulario = true;
+    console.log(this.citaEditar.etxekoa)
   }
 
 
@@ -762,6 +763,7 @@ export class HitzorduakPage implements OnInit {
 
   editar_cita() {
     const etxeko = this.citaEditar.etxekoa ? "E" : "K";
+    console.log(this.citaEditar.izena);
     const json_data = {
       "id": this.citaEditar.id,
       "data": this.citaEditar.data,
