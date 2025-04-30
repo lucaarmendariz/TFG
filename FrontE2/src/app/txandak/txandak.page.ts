@@ -167,7 +167,6 @@ export class TxandakPage implements OnInit {
           .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
           .map(txanda => {  
             const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
-            console.log("Alumno encontrado:", alumno);
   
             if (alumno) {
               txanda.alumno = alumno;  // Asignamos el alumno a txanda
@@ -183,7 +182,7 @@ export class TxandakPage implements OnInit {
             };
           });
   
-        this.filterTxandas();  // Llamar a filterTxandas para filtrar y mostrar las txandas
+        this.filterTxandas();  
 
       },
       (error) => {
@@ -304,9 +303,39 @@ export class TxandakPage implements OnInit {
 
   filterToday() {
     const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
-
-    this.filteredTxandak = this.txandak.filter(txanda => {
-      return txanda.data === today; // Filtrar las txandas que tengan la fecha igual a la de hoy
-    });
+    this.fechaInicio = today;
+    this.fechaFin=today;
+    this.getTxandak();
   }
+  // Método para obtener los alumnos asignados en un día específico
+getAlumnosAsignados(data: string): any[] {
+  return this.txandak
+    .filter(txanda => txanda.data === data && !txanda.ezabatzeData) // Filtrar por fecha y eliminar txandas eliminadas
+    .map(txanda => txanda.alumno); // Devolver los alumnos de los turnos
+}
+
+// Función modificada para filtrar alumnos disponibles sin necesidad de la fecha
+filterAlumnosDisponibles(alumnos: Ikaslea[], turnosAsignados: Txanda[]): Ikaslea[] {
+  // Filtrar y devolver los alumnos que no están asignados a ningún turno
+  return alumnos.filter(alumno => !turnosAsignados.some(txanda => txanda.alumno?.id === alumno.id));
+}
+
+// Método para contar cuántos turnos de un tipo existen en una fecha determinada
+countTurnosPorTipo(data: string, tipo: string): number {
+  return this.txandak.filter(txanda => txanda.data === data && txanda.mota === tipo && !txanda.ezabatzeData).length;
+}
+
+// Lógica para verificar si es posible crear el turno
+puedeCrearTurno(data: string, tipo: string): boolean {
+  if (tipo === 'garbiketa' && this.countTurnosPorTipo(data, 'garbiketa') >= 2) {
+    this.mostrarToast('Ya hay 2 turnos de limpieza en este día.', 'danger');
+    return false;
+  }
+  if (tipo === 'mahaia' && this.countTurnosPorTipo(data, 'mahaia') >= 1) {
+    this.mostrarToast('Ya hay un turno de mostrador en este día.', 'danger');
+    return false;
+  }
+  return true;
+}
+
 }
