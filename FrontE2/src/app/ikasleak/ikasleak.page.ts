@@ -145,13 +145,17 @@ export class IkasleakPage implements OnInit {
   }
 
   resetFilters() {
-    this.fechaInicioFilter = null;
-    this.fechaFinFilter = null;
+    const today = new Date().toISOString().split('T')[0];  
+    this.fechaInicioFilter = today;
+    this.fechaFinFilter = today;
+  
     this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
       ...ordutegi,
-      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
-    }));  
+      
+    }));
+    this.getHorarios(); 
   }
+  
   
 
   filterGroups() {

@@ -66,11 +66,11 @@
         
               <!-- Contenedor flex para alinear los botones al final -->
               <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-                <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
                 <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
                   <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
+                  <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </div>
             </ion-card-content>
@@ -100,8 +100,8 @@
               
               <ion-item>
                 <ion-label position="stacked">{{ "ikaslePage.Kodea" | translate }}</ion-label>
-                <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel">
-                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel" interface="popover">
+                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea" >
                     {{ grupo.kodea }}
                   </ion-select-option>
                 </ion-select>
@@ -147,7 +147,7 @@
               <ion-item>
                 <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
                 <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
-                            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
+                            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" interface="popover">
                   <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                     {{ grupo.kodea }}
                   </ion-select-option>
@@ -384,7 +384,7 @@
             <!-- Selección de grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel" interface="popover">
                 <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.izena }}
                 </ion-select-option>
@@ -397,7 +397,7 @@
             <!-- Selección de día -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel" interface="popover">
                 <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
                 <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
                 <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
@@ -478,7 +478,7 @@
             <!-- Grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel" interface="popover">
                 <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.izena }}
                 </ion-select-option>
@@ -491,7 +491,7 @@
             <!-- Día de la semana -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel" interface="popover">
                 <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
                 <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
                 <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
