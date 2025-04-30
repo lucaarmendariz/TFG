@@ -36,7 +36,7 @@ export class HitzorduakPage implements OnInit {
   citaCrear: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
   citaEditar: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
 
-    idLangile: any = null;
+  idLangile: any = null;
   dataSelec!: any;
   todayDate!: any;
   selectedLanguage: string = 'es';
@@ -54,7 +54,7 @@ export class HitzorduakPage implements OnInit {
   filtroBusqueda: string = '';
   hitzorduArrayFiltrado: any[] = [];
 
-  segmentoActivo: string = 'editatu'; 
+  segmentoActivo: string = 'editatu';
 
   filtrarCitas() {
     const texto = this.filtroBusqueda?.toLowerCase() || '';
@@ -89,18 +89,18 @@ export class HitzorduakPage implements OnInit {
 
   cambiarCliente(telefonoSeleccionado: string) {
     const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
-  
+
     if (clienteSeleccionado) {
       this.citaEditar.izena = clienteSeleccionado.izena;
       this.citaEditar.abizena = clienteSeleccionado.abizena;
       this.citaEditar.telefonoa = clienteSeleccionado.telefonoa;
     }
-  
+
     console.log(clienteSeleccionado);
     console.log(this.citaEditar.izena);
   }
-  
-  
+
+
 
   limpiarBusqueda() {
     this.filtroBusqueda = '';
@@ -114,7 +114,6 @@ export class HitzorduakPage implements OnInit {
     this.citaEditar = { ...cita }; // Clonamos para no alterar directamente
     this.citaEditar.etxekoa = this.citaEditar.etxekoa === 'E';
     this.mostrarFormulario = true;
-    console.log(this.citaEditar.etxekoa)
   }
 
 
@@ -134,14 +133,14 @@ export class HitzorduakPage implements OnInit {
 
   esAlumnoOcupado(idLangile: number): boolean {
     return this.hitzorduArray.some(cita =>
-      
+
       cita.id !== this.citaEditar.id && // ignorar la cita que estás editando
       cita.data === this.citaEditar.data &&
       cita.hasieraOrdua === this.citaEditar.hasieraOrdua &&
       cita.langilea?.id === idLangile
     );
   }
-  
+
 
   preciosValidos(): boolean {
     return this.tratamenduSelec.every(katTrat =>
@@ -188,7 +187,7 @@ export class HitzorduakPage implements OnInit {
     const modal = await this.modalController.create({
       component: NuevaCitaModalPage
     });
-  
+
     modal.onDidDismiss().then((result) => {
       if (result.role === 'confirm') {
         // El usuario confirmó la cita → agregar la card
@@ -202,37 +201,33 @@ export class HitzorduakPage implements OnInit {
         this.resetSelection();
       }
     });
-  
+
     await modal.present();
   }
-  
+
   async reservar_cita(eserlekua: number, time: string) {
     if (this.citaEditar.hasieraOrduaErreala) {
       return;
     }
-
     if (this.citaEditar.eserlekua === 0) {
-      // if (this.firstCell && this.firstCell.seat !== eserlekua) {
-      //   const cambiar = await this.mostrarAlertaCambioAsiento();
-      //   if (!cambiar) return;
-      //   this.resetSelection();
-      //   this.limpiar_campos();
-      // }
-
       if (this.citaCrear.data) {
         if (this.citaCrear.hasieraOrdua < time) {
           this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
           this.secondCell = { time, seat: eserlekua };
+          if (this.firstCell?.seat !== this.secondCell?.seat) {
+            this.limpiar_campos();
+            this.updateHighlightedCells();
+            this.resetSelection();
+            this.mostrarAlertaAsientosDiferentes();
+            return;
+          }
           this.citaService.setCita(this.citaCrear.data, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, this.citaCrear.eserlekua)
-          console.log('Primera: ' + this.firstCell?.time)
-          console.log('segunda: ' + this.secondCell.time)
           await this.abrirNuevaCitaModal();
           this.limpiar_campos();
           this.updateHighlightedCells();
-          
           this.resetSelection();
           return;
-        } 
+        }
       } else {
         this.citaCrear.data = this.dataSelec;
         this.citaCrear.hasieraOrdua = time;
@@ -241,47 +236,19 @@ export class HitzorduakPage implements OnInit {
         this.firstCell = { time, seat: eserlekua };
         this.highlightedCells = [{ time, seat: eserlekua }];
       }
-      // } else {
-      //   if (this.citaEditar.data !== this.dataSelec) {
-      //     const cambiarDia = await this.mostrarAlertaCambioDia();
-      //     if (!cambiarDia) return;
-
-      //     this.resetSelection();
-      //     this.citaEditar.data = this.dataSelec;
-      //     this.citaEditar.hasieraOrdua = time;
-      //     this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      //     this.citaEditar.eserlekua = eserlekua;
-      //     this.firstCell = { time, seat: eserlekua };
-      //     this.highlightedCells = [{ time, seat: eserlekua }];
-      //     return;
-      //   }
-
-      //   if (this.citaEditar.eserlekua !== eserlekua) {
-      //     const cambiarAsiento = await this.mostrarAlertaCambioAsiento();
-      //     if (!cambiarAsiento) return;
-
-      //     this.resetSelection();
-      //     this.citaEditar.data = this.dataSelec;
-      //     this.citaEditar.hasieraOrdua = time;
-      //     this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      //     this.citaEditar.eserlekua = eserlekua;
-      //     this.firstCell = { time, seat: eserlekua };
-      //     this.highlightedCells = [{ time, seat: eserlekua }];
-      //     return;
-      //   }
-
-      //   if (this.citaEditar.hasieraOrdua < time) {
-      //     this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      //     this.secondCell = { time, seat: eserlekua };
-      //     this.updateHighlightedCells();
-
-      //   } else {
-      //     this.citaEditar.hasieraOrdua = time;
-      //     this.firstCell = { time, seat: eserlekua };
-      //     this.updateHighlightedCells();
-      //   }
     }
   }
+
+  async mostrarAlertaAsientosDiferentes() {
+    const alert = await this.alertController.create({
+      header: 'Aviso',
+      message: 'No se puede asignar una cita para un cliente en dos asientos diferentes.',
+      buttons: ['Aceptar']
+    });
+  
+    await alert.present();
+  }
+
   // Método llamado cuando se inicia el arrastre
   onDragStart(event: DragEvent, cita: any) {
     // Almacenamos la cita que se está arrastrando en el evento
@@ -401,8 +368,8 @@ export class HitzorduakPage implements OnInit {
       }
     }).subscribe(
       async () => {
-        await this.cargarHitzordu(); 
-        this.limpiar_campos(); 
+        await this.cargarHitzordu();
+        this.limpiar_campos();
       },
       (error) => {
         console.error("Error al editar la cita:", error);
@@ -480,9 +447,9 @@ export class HitzorduakPage implements OnInit {
     this.bezeroService.cargarClientes();
     this.bezeroService.bezeroak$.subscribe((clientes) => {
       this.bezeroak = clientes;
-    });    
-    
-  
+    });
+
+
     // También asegúrate de que citaEditar ya esté definido
     this.citaEditar = this.citaService.getCita();
     this.hitzorduArray.forEach(cita => {
@@ -499,17 +466,17 @@ export class HitzorduakPage implements OnInit {
   }
   timeElapsedMap: { [key: string]: string } = {};
   private intervals: { [key: string]: any } = {};
-  
+
   ngOnDestroy() {
     // Limpiar todos los intervalos al destruir el componente
     Object.values(this.intervals).forEach(interval => clearInterval(interval));
   }
-  
+
   startTimer(cita: any) {
     if (this.intervals[cita.id]) return; // Si ya tiene cronómetro, no duplicar
-  
+
     const startTime = Date.now();
-  
+
     this.intervals[cita.id] = setInterval(() => {
       const now = Date.now();
       const diff = now - startTime;
@@ -530,7 +497,7 @@ export class HitzorduakPage implements OnInit {
   pad(num: number): string {
     return num < 10 ? '0' + num : num.toString();
   }
-  
+
   // Función: lortuData
   lortuData(): string {
     const gaur = new Date();
@@ -805,7 +772,7 @@ export class HitzorduakPage implements OnInit {
 
   eliminar_cita() {
     const json_data = { "id": this.citaEditar.id };
-    
+
     this.http.delete(`${environment.url}hitzorduak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -896,7 +863,7 @@ export class HitzorduakPage implements OnInit {
     this.dineroCliente = event.target.value;
     this.calcularCambio(); // Actualiza el cambio al ingresar dinero
   }
-  
+
 
   asignar_cita() {
     const json_data = { "id": this.citaEditar.id };
@@ -924,7 +891,7 @@ export class HitzorduakPage implements OnInit {
   generar_ticket() {
     const color = this.serviciosSeleccionados.some(s => s.color === true);
 
-   this.stopTimer(this.citaEditar);
+    this.stopTimer(this.citaEditar);
 
     const json_data = this.serviciosSeleccionados.map(servicio => ({
       "hitzordua": { "id": this.citaEditar.id },
@@ -988,11 +955,11 @@ export class HitzorduakPage implements OnInit {
   }
 
 
-  
-  
-  
-  
-  
+
+
+
+
+
 
   descargar_ticket(datuak: any) {
     const pdf = new jsPDF();
