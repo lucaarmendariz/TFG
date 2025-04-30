@@ -112,6 +112,7 @@ export class HitzorduakPage implements OnInit {
   abrirFormularioEdicion(cita: any) {
     this.cargarHitzordu();
     this.citaEditar = { ...cita }; // Clonamos para no alterar directamente
+    this.citaEditar.etxekoa = this.citaEditar.etxekoa === 'E';
     this.mostrarFormulario = true;
     console.log(this.citaEditar.etxekoa)
   }
@@ -763,7 +764,6 @@ export class HitzorduakPage implements OnInit {
 
   editar_cita() {
     const etxeko = this.citaEditar.etxekoa ? "E" : "K";
-    console.log(this.citaEditar.izena);
     const json_data = {
       "id": this.citaEditar.id,
       "data": this.citaEditar.data,
