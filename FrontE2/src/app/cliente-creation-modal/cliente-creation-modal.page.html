@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>añadir cliente</ion-title>
+    <ion-title>Añadir Cliente</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,34 +8,34 @@
   <form #form="ngForm" (ngSubmit)="crearBezero()" novalidate>
     <!-- Nombre del cliente -->
     <ion-item>
-      <ion-label position="stacked">nombre</ion-label>
+      <ion-label position="stacked">Nombre</ion-label>
       <ion-input [(ngModel)]="crearNombre" name="nombre" placeholder="Izena" required #nombre="ngModel"></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">nombre</ion-text>
+    <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">Nombre</ion-text>
 
     <!-- Apellido del cliente -->
     <ion-item>
-      <ion-label position="stacked">apellico</ion-label>
+      <ion-label position="stacked">Apellido</ion-label>
       <ion-input [(ngModel)]="crearApellido" name="apellido" placeholder="Apellido" required
         #apellido="ngModel"></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">apellico</ion-text>
+    <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">Apellido</ion-text>
 
     <!-- Teléfono del cliente -->
     <ion-item>
-      <ion-label position="stacked">tlf</ion-label>
-      <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$"
+      <ion-label position="stacked">Teléfono</ion-label>
+      <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="000000000" pattern="^[0-9]{9,}$"
         #telefono="ngModel"></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">tlf</ion-text>
+    <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">Teléfono</ion-text>
 
     <!-- Piel del cliente -->
     <ion-item>
-      <ion-label position="stacked">piel</ion-label>
+      <ion-label position="stacked">Piel sensible</ion-label>
       <ion-checkbox [(ngModel)]="crearPiel" name="piel" #piel="ngModel"></ion-checkbox>
     </ion-item>
 
     <!-- Botón para crear el cliente -->
-    <ion-button expand="full" type="submit" [disabled]="form.invalid">crear</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="form.invalid">Crear</ion-button>
   </form>
 </ion-content>

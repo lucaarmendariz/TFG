@@ -16,6 +16,7 @@
         {{ bezero.izena }} {{ bezero.abizena }}
       </ion-select-option>
     </ion-select>
+    <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
   </ion-item>
 
   <!-- Descripción de la cita -->
@@ -29,9 +30,6 @@
     <ion-label>¿Pertenece al centro?</ion-label>
     <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
   </ion-item>
-
-  <!-- Botón para crear un nuevo cliente -->
-  <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
 
   <ion-button expand="full" (click)="confirmarCita()" [disabled]="!clienteId || !descripcion">
     Confirmar Cita

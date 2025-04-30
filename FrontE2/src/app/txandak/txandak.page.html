@@ -7,21 +7,13 @@
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title size="large">{{ 'txandakPage.titulo' | translate }}</ion-title>
-      <ion-select
-        slot="end"
-        [(ngModel)]="selectedLanguage"
-        (ionChange)="changeLanguage()"
-      >
-        <ion-select-option value="es"
-          >Español</ion-select-option
-        >
-        <ion-select-option value="eu"
-          >Euskera</ion-select-option
-        >
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
   </ion-header>
-  
+
 
   <!-- Botón para añadir nueva txanda -->
   <ion-button id="txanda-sortu-modal" class="Botoiak">
@@ -30,36 +22,22 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title
-        >{{ 'txandakPage.filtrarFecha' | translate }}</ion-card-title
-      >
+      <ion-card-title>{{ 'txandakPage.filtrarFecha' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col size="5">
             <ion-item>
-              <ion-label position="stacked"
-                >{{ 'txandakPage.fechaInicio' | translate }}</ion-label
-              >
-              <ion-input
-                type="date"
-                [(ngModel)]="fechaInicio"
-                (ionChange)="getTxandak()"
-              ></ion-input>
+              <ion-label position="stacked">{{ 'txandakPage.fechaInicio' | translate }}</ion-label>
+              <ion-input type="date" [(ngModel)]="fechaInicio" (ionChange)="getTxandak()"></ion-input>
             </ion-item>
           </ion-col>
 
           <ion-col size="5">
             <ion-item>
-              <ion-label position="stacked"
-                >{{ 'txandakPage.fechaFin' | translate }}</ion-label
-              >
-              <ion-input
-                type="date"
-                [(ngModel)]="fechaFin"
-                (ionChange)="getTxandak()"
-              ></ion-input>
+              <ion-label position="stacked">{{ 'txandakPage.fechaFin' | translate }}</ion-label>
+              <ion-input type="date" [(ngModel)]="fechaFin" (ionChange)="getTxandak()"></ion-input>
             </ion-item>
           </ion-col>
 
@@ -80,9 +58,7 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title
-        >{{ 'txandakPage.filtrarTipo' | translate }}</ion-card-title
-      >
+      <ion-card-title>{{ 'txandakPage.filtrarTipo' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-grid>
@@ -95,7 +71,7 @@
                 <ion-select-option value="G">{{ 'txandakPage.garbiketa' | translate }}</ion-select-option>
                 <ion-select-option value="M">{{ 'txandakPage.mahaia' | translate }}</ion-select-option>
               </ion-select>
-              
+
             </ion-item>
           </ion-col>
         </ion-row>
@@ -105,9 +81,7 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title
-        >{{ 'txandakPage.listaTxandas' | translate }}</ion-card-title
-      >
+      <ion-card-title>{{ 'txandakPage.listaTxandas' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <!-- Lista de Txandas -->
@@ -134,12 +108,8 @@
             </p>
           </ion-label>
           <!-- Botón para eliminar -->
-          <ion-button
-            (click)="deleteTxanda(txanda.id!)"
-            color="danger"
-            slot="end"
-            >{{ 'txandakPage.botonEliminar' | translate }}</ion-button
-          >
+          <ion-button (click)="deleteTxanda(txanda.id!)" color="danger" slot="end">{{ 'txandakPage.botonEliminar' |
+            translate }}</ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -156,45 +126,25 @@
       <ion-content>
         <!-- Selección del tipo de txanda -->
         <ion-item>
-          <ion-label position="stacked"
-            >{{ 'txandakPage.tipoTxanda' | translate }}</ion-label
-          >
-          <ion-select
-            [(ngModel)]="nuevaTxanda.mota"
-            placeholder="{{ 'txandakPage.tipoPlaceholderModal' | translate }}"
-          >
-            <ion-select-option value="G"
-              >{{ 'txandakPage.garbiketa' | translate }}</ion-select-option
-            >
-            <ion-select-option value="M"
-              >{{ 'txandakPage.mahaia' | translate }}</ion-select-option
-            >
+          <ion-label position="stacked">{{ 'txandakPage.tipoTxanda' | translate }}</ion-label>
+          <ion-select [(ngModel)]="nuevaTxanda.mota" placeholder="{{ 'txandakPage.tipoPlaceholderModal' | translate }}">
+            <ion-select-option value="G">{{ 'txandakPage.garbiketa' | translate }}</ion-select-option>
+            <ion-select-option value="M">{{ 'txandakPage.mahaia' | translate }}</ion-select-option>
           </ion-select>
         </ion-item>
         <!-- Selección del alumno -->
         <ion-item>
-          <ion-label position="stacked"
-            >{{ 'txandakPage.alumnoSeleccion' | translate }}</ion-label
-          >
-          <ion-select
-            [(ngModel)]="nuevaTxanda.alumno"
-            placeholder="{{ 'txandakPage.alumnoPlaceholderModal' | translate }}"
-          >
-            <ion-select-option
-              *ngFor="let alumno of Alumnos"
-              [value]="alumno.id"
-            >
+          <ion-label position="stacked">{{ 'txandakPage.alumnoSeleccion' | translate }}</ion-label>
+          <ion-select [(ngModel)]="nuevaTxanda.alumno"
+            placeholder="{{ 'txandakPage.alumnoPlaceholderModal' | translate }}">
+            <ion-select-option *ngFor="let alumno of Alumnos" [value]="alumno.id">
               {{ alumno.izena }} {{ alumno.abizenak }}
             </ion-select-option>
           </ion-select>
         </ion-item>
 
         <!-- Botón para guardar, deshabilitado si no están completos los campos -->
-        <ion-button
-          expand="full"
-          (click)="guardarTxanda()"
-          [disabled]="!nuevaTxanda.mota || !nuevaTxanda.alumno"
-        >
+        <ion-button expand="full" (click)="guardarTxanda()" [disabled]="!nuevaTxanda.mota || !nuevaTxanda.alumno">
           {{ 'txandakPage.botonGuardar' | translate }}
         </ion-button>
       </ion-content>

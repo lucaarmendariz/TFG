@@ -17,7 +17,7 @@
             </ion-input>
           </ion-item>
         </div>
-        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
           <ion-select-option value="es">Español</ion-select-option>
           <ion-select-option value="eu">Euskera</ion-select-option>
         </ion-select>
@@ -76,11 +76,9 @@
                                 'selected': cita.id === citaEditar.id
                               }" [attr.id]="'card-' + cita.id" draggable="true"
                               (dragstart)="!cita.prezioTotala && !cita.langilea && onDragStart($event, cita)">
-
                               <ion-card-header>
                                 <ion-card-title>{{ cita.izena }}</ion-card-title>
                               </ion-card-header>
-
                               <ion-card-content>
                                 <!-- Aquí está el badge para el estado de la cita -->
                                 <ion-text>{{ cita.deskribapena }}</ion-text>
@@ -191,7 +189,7 @@
                       <ion-item>
                         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
                         <ion-label>{{ "citas.modal.cliente" | translate }}</ion-label>
-                        <ion-text>{{ citaEditar.izena || '-' }}</ion-text>
+                        <ion-text>{{ citaEditar.izena }}</ion-text>
                       </ion-item>
 
                       <ion-item>
@@ -224,12 +222,8 @@
                           {{ "citas.botones.borrar" | translate }}
                         </ion-button>
                       </div>
-
                     </form>
                   </div>
-
-
-
                   <div *ngIf="segmentoActivo === 'asignatu'">
                     <!-- Formulario para asignar cita -->
                     <form #asignarCitaForm="ngForm" (ngSubmit)="asignar_cita()" (ngSubmit)="asignarCitaForm.resetForm()"
@@ -265,7 +259,16 @@
                       <ion-text color="danger" *ngIf="!citaValida()">
                         {{ "citas.validaciones.selectCita" | translate }}
                       </ion-text>
-
+                      <ion-card>
+                        <ion-card-header>
+                          <ion-card-title>{{ 'Tipo de cita' | translate }}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                          <ion-badge [color]="citaEditar.etxekoa ? 'secondary' : 'primary'">
+                            {{ citaEditar.etxekoa ? 'Etxekoa' : 'Kanpokoa' }}
+                          </ion-badge>
+                        </ion-card-content>
+                      </ion-card>
                       <ion-grid>
                         <ion-row>
                           <ion-col size="12" size-md="6" *ngFor="let katTrat of tratamenduArray">
@@ -275,6 +278,7 @@
                               </ion-card-header>
                               <ion-card-content>
                                 <ion-list>
+                                  <ion-spinner *ngIf="tratamenduArray.length === 0"></ion-spinner>
                                   <ion-item *ngFor="let trat of katTrat.zerbitzuak">
                                     <ion-checkbox slot="start" [(ngModel)]="trat.selected" name="trat_{{trat.id}}"
                                       (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra, katTrat.kolorea)">
@@ -282,8 +286,8 @@
                                     <ion-label style="color: black;">
                                       <div style="display: flex; justify-content: space-between; width: 100%;">
                                         <span>{{ trat.izena }}</span>
-                                        <span *ngIf="trat.precio !== undefined">{{ trat.precio | currency:'EUR'
-                                          }}</span>
+                                        <span>{{ trat.precio | currency: 'EUR' }}</span>
+                                        <!-- Muestra el precio de inmediato -->
                                       </div>
                                     </ion-label>
                                   </ion-item>
@@ -360,8 +364,9 @@
             (input)="filtrarCitas()" />
         </div>
         <ion-list>
-          <ion-item *ngFor="let cita of hitzorduArrayFiltrado">
-            <ion-card (click)="abrirFormularioEdicion(cita)" class="alargada-card">
+          <div class="flex-container">
+            <ion-card *ngFor="let cita of hitzorduArrayFiltrado" (click)="abrirFormularioEdicion(cita)"
+              class="alargada-card">
               <ion-card-header>
                 <ion-card-title>{{ cita.izena }} {{ cita.abizena }}</ion-card-title>
               </ion-card-header>
@@ -369,11 +374,16 @@
                 <div><strong>Teléfono:</strong> {{ cita.telefonoa }}</div>
                 <div><strong>Trabajador:</strong> {{ cita.langilea?.izena || '—' }}</div>
                 <div><strong>Servicios:</strong>
-                  <ul>
-                    <li *ngFor="let s of cita.zerbitzuak">{{ s.izena }}</li>
-                  </ul>
+                  <ng-container *ngIf="cita.zerbitzuak?.length > 0; else sinServicios">
+                    <ul>
+                      <li *ngFor="let s of cita.zerbitzuak">{{ s.izena }}</li>
+                    </ul>
+                  </ng-container>
+                  <ng-template #sinServicios>
+                    <p style="color: #999; font-style: italic;">Todavía no se le han asignado servicios.</p>
+                  </ng-template>
                 </div>
-                <div><strong>Tratamiento:</strong>
+                <div><strong>Localidad:</strong>
                   <span class="badge" [ngClass]="cita.etxekoa === 'E' ? 'badge-primary' : 'badge-secondary'">
                     {{ cita.etxekoa === 'E' ? 'Etxekoa' : 'Kanpokoa' }}
                   </span>
@@ -383,7 +393,8 @@
                 <div><strong>Hora fin:</strong> {{ cita.amaieraOrdua }}</div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
+          </div>
+
         </ion-list>
         <!-- Mensaje cuando no hay citas -->
         <ion-text color="danger" *ngIf="hitzorduArrayFiltrado.length === 0">

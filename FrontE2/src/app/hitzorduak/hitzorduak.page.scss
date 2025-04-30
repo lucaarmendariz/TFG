@@ -244,3 +244,46 @@ ion-text {
   text-overflow: ellipsis;
   white-space: normal;
 }
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* empieza desde la izquierda */
+  padding: 16px;
+  gap: 20px;
+}
+
+.cita-card {
+  width: 320px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+}
+
+.busqueda-container {
+  display: flex;
+  justify-content: center; /* Centra la barra */
+  padding: 20px 0; /* Espaciado arriba y abajo */
+}
+
+.form-control {
+  width: 100%;
+  max-width: 500px; /* Establece un tamaño máximo */
+  padding: 12px 20px; /* Añade espaciado dentro del input */
+  font-size: 16px; /* Tamaño de texto */
+  border-radius: 25px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde gris claro */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  transition: border 0.3s ease; /* Transición para cuando cambia el borde */
+}
+
+.form-control:focus {
+  border: 1px solid #007bff; /* Cambia el borde al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Sombra al enfocar */
+}
+
+.form-control::placeholder {
+  color: #aaa; /* Color para el texto del placeholder */
+  font-style: italic; /* Hace que el placeholder sea cursivo */
+}

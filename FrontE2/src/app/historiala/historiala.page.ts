@@ -215,6 +215,7 @@ export class HistorialaPage implements OnInit {
         // Filtramos los tickets activos (sin `ezabatzeData`)
         this.tickets = datuak.filter((citas: any) => citas.ezabatzeData === null);
         this.ticketsFiltered = this.tickets;
+        
       },
       (error) => {
         console.error("Error al cargar tickets:", error);

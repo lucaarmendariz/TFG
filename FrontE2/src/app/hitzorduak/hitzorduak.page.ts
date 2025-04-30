@@ -12,7 +12,6 @@ import { AlertController, ModalController, NavController } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
 import { BezeroService } from '../zerbitzuak/bezero.service';
 import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page';
-import { ReactiveFormsModule } from '@angular/forms'; // Importar ReactiveFormsModule
 
 
 @Component({
@@ -83,8 +82,6 @@ export class HitzorduakPage implements OnInit {
         telefono.includes(texto)
       );
     });
-    console.log('Citas cargadas:', this.hitzorduArray);
-
   }
 
   cambiarCliente(telefonoSeleccionado: string) {
@@ -95,9 +92,6 @@ export class HitzorduakPage implements OnInit {
       this.citaEditar.abizena = clienteSeleccionado.abizena;
       this.citaEditar.telefonoa = clienteSeleccionado.telefonoa;
     }
-
-    console.log(clienteSeleccionado);
-    console.log(this.citaEditar.izena);
   }
 
 
@@ -122,6 +116,7 @@ export class HitzorduakPage implements OnInit {
     this.citaEditar = {};
     await this.cargarHitzordu(); // Recargar citas después de la actualización
     this.limpiar_campos(); // Limpiar campos si es necesario
+    this.limpiarCamposTicket();
   }
 
 
@@ -205,30 +200,61 @@ export class HitzorduakPage implements OnInit {
     await modal.present();
   }
 
+  resetSelectionToFirst() {
+    this.firstCell = this.secondCell;
+    this.updateHighlightedCells();
+  }
+
   async reservar_cita(eserlekua: number, time: string) {
-    if (this.citaEditar.hasieraOrduaErreala) {
-      return;
-    }
+
     if (this.citaEditar.eserlekua === 0) {
       if (this.citaCrear.data) {
-        if (this.citaCrear.hasieraOrdua < time) {
-          this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.secondCell = { time, seat: eserlekua };
-          if (this.firstCell?.seat !== this.secondCell?.seat) {
-            this.limpiar_campos();
-            this.updateHighlightedCells();
-            this.resetSelection();
-            this.mostrarAlertaAsientosDiferentes();
-            return;
-          }
-          this.citaService.setCita(this.citaCrear.data, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, this.citaCrear.eserlekua)
-          await this.abrirNuevaCitaModal();
-          this.limpiar_campos();
-          this.updateHighlightedCells();
-          this.resetSelection();
+        this.secondCell = { time, seat: eserlekua };
+
+        // Validar que los asientos coincidan
+      if (this.firstCell?.seat !== this.secondCell.seat) {
+        // Resetear los campos si el asiento ha cambiado
+        this.limpiar_campos();
+        
+        // Actualizar las celdas resaltadas inmediatamente con el nuevo asiento
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        
+        // Llamar a updateHighlightedCells para reflejar los cambios
+        this.updateHighlightedCells();
+        this.resetSelectionToFirst();
+        return;
+      }
+
+        // Ordenar las horas sin importar el orden de selección
+        const index1 = this.hoursArray.indexOf(this.firstCell.time);
+        const index2 = this.hoursArray.indexOf(this.secondCell.time);
+        const inicioIndex = Math.min(index1, index2);
+        const finIndex = Math.max(index1, index2);
+
+        // Verificar si ya existe una cita entre el rango de tiempo
+        const citasEnRango = await this.verificarCitasExistentes(inicioIndex, finIndex, eserlekua);
+        
+        if (citasEnRango.length > 0) {
+          // Si ya hay citas en el rango, mostrar alerta
+          this.mostrarAlertaSuperposicion();
           return;
         }
+
+        // Si no hay citas, continuar con la creación de la cita
+        this.citaCrear.hasieraOrdua = this.hoursArray[inicioIndex];
+        this.citaCrear.amaieraOrdua = this.hoursArray[finIndex + 1] || this.hoursArray[finIndex];
+        this.citaCrear.eserlekua = eserlekua;
+
+        this.citaService.setCita(this.citaCrear.data, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, this.citaCrear.eserlekua);
+        await this.abrirNuevaCitaModal();
+
+        this.limpiar_campos();
+        this.updateHighlightedCells();
+        this.resetSelection();
+        return;
       } else {
+        // Primera selección
         this.citaCrear.data = this.dataSelec;
         this.citaCrear.hasieraOrdua = time;
         this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
@@ -238,6 +264,20 @@ export class HitzorduakPage implements OnInit {
       }
     }
   }
+
+  // Método para verificar si hay citas existentes entre dos horas
+async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua: number) {
+  // Recorremos todas las citas para verificar si se solapan con el rango de tiempo seleccionado
+  return this.hitzorduArray.filter((cita: any) => {
+    const citaInicioIndex = this.hoursArray.indexOf(cita.hasieraOrdua);
+    const citaFinIndex = this.hoursArray.indexOf(cita.amaieraOrdua);
+
+    // Verificamos si la cita se solapa con el rango de la selección
+    const solapa = (cita.eserlekua === eserlekua) &&
+                   ((citaInicioIndex < finIndex && citaFinIndex > inicioIndex));
+    return solapa;
+  });
+}
 
   async mostrarAlertaAsientosDiferentes() {
     const alert = await this.alertController.create({
@@ -582,6 +622,7 @@ export class HitzorduakPage implements OnInit {
             )
           };
         });
+        this.inicializarPreciosServicios();
       },
       (error) => {
         console.log("Error al cargar tratamientos:", error);
@@ -605,9 +646,6 @@ export class HitzorduakPage implements OnInit {
     const egunaDate = new Date(eguna);
     let diaSemana = egunaDate.getDay();
     diaSemana = diaSemana === 0 ? 7 : diaSemana;
-    // this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => 
-    //   (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
-    // );
     this.cargarHitzordu();
     const langileak = this.ordutegiak.filter((ordu: any) => {
       const hasieraDate = new Date(ordu.hasieraData);
@@ -619,10 +657,10 @@ export class HitzorduakPage implements OnInit {
     if (this.langileArray.length == 0 && langileak.length > 0) {
       this.langileArray = langileak[0].taldea.langileak.filter((langile: any) => !langile.ezabatzeData);
     }
-    this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 1 : 0;
+    console.log(this.langileArray);
+    this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 4 : 0;
     this.resetSelection();
     this.citaCrear = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-    // this.limpiar_campos();
   }
 
 
@@ -743,8 +781,6 @@ export class HitzorduakPage implements OnInit {
       "etxekoa": etxeko
     };
 
-    console.log(etxeko);
-
     this.http.put(`${environment.url}hitzorduak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -813,6 +849,7 @@ export class HitzorduakPage implements OnInit {
     this.citaCrear = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
     this.citaEditar = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
     this.resetSelection();
+    this.firstCell = null;
   }
 
   today(): string {
@@ -847,6 +884,24 @@ export class HitzorduakPage implements OnInit {
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
+  }
+
+  limpiarCamposTicket() {
+    // Desmarcar todos los servicios en cada categoría
+    this.tratamenduArray.forEach((katTrat: any) => {
+      katTrat.zerbitzuak.forEach((servicio: any) => {
+        servicio.selected = false;
+        servicio.color = false;
+      });
+    });
+  
+    // Vaciar servicios seleccionados
+    this.serviciosSeleccionados = [];
+  
+    // Reiniciar totales
+    this.precioTotal = 0;
+    this.dineroCliente = 0;
+    this.cambio = 0;
   }
 
   // Función para calcular el cambio
@@ -920,6 +975,7 @@ export class HitzorduakPage implements OnInit {
             {
               text: this.translate.instant('citas.botones.descargar'),
               handler: () => {
+                datuak.cambio = this.cambio;
                 this.descargar_ticket(datuak);
               }
             }
@@ -951,24 +1007,37 @@ export class HitzorduakPage implements OnInit {
         console.error("Error en generación de cita:", error);
       }
     );
+    this.limpiarCamposTicket();
     this.cerrarFormulario();
+    
+  }
+
+
+  inicializarPreciosServicios() {
+    this.cargarHitzordu();
+    this.tratamenduArray.forEach((katTrat: any) => {
+      katTrat.zerbitzuak.forEach((servicio: any) => {
+        // Inicializa el precio en base al tipo de cita
+        servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
+      });
+    });
   }
 
 
 
 
 
-
-
-
   descargar_ticket(datuak: any) {
+    console.log(datuak)
     const pdf = new jsPDF();
     const margenIzquierdo = 10;
     let posicionY = 20;
+  
     pdf.setFontSize(18);
     pdf.setFont("helvetica", "bold");
     pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
     posicionY += 10;
+  
     pdf.setFontSize(12);
     pdf.setFont("helvetica", "normal");
     pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
@@ -979,13 +1048,13 @@ export class HitzorduakPage implements OnInit {
     posicionY += 7;
     pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
     posicionY += 10;
-    const head = [
-      ['Zerbitzua', 'Prezioa (€)']
-    ];
+  
+    const head = [['Zerbitzua', 'Prezioa (€)']];
     const body = datuak.lerroak.map((lerro: any) => [
       lerro.zerbitzuak.izena,
       lerro.prezioa.toFixed(2)
     ]);
+  
     autoTable(pdf, {
       startY: posicionY,
       margin: { left: margenIzquierdo, right: margenIzquierdo },
@@ -995,13 +1064,13 @@ export class HitzorduakPage implements OnInit {
       styles: { fontSize: 10, halign: 'center' },
       headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
     });
+  
     posicionY = (pdf as any).lastAutoTable.finalY + 10;
+  
     pdf.setFont("helvetica", "bold");
-    pdf.text(
-      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
-      margenIzquierdo,
-      posicionY
-    );
+    pdf.text(`PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`, margenIzquierdo, posicionY);
+    posicionY += 7;
+  
     pdf.save(`ticket_${datuak.id}.pdf`);
   }
 

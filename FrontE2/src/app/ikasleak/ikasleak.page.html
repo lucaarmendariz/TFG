@@ -7,7 +7,7 @@
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title size="large">{{ "ikaslePage.ikasleak" | translate }} </ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
