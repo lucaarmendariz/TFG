@@ -1,8 +1,8 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <app-header></app-header>
-<ion-content class="ion-page" id="main-content">
+<ion-content  id="main-content">
   <ion-header>
-    <ion-toolbar class="Headeraaa">
+    <ion-toolbar >
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -12,7 +12,7 @@
         <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
-    <ion-toolbar class="Headeraaa">
+    <ion-toolbar>
       <ion-segment>
         <ion-segment-button value="taldeKudeatu" content-id="taldeKudeatu">
           <ion-label>{{ "ikaslePage.taldeenKudeaketa" | translate }} </ion-label>
@@ -302,7 +302,7 @@
             </ion-item>
           </ion-col>
   
-          <ion-col size="2" class="ion-text-center">
+          <ion-col size="2">
             <ion-button color="danger" fill="outline" (click)="resetFilters()">
               <ion-icon slot="start" name="close-circle"></ion-icon>
               {{ 'ikaslePage.Reset' | translate }}
@@ -380,7 +380,7 @@
       </ion-header>
       <ion-content>
         <form #horarioForm="ngForm" (ngSubmit)="guardarHorario()" novalidate>
-          <div class="horario-container">
+          <div >
             <!-- Selección de grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
@@ -474,7 +474,7 @@
       </ion-header>
       <ion-content>
         <form #actualizarHorarioForm="ngForm" (ngSubmit)="actualizarHorario()" novalidate>
-          <div class="horario-container">
+          <div >
             <!-- Grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>

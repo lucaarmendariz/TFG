@@ -87,7 +87,7 @@
                                   <ion-badge color="secondary">{{ 'En espera...' }}</ion-badge>
                                 </div>
 
-                                <div *ngIf="cita.hasieraOrduaErreala">
+                                <div *ngIf="cita.hasieraOrduaErreala && !cita.prezioTotala">
                                   <ion-badge color="warning">{{ 'En proceso...' }}</ion-badge>
                                   <span *ngIf="cita.langilea && !cita.prezioTotala">
                                     {{ divideTimeByTwo(timeElapsedMap[cita.id] || '00:00') }}
