@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -11,25 +13,26 @@ import { TranslateService } from '@ngx-translate/core';
 export class HomePage implements OnInit {
   ikasle!: boolean;
   selectedLanguage: string = 'es';
-
+  produktuak:any []=[];
+  filteredProduktuak:any[]=[];
   constructor(
     private loginService: LoginServiceService,
     private translate: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    // Cada vez que se navegue a esta página, este código se ejecutará
-    console.log('Página Home cargada');
     this.ikasle = this.loginService.isAlumno();
     this.translate.setDefaultLang(this.selectedLanguage);
 
     // Escucha los cambios en la ruta
     this.route.params.subscribe(params => {
       // Puedes realizar una acción aquí cada vez que se cambie la ruta
-      console.log('Ruta cambiada:', params);
       this.ikasle = this.loginService.isAlumno();
     });
+    this.produktuakLortu();
+    this.getProductosBajoStock();
   }
 
   logout() {
@@ -39,4 +42,43 @@ export class HomePage implements OnInit {
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
   }
+
+produktuakLortu() {
+    this.http.get(`${environment.url}produktu_kategoria`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos las categorías y productos activos (sin `ezabatzeData`)
+        this.produktuak = datuak
+          .filter((categoria: any) => categoria.ezabatzeData === null)
+          .map((categoria: any) => ({
+            ...categoria,
+            produktuak: categoria.produktuak
+              .filter((producto: any) => producto.ezabatzeData === null)
+          }));
+          this.filteredProduktuak = this.produktuak;
+      },
+      (error) => {
+        console.error("Errorea produktuak kargatzerakoan:", error);
+      }
+    );
+  }
+
+
+  getProductosBajoStock(): any[] {
+
+    const productosBajoStock: any[] = [];
+  
+    this.produktuak.forEach((material: any) => {
+      if (material.produktuak && Array.isArray(material.produktuak)) {
+        const bajoStock = material.produktuak.filter((prod: any) => prod.stock <= prod.stockAlerta);
+        productosBajoStock.push(...bajoStock);
+      }
+    });
+    return productosBajoStock;
+  }
+  
 }

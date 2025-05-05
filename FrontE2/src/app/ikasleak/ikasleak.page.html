@@ -1,18 +1,18 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <app-header></app-header>
-<ion-content class="ion-page" id="main-content">
+<ion-content  id="main-content">
   <ion-header>
-    <ion-toolbar class="Headeraaa">
+    <ion-toolbar >
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title size="large">{{ "ikaslePage.ikasleak" | translate }} </ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
-    <ion-toolbar class="Headeraaa">
+    <ion-toolbar>
       <ion-segment>
         <ion-segment-button value="taldeKudeatu" content-id="taldeKudeatu">
           <ion-label>{{ "ikaslePage.taldeenKudeaketa" | translate }} </ion-label>
@@ -47,8 +47,8 @@
           </ion-card-content>
         </ion-card>
         
-        <ion-list>
-          <ion-card *ngFor="let grupo of filteredGroups">
+        <ion-list style="display: flex; flex-wrap: wrap; gap: 20px; margin: 20px;">
+          <ion-card *ngFor="let grupo of filteredGroups" style="flex: 1 1 calc(33% - 20px); box-sizing: border-box;">
             <ion-card-header>
               <ion-card-title>{{ grupo.izena }}</ion-card-title>
               <ion-card-subtitle>{{ "ikaslePage.Kodea" | translate }}: {{ grupo.kodea }}</ion-card-subtitle>
@@ -66,16 +66,17 @@
         
               <!-- Contenedor flex para alinear los botones al final -->
               <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-                <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
                 <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
                   <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
+                  <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </div>
             </ion-card-content>
           </ion-card>
         </ion-list>
+        
       <!-- Modal para editar un Ikaslea -->
       <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
         <ng-template>
@@ -100,8 +101,8 @@
               
               <ion-item>
                 <ion-label position="stacked">{{ "ikaslePage.Kodea" | translate }}</ion-label>
-                <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel">
-                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel" interface="popover">
+                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea" >
                     {{ grupo.kodea }}
                   </ion-select-option>
                 </ion-select>
@@ -147,7 +148,7 @@
               <ion-item>
                 <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
                 <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
-                            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
+                            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" interface="popover">
                   <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                     {{ grupo.kodea }}
                   </ion-select-option>
@@ -191,7 +192,7 @@
             <ion-list>
               <ion-item *ngFor="let alumno of filteredAlumnos">
                 <!-- Checkbox para seleccionar alumno -->
-                <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
+                <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)" interface="popover">
                 </ion-checkbox>
                 <ion-label>
                   <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
@@ -302,7 +303,7 @@
             </ion-item>
           </ion-col>
   
-          <ion-col size="2" class="ion-text-center">
+          <ion-col size="2">
             <ion-button color="danger" fill="outline" (click)="resetFilters()">
               <ion-icon slot="start" name="close-circle"></ion-icon>
               {{ 'ikaslePage.Reset' | translate }}
@@ -380,11 +381,11 @@
       </ion-header>
       <ion-content>
         <form #horarioForm="ngForm" (ngSubmit)="guardarHorario()" novalidate>
-          <div class="horario-container">
+          <div >
             <!-- Selección de grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel" interface="popover">
                 <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.izena }}
                 </ion-select-option>
@@ -397,7 +398,7 @@
             <!-- Selección de día -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel" interface="popover">
                 <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
                 <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
                 <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
@@ -474,11 +475,11 @@
       </ion-header>
       <ion-content>
         <form #actualizarHorarioForm="ngForm" (ngSubmit)="actualizarHorario()" novalidate>
-          <div class="horario-container">
+          <div >
             <!-- Grupo -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel" interface="popover">
                 <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.izena }}
                 </ion-select-option>
@@ -491,7 +492,7 @@
             <!-- Día de la semana -->
             <ion-item>
               <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel" interface="popover">
                 <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
                 <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
                 <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>

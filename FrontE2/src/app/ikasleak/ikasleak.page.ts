@@ -5,6 +5,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Txanda } from '../txandak/txandak.page';
 
 @Component({
   selector: 'app-ikasleak',
@@ -54,7 +57,8 @@ export class IkasleakPage implements OnInit {
     private toastController: ToastController,
     private router: Router,
     private loginService: LoginServiceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private http: HttpClient
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -145,13 +149,17 @@ export class IkasleakPage implements OnInit {
   }
 
   resetFilters() {
-    this.fechaInicioFilter = null;
-    this.fechaFinFilter = null;
+    const today = new Date().toISOString().split('T')[0];  
+    this.fechaInicioFilter = today;
+    this.fechaFinFilter = today;
+  
     this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
       ...ordutegi,
-      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
-    }));  
+      
+    }));
+    this.getHorarios(); 
   }
+  
   
 
   filterGroups() {
@@ -494,55 +502,92 @@ grupoArray: Taldea[] = [];
     });
   }
   
-  guardarHorario() {
+  async guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
     const formattedHoraInicio = this.horaInicio + ':00';
     const formattedHoraFin = this.horaFin + ':00';
   
-    this.ordutegia = {
-      taldea: {
-        kodea: this.grupoSeleccionado.kodea,
-      },
-      eguna: this.diaSeleccionado,
-      hasieraData: formattedFechaInicio,
-      amaieraData: formattedFechaFin,
-      hasieraOrdua: formattedHoraInicio,
-      amaieraOrdua: formattedHoraFin,
-    };
-  
-    this.ikasleService.guardarHorario(this.ordutegia).subscribe(
-      (data) => {
-        this.getHorarios();
-        this.ordutegia = {
-          taldea: { kodea: '' },
-          eguna: 0,
-          hasieraData: '',
-          amaieraData: '',
-          hasieraOrdua: '',
-          amaieraOrdua: '',
-        };
-        this.grupoSeleccionado.kodea = '';
-        this.diaSeleccionado = 0;
-        this.fechaInicio = '';
-        this.fechaFin = '';
-        this.horaInicio = null;
-        this.horaFin = null;
-  
-        if (data && data.id) {
-          this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 'success');
-        } else {
-          this.mostrarToast(this.translate.instant('ikaslePage.ErrorGuardarHorario'), 'danger');
-        }
-      },
-      (error) => {
-        console.error('Error al guardar el horario:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.ErrorConexion'), 'danger');
+    // Comprobar si hay txandas para esas fechas
+    const url = `${environment.url}txandak/${formattedFechaInicio}/${formattedFechaFin}`;
+    this.http.get<Txanda[]>(url).subscribe(async (txandas: Txanda[]) => {
+      // Verificar si txandas es null o undefined, y si es así, asignar un array vacío
+      if (!txandas) {
+        txandas = [];
       }
-    );
+    
+      // Ahora podemos usar .some() sin que falle
+      const hayTxandas = txandas.some(tx => !tx.ezabatzeData);
+    
+      // Si no hay txandas, mostrar aviso pero continuar
+      if (!hayTxandas) {
+        const alert = await this.alertController.create({
+          header: 'No hay txandas',
+          message: 'No se han encontrado txandas para estas fechas. ¿Quieres ir a la página de txandas para crearlas?',
+          buttons: [
+            {
+              text: 'Continuar',
+              role: 'cancel'
+            },
+            {
+              text: 'Ir a Txandas',
+              handler: () => {
+                // Redirigir a la página de txandas
+                this.router.navigate(['/txandak']); // Descomenta esta línea si usas Router
+              }
+            }
+          ]
+        });
+        await alert.present();
+      }
+      // Guardar horario aunque no haya txandas
+      this.ordutegia = {
+        taldea: {
+          kodea: this.grupoSeleccionado.kodea,
+        },
+        eguna: this.diaSeleccionado,
+        hasieraData: formattedFechaInicio,
+        amaieraData: formattedFechaFin,
+        hasieraOrdua: formattedHoraInicio,
+        amaieraOrdua: formattedHoraFin,
+      };
   
-    this.closeModal();
+      this.ikasleService.guardarHorario(this.ordutegia).subscribe(
+        (data) => {
+          this.getHorarios();
+          this.ordutegia = {
+            taldea: { kodea: '' },
+            eguna: 0,
+            hasieraData: '',
+            amaieraData: '',
+            hasieraOrdua: '',
+            amaieraOrdua: '',
+          };
+          this.grupoSeleccionado.kodea = '';
+          this.diaSeleccionado = 0;
+          this.fechaInicio = '';
+          this.fechaFin = '';
+          this.horaInicio = null;
+          this.horaFin = null;
+  
+          if (data && data.id) {
+            this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 'success');
+          } else {
+            this.mostrarToast(this.translate.instant('ikaslePage.ErrorGuardarHorario'), 'danger');
+          }
+        },
+        (error) => {
+          console.error('Error al guardar el horario:', error);
+          this.mostrarToast(this.translate.instant('ikaslePage.ErrorConexion'), 'danger');
+        }
+      );
+  
+      this.closeModal();
+    });
   }
+  
+  
+
   
   actualizarHorario() {
     if (this.selectedHorario) {

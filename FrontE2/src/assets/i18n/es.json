@@ -20,7 +20,11 @@
     "zerbitzuak": "Servicios",
     "txandak":"Turnos",
     "inbentario":"Inventario",
-    "parametrizacion":"Parametrizacion"
+    "parametrizacion":"Parametrizacion",
+    "productosBajoStock": "Productos bajo Stock",
+    "bajoStock": "Bajo Stock",
+    "Stock": "Stock",
+    "Alerta": "Alerta"
   },
   "productos": {
     "title": "Gestion de productos",
@@ -49,7 +53,8 @@
       "vacio": "No hay productos seleccionados",
       "filtroCat": "Filtrar por Nombre de Categoria",
       "filtroProd": "Filtrar por Nombre de Producto",
-      "stockBajo": "Productos Bajo Stock"
+      "stockBajo": "Productos Bajo Stock",
+      "gestionar" : "Gestion de cita"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -152,7 +157,9 @@
       "cambioAsiento": "Cambio Asiento",
       "messageCambioAsiento": "¿Desea cambiar el asiento?",
       "cambioDia": "Cambio Dia",
-      "messageCambioDia": "¿Desea cambiar de Dia?"
+      "messageCambioDia": "¿Desea cambiar de Dia?",
+      "gestionar" : "Gestion de cita",
+      "alumnoAsignado": "Esta cita ya tiene un alumno asignado"
     },
     "validaciones": {
       "fecha": "La fecha es obligatoria",
@@ -266,6 +273,12 @@
     }
   },
   "ikaslePage": {
+    "placeholderBusqueda": "Buscar por cliente, langile, servicio, tratamiento o asiento",
+    "cambio": "Cambio",
+    "dineroRecibido": "Dinero recibido",
+    "precioTotal": "Precio total",
+    "total": "Total: ",
+    "cambioAdevolver": "Cambio a devolver: ",
     "ikasleak": "Estudiantes",
     "taldeenKudeaketa": "Gestión de Grupos",
     "ordutegienKudeaketa": "Gestión de Horarios",
@@ -341,8 +354,11 @@
     "Cancelar": "Cancelar",
     "GuardarCambios": "Guardar Cambios",
     "EliminarAlumnos": "Alumno/s eliminados correctamente",
-    "validaciones":{
-      "kodea":"Inserta un codigo de grupo valido (5 char max)",
+    "enProceso": "En proceso...",
+    "finalizada": "Finalizada",
+    "enEspera": "En espera...",
+    "Validaciones":{
+      "kodea":"Inserta un codigo de grupo valido (5 caracteres maximo)",
       "kodeaSelec":"Selecciona un grupo",
       "abizena":"Inserta un apellido valido",
       "izena":"Inserta un nombre valido",
@@ -352,7 +368,8 @@
       "FechaInicioMenor":"La fecha final no puede ser menor que la de inicio",
       "HoraInicio":"Debe insertar una hora de inicio",
       "HoraFin":"Debe insertar una hora fin",
-      "HoraInicioMenor":"La hora inicio no puede ser menor que la hora fin"
+      "HoraInicioMenor":"La hora inicio no puede ser menor que la hora fin",
+      "insertarAlumno": "Debe asignar un alumno antes de poder generar un ticket"
     }
   },
   "txandakPage": {

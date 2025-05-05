@@ -1,7 +1,7 @@
 .table-container {
   background-color: transparent;
   overflow:scroll;
-  height:500px;
+  margin: 20px;
 }
 
 table {
@@ -42,16 +42,16 @@ th {
   font-weight: bold;
 }
 
-.bg-pink-light{
-  background-color:#FFD9EC !important;
+.bg-rojo {
+  background-color: grey;
 }
 
-.bg-blue-green-light{
-  background-color:#BBF0E8 !important;
+.bg-naranja {
+  background-color: yellow;
 }
 
-.bg-grey-blue-light{
-  background-color:#B0BEC5 !important;
+.bg-azul {
+  background-color: lightblue;
 }
 
 .selected {
@@ -78,10 +78,7 @@ ion-card-header{
   background-color: transparent;
 }
 
-.flexbox {
-  background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
-  padding: 20px;
-}
+
 
 /* Cabecera de la tabla */
 table thead th {
@@ -184,3 +181,109 @@ ion-label {
   width: 100%;
 }
 
+.alargada-card {
+  height: 250px; /* Ajusta según la altura que quieras */
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto asegura que el contenido dentro de la card se distribuya bien */
+  padding: 20px;
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid #000; /* Puedes cambiar el color y el grosor */
+  margin: 20px 0;
+}
+
+
+.modal-grande {
+  --width: 90vw;
+  --height: 90vh;
+  --max-width: 100%;
+  --max-height: 100%;
+  --border-radius: 16px; // opcional, para que no quede cuadrado
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.card-grid ion-card {
+  width: 300px; /* Ajusta según tus necesidades */
+  flex-shrink: 0;
+}
+
+
+ion-badge {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 10px;
+}
+
+ion-badge[color='secondary'] {
+  background-color: #8e8e8e; /* Gris para En espera */
+}
+
+ion-badge[color='warning'] {
+  background-color: #ff9800; /* Naranja para En proceso */
+}
+
+ion-badge[color='success'] {
+  background-color: #4caf50; /* Verde para Finalizada */
+}
+
+ion-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Número de líneas antes de truncar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* empieza desde la izquierda */
+  padding: 16px;
+  gap: 20px;
+}
+
+.cita-card {
+  width: 320px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+}
+
+.busqueda-container {
+  display: flex;
+  justify-content: center; /* Centra la barra */
+  padding: 20px 0; /* Espaciado arriba y abajo */
+}
+
+.form-control {
+  width: 100%;
+  max-width: 500px; /* Establece un tamaño máximo */
+  padding: 12px 20px; /* Añade espaciado dentro del input */
+  font-size: 16px; /* Tamaño de texto */
+  border-radius: 25px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde gris claro */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  transition: border 0.3s ease; /* Transición para cuando cambia el borde */
+}
+
+.form-control:focus {
+  border: 1px solid #007bff; /* Cambia el borde al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Sombra al enfocar */
+}
+
+.form-control::placeholder {
+  color: #aaa; /* Color para el texto del placeholder */
+  font-style: italic; /* Hace que el placeholder sea cursivo */
+}

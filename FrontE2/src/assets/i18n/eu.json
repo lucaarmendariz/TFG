@@ -20,7 +20,13 @@
         "zerbitzuak": "Zerbitzuak",
         "txandak":"Txandak",
         "inbentario":"Inbentarioa",
-        "parametrizacion":"Parametrizazioa"
+        "parametrizacion":"Parametrizazioa",
+        "productosBajoStock": "Stock baxuko produktuak",
+        "bajoStock": "Sock baxua",
+        "Stock": "Stock-a",
+        "Alerta": "Alerta"
+
+
     },
     "productos": {
         "title": "Produktuen kudeaketa",
@@ -49,7 +55,8 @@
             "vacio": "Ez daude produktuak aukeratuta",
             "filtroCat": "Kategoriaren Izenaz Filtratu",
             "filtroProd": "Produktuaren Izenaz Filtratu",
-            "stockBajo": "Stock Gutxiko Produktuak"
+            "stockBajo": "Stock Gutxiko Produktuak",
+            "gestionar" : "Hitzordua gestionatu"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -152,7 +159,10 @@
             "cambioAsiento": "Eserleku Aldaketa",
             "messageCambioAsiento": "Eserlekuz aldatu nahi duzu?",
             "cambioDia": "Egun aldaketa",
-            "messageCambioDia": "Egunez aldatu nahi duzu?"
+            "messageCambioDia": "Egunez aldatu nahi duzu?",
+            "gestionar" : "Hitzordua gestionatu",
+            "alumnoAsignado": "Hitzordu honek badauka ikaslea"
+
         },
         "validaciones": {
             "fecha": "Data derrigorrezkoa da",
@@ -250,6 +260,12 @@
         }
     },
     "ikaslePage": {
+        "placeholderBusqueda": "Bezeroa, langilea, zerbitzua, tratamendua edo eserlekua bilatu",
+        "cambio": "Aldaketak",
+        "dineroRecibido": "Jasotako dirua",
+        "precioTotal": "Prezio totala",
+        "total": "Totala: ",
+        "cambioAdevolver": "Itzuli beharreko aldaketa: ",
         "ikasleak": "Ikasleak",
         "taldeenKudeaketa": "Taldeen Kudeaketa",
         "ordutegienKudeaketa": "Ordutegien Kudeaketa",
@@ -323,7 +339,10 @@
         "Cancelar": "Ezeztatu",
         "GuardarCambios": "Aldaketak gorde",
         "EliminarAlumnos": "Ikaslea/k behar bezala ezabatuta",
-        "validaciones": {
+        "enProceso": "Prozesuan...",
+        "finalizada": "Amaituta",
+        "enEspera": "Ikasleren zain...",
+        "Validaciones": {
             "kodea": "Sartu talde kode baliodun bat (gehienez 5 karaktere)",
             "kodeaSelec": "Hautatu talde bat",
             "abizena": "Sartu abizen baliodun bat",
@@ -334,7 +353,8 @@
             "FechaInicioMenor": "Amaierako data ez da hasierakoa baino txikiagoa izan behar",
             "HoraInicio": "Sartu hasierako ordu bat",
             "HoraFin": "Sartu amaierako ordu bat",
-            "HoraInicioMenor": "Hasierako orduak ez du amaierako ordua baino txikiagoa izan behar"
+            "HoraInicioMenor": "Hasierako orduak ez du amaierako ordua baino txikiagoa izan behar",
+            "insertarAlumno": "Ikasle bat esleitu behar duzu tiket bat sortu aurretik"
         }
     },
     "txandakPage": {

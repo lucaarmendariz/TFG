@@ -6,7 +6,7 @@
             <ion-icon color="light" name="log-out-outline"size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
-        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
           <ion-select-option value="es">Español</ion-select-option>
           <ion-select-option value="eu">Euskera</ion-select-option>
         </ion-select>
@@ -15,6 +15,23 @@
 
     <div class="ion-text-center">
       <img src="assets/IMP_Logotipoa.png" alt="Santurtzi Logo" class="logo" />
+    </div>
+
+    <div>
+      <ion-card *ngIf="getProductosBajoStock().length > 0" class="stock-card">
+        <ion-icon size="large" name="warning" color="danger"></ion-icon>
+        <h4><b>{{ 'menu.productosBajoStock' | translate }}</b></h4>
+        <ion-list>
+          <ion-item *ngFor="let producto of getProductosBajoStock()">
+            <ion-label>
+              <h2>{{ producto.izena }}</h2>
+              <p>{{ 'menu.Stock' | translate }}: {{ producto.stock }}</p>
+              <p>{{ 'menu.Alerta' | translate }}: {{ producto.stockAlerta }}</p>
+            </ion-label>
+            <ion-badge color="danger">{{ 'menu.bajoStock' | translate }}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card>
     </div>
     <div class="content">
       <div class="ion-text-center">

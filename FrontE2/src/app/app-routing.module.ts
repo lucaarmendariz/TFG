@@ -51,6 +51,15 @@ const routes: Routes = [
     path: 'historiala',
     loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
   },
+  {
+    path: 'cliente-creation-modal',
+    loadChildren: () => import('./cliente-creation-modal/cliente-creation-modal.module').then( m => m.ClienteCreationModalPageModule)
+  },  {
+    path: 'nueva-cita-modal',
+    loadChildren: () => import('./nueva-cita-modal/nueva-cita-modal.module').then( m => m.NuevaCitaModalPageModule)
+  },
+
+
 
 
 ];

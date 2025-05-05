@@ -50,7 +50,6 @@ export class LoginServiceService {
   
   isAlumno(): boolean {
     const role = localStorage.getItem('role'); // Obtén el rol desde el localStorage
-    console.log(role);
     return role === 'ik'; // Devuelve true si el rol es 'ik' (alumno), false en caso contrario
   }
   
