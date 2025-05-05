@@ -47,8 +47,8 @@
           </ion-card-content>
         </ion-card>
         
-        <ion-list>
-          <ion-card *ngFor="let grupo of filteredGroups">
+        <ion-list style="display: flex; flex-wrap: wrap; gap: 20px; margin: 20px;">
+          <ion-card *ngFor="let grupo of filteredGroups" style="flex: 1 1 calc(33% - 20px); box-sizing: border-box;">
             <ion-card-header>
               <ion-card-title>{{ grupo.izena }}</ion-card-title>
               <ion-card-subtitle>{{ "ikaslePage.Kodea" | translate }}: {{ grupo.kodea }}</ion-card-subtitle>
@@ -76,6 +76,7 @@
             </ion-card-content>
           </ion-card>
         </ion-list>
+        
       <!-- Modal para editar un Ikaslea -->
       <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
         <ng-template>
@@ -191,7 +192,7 @@
             <ion-list>
               <ion-item *ngFor="let alumno of filteredAlumnos">
                 <!-- Checkbox para seleccionar alumno -->
-                <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
+                <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)" interface="popover">
                 </ion-checkbox>
                 <ion-label>
                   <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>

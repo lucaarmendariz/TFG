@@ -84,11 +84,11 @@
                                 <ion-text>{{ cita.deskribapena }}</ion-text>
 
                                 <div *ngIf="!cita.langilea && !cita.prezioTotala">
-                                  <ion-badge color="secondary">{{ 'En espera...' }}</ion-badge>
+                                  <ion-badge color="secondary">{{ 'ikaslePage.enEspera' | translate }}</ion-badge>
                                 </div>
 
                                 <div *ngIf="cita.hasieraOrduaErreala && !cita.prezioTotala">
-                                  <ion-badge color="warning">{{ 'En proceso...' }}</ion-badge>
+                                  <ion-badge color="warning">{{ 'ikaslePage.enProceso' | translate }}</ion-badge>
                                   <span *ngIf="cita.langilea && !cita.prezioTotala">
                                     {{ divideTimeByTwo(timeElapsedMap[cita.id] || '00:00') }}
                                   </span>
@@ -96,7 +96,7 @@
                               
                                 <div *ngIf="cita.amaieraOrduaErreala">
                                   <ion-badge color="success">
-                                    {{ 'Finalizada' }} - {{ calculateElapsedTime(cita) }}
+                                    {{ 'ikaslePage.finalizada' | translate }} - {{ calculateElapsedTime(cita) }}
                                   </ion-badge>
                                 </div>
                                 
@@ -318,11 +318,11 @@
                       <!-- Mostrar el precio total -->
                       <ion-card>
                         <ion-card-header>
-                          <ion-card-title>{{ 'Precio total' }}</ion-card-title>
+                          <ion-card-title>{{ 'ikaslePage.precioTotal' | translate }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
                           <div>
-                            <span>{{ 'Total: ' | translate }}</span>
+                            <span>{{ 'ikaslePage.total' | translate }}</span>
                             <strong>{{ precioTotal | currency:'EUR' }}</strong>
                           </div>
                         </ion-card-content>
@@ -331,7 +331,7 @@
                       <!-- Input para ingresar el dinero que el cliente ha dado -->
                       <ion-card>
                         <ion-card-header>
-                          <ion-card-title>{{ 'Dinero recibido' }}</ion-card-title>
+                          <ion-card-title>{{ 'ikaslePage.dineroRecibido' | translate }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
                           <ion-item>
@@ -346,11 +346,11 @@
                       <!-- Mostrar el cambio que se debe devolver -->
                       <ion-card>
                         <ion-card-header>
-                          <ion-card-title>{{ 'Cambio' }}</ion-card-title>
+                          <ion-card-title>{{ 'ikaslePage.cambio' | translate }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
                           <div>
-                            <span>{{ 'Cambio a devolver: ' | translate }}</span>
+                            <span>{{ 'ikaslePage.cambioAdevolver' | translate }}</span>
                             <strong>{{ cambio | currency:'EUR' }}</strong>
                           </div>
                         </ion-card-content>
@@ -361,11 +361,12 @@
                         {{ "citas.botones.generar" | translate }}
                       </ion-button>
                       <ion-text color="danger" *ngIf="!citaEditar.langilea && citaValida()">
-                        <p>Debe asignar un alumno antes de generar el ticket.</p>
+                        {{ "ikaslePage.Validaciones.insertarAlumno" | translate }}
+                        
                       </ion-text>
                     </form>
                   </div>
-
+ 
 
                 </ion-content>
               </ng-template>
@@ -377,7 +378,7 @@
         <!-- Barra de búsqueda -->
         <div class="busqueda-container">
           <input type="text" class="form-control"
-            placeholder="Buscar por cliente, langile, servicio, tratamiento o asiento" [(ngModel)]="filtroBusqueda"
+            placeholder="{{'ikaslePage.placeholderBusqueda' | translate}}" [(ngModel)]="filtroBusqueda"
             (input)="filtrarCitas()" />
         </div>
         <ion-list>

@@ -25,10 +25,10 @@
           <ion-item *ngFor="let producto of getProductosBajoStock()">
             <ion-label>
               <h2>{{ producto.izena }}</h2>
-              <p>{{ 'Stock' | translate }}: {{ producto.stock }}</p>
-              <p>{{ 'Alerta' | translate }}: {{ producto.stockAlerta }}</p>
+              <p>{{ 'menu.Stock' | translate }}: {{ producto.stock }}</p>
+              <p>{{ 'menu.Alerta' | translate }}: {{ producto.stockAlerta }}</p>
             </ion-label>
-            <ion-badge color="danger">{{ 'Bajo stock' | translate }}</ion-badge>
+            <ion-badge color="danger">{{ 'menu.bajoStock' | translate }}</ion-badge>
           </ion-item>
         </ion-list>
       </ion-card>
