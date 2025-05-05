@@ -55,34 +55,36 @@ export class HitzorduakPage implements OnInit {
 
   segmentoActivo: string = 'editatu';
 
-  filtrarCitas() {
-    const texto = this.filtroBusqueda?.toLowerCase() || '';
+ // Método para filtrar las citas
+ filtrarCitas() {
+  const texto = this.filtroBusqueda?.toLowerCase() || '';
 
-    if (!texto.trim()) {
-      // Si no hay texto, mostrar todas las citas
-      this.hitzorduArrayFiltrado = [...this.hitzorduArray];
-      return
-    }
-
-    this.hitzorduArrayFiltrado = this.hitzorduArray.filter((cita: any) => {
-      const cliente = cita.izena?.toLowerCase() || '';
-      const telefono = cita.telefonoa?.toLowerCase() || '';
-      const langile = cita.langilea?.izena?.toLowerCase() || '';
-      const tratamiento = cita.etxekoa === 'E' ? 'etxekoa' : 'kanpokoa';
-      const asiento = String(cita.eserlekua);
-      const servicios = (cita.zerbitzuak || [])
-        .map((s: any) => s.izena?.toLowerCase())
-        .join(' ');
-      return (
-        cliente.includes(texto) ||
-        langile.includes(texto) ||
-        tratamiento.includes(texto) ||
-        asiento.includes(texto) ||
-        servicios.includes(texto) ||
-        telefono.includes(texto)
-      );
-    });
+  if (!texto.trim()) {
+    // Si no hay texto, mostrar todas las citas
+    this.hitzorduArrayFiltrado = [...this.hitzorduArray];
+    return;
   }
+
+  this.hitzorduArrayFiltrado = this.hitzorduArray.filter((cita: any) => {
+    const cliente = cita.izena?.toLowerCase() || '';
+    const telefono = cita.telefonoa?.toLowerCase() || '';
+    const langile = cita.langilea?.izena?.toLowerCase() || '';
+    const tratamiento = cita.etxekoa === 'E' ? 'etxekoa' : 'kanpokoa';
+    const asiento = String(cita.eserlekua);
+    const servicios = (cita.zerbitzuak || [])
+      .map((s: any) => s.izena?.toLowerCase())
+      .join(' ');
+
+    return (
+      cliente.includes(texto) ||
+      langile.includes(texto) ||
+      tratamiento.includes(texto) ||
+      asiento.includes(texto) ||
+      servicios.includes(texto) ||
+      telefono.includes(texto)
+    );
+  });
+}
 
   cambiarCliente(telefonoSeleccionado: string) {
     const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
@@ -278,6 +280,127 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
     return solapa;
   });
 }
+
+bloqueoHoraInicio: Date | null = null;
+bloqueoHoraFin: Date | null = null;
+
+
+ajustarHora(campo: 'hasieraOrdua' | 'amaieraOrdua', incremento: number): void {
+  const fecha = this.citaEditar.data;
+  const horaActual = this.citaEditar[campo];
+
+  if (!fecha || !horaActual) {
+    console.warn("Fecha u hora inválida al ajustar");
+    return;
+  }
+
+  const horaNueva = new Date(`${fecha}T${horaActual}`);
+
+  // Comprobar bloqueos
+  if (campo === 'hasieraOrdua' && this.bloqueoHoraInicio) {
+    if ((incremento > 0 && horaNueva >= this.bloqueoHoraInicio) || (incremento < 0 && horaNueva <= this.bloqueoHoraInicio)) {
+      console.log('Ajuste bloqueado para hora de inicio');
+      return;
+    }
+  }
+  if (campo === 'amaieraOrdua' && this.bloqueoHoraFin) {
+    if ((incremento > 0 && horaNueva >= this.bloqueoHoraFin) || (incremento < 0 && horaNueva <= this.bloqueoHoraFin)) {
+      console.log('Ajuste bloqueado para hora de fin');
+      return;
+    }
+  }
+
+  horaNueva.setMinutes(horaNueva.getMinutes() + incremento);
+
+  const horaFormateada = horaNueva.toTimeString().substring(0, 5) + ':00';
+  const citaTemp = { ...this.citaEditar, [campo]: horaFormateada };
+
+  // Validaciones de hora
+  const horaMin = campo === 'hasieraOrdua' ? '09:00:00' : '09:00:00';
+  const horaMax = campo === 'amaieraOrdua' ? '14:30:00' : '14:00:00';
+
+  if (horaFormateada < horaMin || horaFormateada > horaMax) {
+    console.log('Hora fuera de límites permitidos');
+    return;
+  }
+
+  // Prevenir que la hora de inicio sea igual o posterior a la de fin
+  if (campo === 'hasieraOrdua' && horaFormateada >= this.citaEditar.amaieraOrdua) return;
+  if (campo === 'amaieraOrdua' && horaFormateada <= this.citaEditar.hasieraOrdua) return;
+
+  // Comprobar solapamiento
+  const haySuperposicion = this.checkSuperposicion(citaTemp);
+
+  if (haySuperposicion) {
+    // Bloquear ajustes en esta dirección
+    if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = horaNueva;
+    if (campo === 'amaieraOrdua') this.bloqueoHoraFin = horaNueva;
+
+    this.mostrarAlertaSuperposicion();
+    return;
+  }
+
+  // Si no hay superposición, aplicar hora nueva y limpiar bloqueo
+  this.citaEditar[campo] = horaFormateada;
+  if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = null;
+  if (campo === 'amaieraOrdua') this.bloqueoHoraFin = null;
+}
+
+
+checkSuperposicion(cita: any): boolean {
+  if (!cita || !cita.data || !cita.hasieraOrdua || !cita.amaieraOrdua || cita.eserlekua == null) {
+    return false;
+  }
+
+  const inicioNueva = new Date(`${cita.data}T${cita.hasieraOrdua}`);
+  const finNueva = new Date(`${cita.data}T${cita.amaieraOrdua}`);
+
+  return this.hitzorduak.some((otraCita: any) => {
+    if (
+      otraCita.id === cita.id || // no compararse consigo misma
+      otraCita.data !== cita.data ||
+      otraCita.eserlekua !== cita.eserlekua
+    ) {
+      return false;
+    }
+
+    const inicioOtra = new Date(`${otraCita.data}T${otraCita.hasieraOrdua}`);
+    const finOtra = new Date(`${otraCita.data}T${otraCita.amaieraOrdua}`);
+
+    // Verificar solapamiento
+    return (
+      (inicioNueva < finOtra) && (finNueva > inicioOtra)
+    );
+  });
+}
+
+
+async mostrarAlertaHorasIguales() {
+  const alert = await this.alertController.create({
+    header: 'Horas inválidas',
+    message: 'La hora de inicio y la de fin no pueden ser iguales.',
+    buttons: ['Entendido']
+  });
+
+  await alert.present();
+}
+
+async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
+  const mensaje = tipo === 'inicio'
+    ? 'La hora de inicio no puede ser antes de las 09:00.'
+    : 'La hora de fin no puede ser después de las 14:30.';
+
+  const alert = await this.alertController.create({
+    header: 'Horario no permitido',
+    message: mensaje,
+    buttons: ['Aceptar']
+  });
+
+  await alert.present();
+}
+
+
+
 
   async mostrarAlertaAsientosDiferentes() {
     const alert = await this.alertController.create({
@@ -503,7 +626,9 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
         servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
       }
     });
+  
   }
+
   timeElapsedMap: { [key: string]: string } = {};
   private intervals: { [key: string]: any } = {};
 
@@ -512,20 +637,75 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
     Object.values(this.intervals).forEach(interval => clearInterval(interval));
   }
 
-  startTimer(cita: any) {
-    if (this.intervals[cita.id]) return; // Si ya tiene cronómetro, no duplicar
+  startCronometros(citas: any[]) {
+    citas.forEach((cita: any) => {
+      if (cita.hasieraOrduaErreala) {
+        // Combinar la fecha con la hora real de inicio para formar un timestamp completo
+        const startTimeReal = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
+  
+        // Calcular el tiempo transcurrido desde la hora real de inicio
+        const now = Date.now();
+        const elapsedTime = now - startTimeReal;
+  
+        // Asignar el tiempo formateado a timeElapsedMap
+        this.timeElapsedMap[cita.id] = this.formatTime(elapsedTime);
+  
+        // Iniciar el cronómetro para esta cita
+        this.startTimer(cita, startTimeReal, elapsedTime);
+  
+        console.log("Start Time Real:", startTimeReal);
+        console.log("Elapsed Time:", elapsedTime);
+      }
+    });
+  }
+  
+// Método para calcular el tiempo transcurrido en minutos y segundos
+calculateElapsedTime(cita: any): string {
+  if (cita.hasieraOrduaErreala && cita.amaieraOrduaErreala) {
+    const startTime = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
+    const endTime = new Date(`${cita.data}T${cita.amaieraOrduaErreala}`).getTime();
+    const elapsedTime = endTime - startTime; // Tiempo en milisegundos
 
-    const startTime = Date.now();
+    // Convertir el tiempo transcurrido a minutos y segundos
+    const minutes = Math.floor(elapsedTime / 60000);
+    const seconds = Math.floor((elapsedTime % 60000) / 1000);
 
+    return `${this.pad(minutes)}:${this.pad(seconds)}`; // Devuelve el tiempo formateado
+  }
+  return '';
+}
+  // Método para empezar el cronómetro
+  startTimer(cita: any, startTime?: number, elapsedTime?: number) {
+    if (this.intervals[cita.id]) return; // Evitar duplicación del cronómetro
+
+    // Si no existe el cronómetro, lo inicializamos
+    const timerStartTime = startTime || Date.now();
     this.intervals[cita.id] = setInterval(() => {
       const now = Date.now();
-      const diff = now - startTime;
-      const minutes = Math.floor(diff / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      this.timeElapsedMap[cita.id] = `${this.pad(minutes)}:${this.pad(seconds)}`;
+      const diff = now - timerStartTime + (elapsedTime || 0); // Añadir el tiempo ya transcurrido
+      this.timeElapsedMap[cita.id] = this.formatTime(diff);
     }, 1000);
   }
 
+  divideTimeByTwo(time: string): string {
+    // Convertir el tiempo de formato 'MM:SS' a minutos y segundos
+    const [minutes, seconds] = time.split(':').map(num => parseInt(num, 10));
+  
+    // Calcular el total de segundos
+    const totalSeconds = (minutes * 60) + seconds;
+  
+    // Dividir entre 2
+    const dividedSeconds = totalSeconds / 2;
+  
+    // Obtener los minutos y segundos del resultado
+    const dividedMinutes = Math.floor(dividedSeconds / 60);
+    const dividedSecs = Math.floor(dividedSeconds % 60);
+  
+    // Formatear el tiempo como 'MM:SS'
+    return `${this.pad(dividedMinutes)}:${this.pad(dividedSecs)}`;
+  }
+
+  // Método para detener el cronómetro
   stopTimer(cita: any) {
     const intervalId = this.intervals[cita.id];
     if (intervalId) {
@@ -534,8 +714,16 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
     }
   }
 
-  pad(num: number): string {
-    return num < 10 ? '0' + num : num.toString();
+  // Método para formatear el tiempo (minutos:segundos)
+  formatTime(diff: number) {
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    return `${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  // Método para rellenar con ceros en caso de que los minutos o segundos sean menores a 10
+  pad(num: number) {
+    return num < 10 ? `0${num}` : `${num}`;
   }
 
   // Función: lortuData
@@ -571,7 +759,7 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
         const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
         this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => hitzordu.data.includes(eguna));
         this.hitzorduArrayFiltrado = [...this.hitzorduArray];
-
+        this.startCronometros(this.hitzorduArrayFiltrado);
       },
       (error) => {
         console.error("Error al cargar citas:", error);
@@ -657,7 +845,6 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
     if (this.langileArray.length == 0 && langileak.length > 0) {
       this.langileArray = langileak[0].taldea.langileak.filter((langile: any) => !langile.ezabatzeData);
     }
-    console.log(this.langileArray);
     this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 4 : 0;
     this.resetSelection();
     this.citaCrear = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
@@ -1028,7 +1215,6 @@ async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua:
 
 
   descargar_ticket(datuak: any) {
-    console.log(datuak)
     const pdf = new jsPDF();
     const margenIzquierdo = 10;
     let posicionY = 20;

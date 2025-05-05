@@ -87,16 +87,19 @@
                                   <ion-badge color="secondary">{{ 'En espera...' }}</ion-badge>
                                 </div>
 
-                                <div *ngIf="cita.langilea && !cita.prezioTotala">
+                                <div *ngIf="cita.hasieraOrduaErreala">
                                   <ion-badge color="warning">{{ 'En proceso...' }}</ion-badge>
                                   <span *ngIf="cita.langilea && !cita.prezioTotala">
-                                    {{ timeElapsedMap[cita.id] || '00:00' }}
+                                    {{ divideTimeByTwo(timeElapsedMap[cita.id] || '00:00') }}
                                   </span>
                                 </div>
-
-                                <div *ngIf="cita.prezioTotala">
-                                  <ion-badge color="success">{{ 'Finalizada' }}</ion-badge>
+                              
+                                <div *ngIf="cita.amaieraOrduaErreala">
+                                  <ion-badge color="success">
+                                    {{ 'Finalizada' }} - {{ calculateElapsedTime(cita) }}
+                                  </ion-badge>
                                 </div>
+                                
 
                               </ion-card-content>
                             </ion-card>
@@ -171,13 +174,27 @@
                       <ion-item>
                         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
                         <ion-label>{{ "citas.modal.horaInicio" | translate }}</ion-label>
+                        <!-- Botones para ajustar la hora de inicio -->
+                        <ion-button fill="clear" (click)="ajustarHora('hasieraOrdua', -30)">
+                          <ion-icon name="remove-circle-outline"></ion-icon>
+                        </ion-button>
                         <ion-text>{{ citaEditar.hasieraOrdua || '-' }}</ion-text>
+                        <ion-button fill="clear" (click)="ajustarHora('hasieraOrdua', 30)">
+                          <ion-icon name="add-circle-outline"></ion-icon>
+                        </ion-button>
                       </ion-item>
-
+                  
                       <ion-item>
                         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
                         <ion-label>{{ "citas.modal.horaFin" | translate }}</ion-label>
+                        <!-- Botones para ajustar la hora de fin -->
+                        <ion-button fill="clear" (click)="ajustarHora('amaieraOrdua', -30)">
+                          <ion-icon name="remove-circle-outline"></ion-icon>
+                        </ion-button>
                         <ion-text>{{ citaEditar.amaieraOrdua || '-' }}</ion-text>
+                        <ion-button fill="clear" (click)="ajustarHora('amaieraOrdua', 30)">
+                          <ion-icon name="add-circle-outline"></ion-icon>
+                        </ion-button>
                       </ion-item>
 
                       <ion-item>

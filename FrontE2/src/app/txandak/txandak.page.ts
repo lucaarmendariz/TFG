@@ -66,6 +66,8 @@ export class TxandakPage implements OnInit {
   fechaInicio: string = '';
   fechaFin: string = '';
 
+
+  
   constructor(private translate: TranslateService, 
               private http: HttpClient,
               private toastController: ToastController,              
@@ -122,7 +124,6 @@ export class TxandakPage implements OnInit {
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
         })
         this.ordutegiArrayFiltered = this.ordutegiArray;
-        console.log(this.ordutegiArray)
         this.filteredAlumnos = this.ordutegiArray
         .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
         .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
@@ -142,7 +143,6 @@ export class TxandakPage implements OnInit {
           );
         });
         this.Alumnos = langileak[0]?.taldea?.langileak?.filter(langile => !langile.ezabatzeData) ?? [];
-        console.log(this.ordutegiArrayFiltered);
       },
       (error) => {
         console.error('Error al obtener los horarios:', error);
@@ -152,41 +152,50 @@ export class TxandakPage implements OnInit {
   
   // Función para filtrar txandas por tipo
   filterTxandas() {
-    if (this.selectedType === 'all') {
-      this.filteredTxandak = this.txandak;
+    if (this.txandak && Array.isArray(this.txandak) && this.txandak.length > 0) {
+      if (this.selectedType === 'all') {
+        this.filteredTxandak = this.txandak;
+      } else {
+        this.filteredTxandak = this.txandak.filter(txanda => txanda.mota === this.selectedType);
+      }
     } else {
-      this.filteredTxandak = this.txandak.filter(txanda => txanda.mota === this.selectedType);
+      this.filteredTxandak = [];  // Si txandak está vacío o no es un array, asignar array vacío
     }
   }
 
   getTxandak() {
     this.http.get<Txanda[]>(`${environment.url}txandak/${this.fechaInicio}/${this.fechaFin}`).subscribe(
       (data) => {
+        // Verificar que los datos no sean null o undefined
+        if (!data || data.length === 0) {
+          this.mostrarToast('No hay txandas disponibles para estas fechas.', 'warning');
+          this.txandak = []; // Asignar un array vacío si no hay txandas
+        } else {
+          this.txandak = data
+            .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
+            .map(txanda => {  
+              const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
+    
+              if (alumno) {
+                txanda.alumno = alumno;  // Asignamos el alumno a txanda
+              } else {
+                console.log(`Alumno no encontrado para el id: ${txanda.langileak?.id}`);
+              }
+    
+              return {
+                mota: txanda.mota,
+                data: txanda.data,
+                alumno: txanda.alumno,  // Asignamos el alumno completo
+                id: txanda.id,  // Aseguramos que el id se conserve
+              };
+            });
+        }
   
-        this.txandak = data
-          .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
-          .map(txanda => {  
-            const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
-  
-            if (alumno) {
-              txanda.alumno = alumno;  // Asignamos el alumno a txanda
-            } else {
-              console.log(`Alumno no encontrado para el id: ${txanda.langileak?.id}`);
-            }
-  
-            return {
-              mota: txanda.mota,
-              data: txanda.data,
-              alumno: txanda.alumno,  // Asignamos el alumno completo
-              id: txanda.id,  // Aseguramos que el id se conserve
-            };
-          });
-  
-        this.filterTxandas();  
-
+        this.filterTxandas();  // Llamar a la función para filtrar las txandas después de recibir los datos
       },
       (error) => {
         console.error('Error al cargar las txandas', error);
+        this.txandak = [];  // En caso de error, asignamos un array vacío para evitar problemas con el filtro
       }
     );
   }
@@ -231,20 +240,18 @@ export class TxandakPage implements OnInit {
 
   // Función para cerrar el modal (se puede utilizar el modalController también)
   closeModal() {
-    this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear datos
-    // Aquí cerramos el modal manualmente si no se usa 'trigger'
-    // this.modalController.dismiss();
+    this.nuevaTxanda = { mota: '', data: '', alumno: null }; 
   }  
 
   // Función para guardar la nueva txanda
-  // Función para guardar la nueva txanda
   guardarTxanda() {
-    if (!this.nuevaTxanda.mota || !this.nuevaTxanda.alumno) {
-      return;
-    }
 
     if (!this.nuevaTxanda.data) {
       this.nuevaTxanda.data = new Date().toISOString().split('T')[0];
+    }
+
+    if (!this.puedeCrearTurno(this.nuevaTxanda.data, this.nuevaTxanda.mota)) {
+      return;
     }
 
     const txandaToSave = {
@@ -327,15 +334,16 @@ countTurnosPorTipo(data: string, tipo: string): number {
 
 // Lógica para verificar si es posible crear el turno
 puedeCrearTurno(data: string, tipo: string): boolean {
-  if (tipo === 'garbiketa' && this.countTurnosPorTipo(data, 'garbiketa') >= 2) {
+  if (tipo === 'G' && this.countTurnosPorTipo(data, 'G') >= 2) {
     this.mostrarToast('Ya hay 2 turnos de limpieza en este día.', 'danger');
     return false;
   }
-  if (tipo === 'mahaia' && this.countTurnosPorTipo(data, 'mahaia') >= 1) {
+  if (tipo === 'M' && this.countTurnosPorTipo(data, 'M') >= 1) {
     this.mostrarToast('Ya hay un turno de mostrador en este día.', 'danger');
     return false;
   }
   return true;
 }
+
 
 }
