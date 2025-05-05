@@ -5,6 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -23,8 +24,12 @@ export class TratamenduakPage implements OnInit {
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
   crearServicio: any = { izena: '', idKategoria: null, kanpokoPrezioa: '', etxekoPrezioa: '' };
-  crearCategoria: any = { izena: '', kolorea: false, extra: false };
-  editarCategoria:any;
+  crearCategoria: any = {
+    izena: '',
+    kolorea: false,
+    extra: false,
+    imagen: null // Aquí se guardará la imagen seleccionada
+  };  editarCategoria:any;
   editarServicio:any;
   serviciosSeleccionados:any[]=[];
   isEditingService: boolean = false;
@@ -35,7 +40,7 @@ export class TratamenduakPage implements OnInit {
   isIkasle!:boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loadingController: LoadingController,private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -62,6 +67,13 @@ export class TratamenduakPage implements OnInit {
     // Limpiar la suscripción cuando el componente se destruya
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+  }
+
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.crearCategoria.imagen = file; // Guardar la imagen seleccionada
     }
   }
 
@@ -226,29 +238,44 @@ export class TratamenduakPage implements OnInit {
   }
 
   crearKategoria() {
-    const json_data = {
-      "izena": this.crearCategoria.izena,
-      "kolorea": this.crearCategoria.kolorea,
-      "extra": this.crearCategoria.extra
+    const categoriaData = {
+      izena: this.crearCategoria.izena,
+      kolorea: this.crearCategoria.kolorea,
+      extra: this.crearCategoria.extra
     };
-    console.log(json_data);
-
-    this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría creada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
+  
+    // Paso 1: Crear la categoría sin imagen
+    this.http.post(`${environment.url}zerbitzu_kategoria`, categoriaData).subscribe(
+      (response: any) => {
+        const id = response.id;
+  
+        // Paso 2: Si hay imagen, subirla
+        if (this.crearCategoria.imagen) {
+          const formData = new FormData();
+          formData.append('imagen', this.crearCategoria.imagen, this.crearCategoria.imagen.name);
+          
+          console.log(this.crearCategoria.imagen);
+          this.http.post(`${environment.url}zerbitzu_kategoria/${id}/upload-irudia`, formData).subscribe(
+            () => {
+              console.log('Imagen subida correctamente');
+              this.zerbiztuakLortu();
+              this.closeKatModal();
+            },
+            error => console.error('Error al subir la imagen:', error)
+          );
+        } else {
+          this.zerbiztuakLortu();
+          this.closeKatModal();
+        }
       },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
-      }
+      error => console.error('Error al crear la categoría:', error)
     );
   }
+  
+
+  
+  
+  
 
   editarKategoria() {
     const json_data = {

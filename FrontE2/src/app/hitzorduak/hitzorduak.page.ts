@@ -5,7 +5,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { AlertController, ModalController, NavController } from '@ionic/angular';

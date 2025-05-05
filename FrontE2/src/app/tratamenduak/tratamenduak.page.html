@@ -260,11 +260,18 @@
             <ion-checkbox [(ngModel)]="crearCategoria.extra" name="extra"></ion-checkbox>
           </ion-item>
   
-          <ion-button expand="full" type="submit" [disabled]="crearKatForm.invalid"(click)="modalKatCrear.dismiss()">
+          <!-- Nuevo campo para subir imagen -->
+          <ion-item>
+            <ion-label position="stacked">{{ 'servicios.modal.imagen' | translate }}</ion-label>
+            <input type="file" (change)="onImageSelected($event)" />
+          </ion-item>
+  
+          <ion-button expand="full" type="submit" [disabled]="crearKatForm.invalid" (click)="modalKatCrear.dismiss()">
             {{ 'servicios.botones.crear' | translate }}
           </ion-button>
         </form>
       </ion-content>
     </ng-template>
-  </ion-modal>  
+  </ion-modal>
+  
 </ion-content>

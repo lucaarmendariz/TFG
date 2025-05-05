@@ -302,12 +302,6 @@ export class TxandakPage implements OnInit {
     }
   }
 
-  resetFilters() {
-    this.fechaInicio = '';
-    this.fechaFin = '';
-    this.filteredTxandak = [...this.txandak];
-  }
-
   filterToday() {
     const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
     this.fechaInicio = today;
