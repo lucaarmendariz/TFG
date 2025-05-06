@@ -28,3 +28,28 @@ ion-list{
 ion-item{
     background-color: transparent;
 }
+
+.categoria-card {
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .categoria-img {
+    height: 550px;
+    object-fit: cover;
+    width: 100%;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .categoria-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .servicio-nombre {
+    font-weight: 500;
+  }
+  

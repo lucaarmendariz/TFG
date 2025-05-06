@@ -16,8 +16,8 @@ export class TratamenduakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  zerbitzuak:any[] = [];
-  filteredZerbitzuak:any[] = [];
+  zerbitzuak: any[] = [];
+  filteredZerbitzuak: any[] = [];
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
@@ -29,18 +29,18 @@ export class TratamenduakPage implements OnInit {
     kolorea: false,
     extra: false,
     imagen: null // Aquí se guardará la imagen seleccionada
-  };  editarCategoria:any;
-  editarServicio:any;
-  serviciosSeleccionados:any[]=[];
+  }; editarCategoria: any;
+  editarServicio: any;
+  serviciosSeleccionados: any[] = [];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
-  
+
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loadingController: LoadingController,private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loadingController: LoadingController, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -90,8 +90,7 @@ export class TratamenduakPage implements OnInit {
       zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredZerbitzuak = this.filteredZerbitzuak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -107,24 +106,24 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
-  openServiceModal(service:any, idKat:number){
+  openServiceModal(service: any, idKat: number) {
     this.isEditingService = true;
     this.editarServicio = service;
     this.editarServicio.idKategoria = idKat;
     console.log(this.editarServicio);
   }
-  
-  closeServiceModal(){
+
+  closeServiceModal() {
     this.isEditingService = false;
   }
 
-  openKatModal(kategoria:any){
+  openKatModal(kategoria: any) {
     this.isEditingCategoria = true;
     this.editarCategoria = kategoria;
     console.log(this.editarCategoria);
   }
-  
-  closeKatModal(){
+
+  closeKatModal() {
     this.isEditingCategoria = false;
   }
 
@@ -148,10 +147,12 @@ export class TratamenduakPage implements OnInit {
           .filter((categoria: any) => categoria.ezabatzeData === null)
           .map((categoria: any) => ({
             ...categoria,
+            // Crear la URL completa de la imagen
+            irudiaUrl: this.getCategoriaImageUrl(categoria.irudia),
             zerbitzuak: categoria.zerbitzuak
               .filter((zerbitzua: any) => zerbitzua.ezabatzeData === null)
           }));
-        
+  
         this.filteredZerbitzuak = this.zerbitzuak;
         console.log('zerbitzuak kargatu:', this.zerbitzuak);
       },
@@ -160,6 +161,7 @@ export class TratamenduakPage implements OnInit {
       }
     );
   }
+  
 
   sortuZerbitzua() {
     const json_data = {
@@ -243,19 +245,21 @@ export class TratamenduakPage implements OnInit {
       kolorea: this.crearCategoria.kolorea,
       extra: this.crearCategoria.extra
     };
-  
+
     // Paso 1: Crear la categoría sin imagen
     this.http.post(`${environment.url}zerbitzu_kategoria`, categoriaData).subscribe(
       (response: any) => {
         const id = response.id;
-  
+
         // Paso 2: Si hay imagen, subirla
         if (this.crearCategoria.imagen) {
           const formData = new FormData();
           formData.append('imagen', this.crearCategoria.imagen, this.crearCategoria.imagen.name);
-          
+
           console.log(this.crearCategoria.imagen);
-          this.http.post(`${environment.url}zerbitzu_kategoria/${id}/upload-irudia`, formData).subscribe(
+          this.http.post(`${environment.url}zerbitzu_kategoria/${id}/upload-irudia`, formData, {
+            responseType: 'text' // 👈 Indicamos que esperamos texto plano
+          }).subscribe(
             () => {
               console.log('Imagen subida correctamente');
               this.zerbiztuakLortu();
@@ -271,11 +275,16 @@ export class TratamenduakPage implements OnInit {
       error => console.error('Error al crear la categoría:', error)
     );
   }
+
+
+  getCategoriaImageUrl(fileName: string): string {
+    const ruta = `${environment.url}uploads/kategoriak/${fileName}`;
+    console.log(ruta);
+    return ruta;
+  }
   
 
-  
-  
-  
+
 
   editarKategoria() {
     const json_data = {

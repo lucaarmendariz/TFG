@@ -12,7 +12,6 @@
       </ion-select>
     </ion-toolbar>
   </ion-header>
-  <ion-content [fullscreen]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button id="cat-service-sortu-modal">{{ 'servicios.botones.crearCategoria' | translate }}</ion-button>
@@ -45,35 +44,59 @@
       </ion-card-content>
     </ion-card>
 
-    <ng-container *ngFor="let categoria of zerbitzuak">
-      <ion-card>
-      <ion-item button (click)="toggleCategoria(categoria.izena)">
-        <ion-label>{{ categoria.izena }}</ion-label>
-        <ion-button slot="end" (click)="openKatModal(categoria)">
-          <ion-icon name="create"></ion-icon>
-        </ion-button>
-        <ion-button slot="end" color="danger" (click)="eliminarKategoria(categoria.id)">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-        <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
-      </ion-item>
-
-      <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
-        <ion-item *ngFor="let servicio of categoria.zerbitzuak">
-          <ion-label> {{ servicio.izena }} </ion-label>
-          <ion-label> {{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }} </ion-label>
-          <ion-label> {{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }} </ion-label>
-          <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
-            <ion-icon name="create"></ion-icon>
-          </ion-button>
-          <ion-button slot="end" color="danger" (click)="eliminarServicio(servicio.id)">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card>
-    </ng-container>
-  </ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" *ngFor="let categoria of zerbitzuak">
+          <ion-card class="categoria-card" button (click)="toggleCategoria(categoria.izena)">
+    
+            <!-- Imagen -->
+            <ion-img
+              *ngIf="categoria.irudia"
+              [src]="getCategoriaImageUrl(categoria.irudia)"
+              alt="Imagen de categoría"
+              class="categoria-img"
+            ></ion-img>
+    
+            <!-- Cabecera de categoría -->
+            <ion-item >
+              <ion-label class="categoria-label">{{ categoria.izena }}</ion-label>
+    
+              <ion-button fill="clear" slot="end" (click)="openKatModal(categoria)">
+                <ion-icon slot="icon-only" name="create"></ion-icon>
+              </ion-button>
+    
+              <ion-button fill="clear" color="danger" slot="end" (click)="eliminarKategoria(categoria.id)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+    
+              <ion-icon 
+                slot="end" 
+                [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'">
+              </ion-icon>
+            </ion-item>
+    
+            <!-- Servicios dentro de la categoría -->
+            <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
+              <ion-item *ngFor="let servicio of categoria.zerbitzuak">
+                <ion-label class="servicio-nombre">{{ servicio.izena }}</ion-label>
+                <ion-label>{{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }}</ion-label>
+                <ion-label>{{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }}</ion-label>
+    
+                <ion-button fill="clear" slot="end" (click)="openServiceModal(servicio, categoria.id)">
+                  <ion-icon slot="icon-only" name="create"></ion-icon>
+                </ion-button>
+    
+                <ion-button fill="clear" color="danger" slot="end" (click)="eliminarServicio(servicio.id)">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+    
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
 
   <ion-modal #modalServiceCrear trigger="service-sortu-modal">
     <ng-template>
