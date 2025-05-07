@@ -5,20 +5,33 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+
+interface Servicio {
+  id: number;
+  izena: string;
+  etxekoPrezioa: number;
+  kanpokoPrezioa: number;
+  sortzeData: string;
+  eguneratzeData: string;
+  ezabatzeData: string;
+}
 
 @Component({
   selector: 'app-tratamenduak',
   templateUrl: './tratamenduak.page.html',
   styleUrls: ['./tratamenduak.page.scss'],
 })
+
+
+
+
 export class TratamenduakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   zerbitzuak: any[] = [];
   filteredZerbitzuak: any[] = [];
-  modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
@@ -29,18 +42,21 @@ export class TratamenduakPage implements OnInit {
     kolorea: false,
     extra: false,
     imagen: null // Aquí se guardará la imagen seleccionada
-  }; editarCategoria: any;
+  }; 
+  editarCategoria: any;
   editarServicio: any;
   serviciosSeleccionados: any[] = [];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
 
-  filtroCategoria: string = '';
-  filtroZerbitzua: string = '';
+  imagenesServidor: string[] = [];
+
+  filtroGeneral: string = '';
   isIkasle!: boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loadingController: LoadingController, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private translate: TranslateService,    private modalController: ModalController,
+    private alertController: AlertController, private http: HttpClient, private loadingController: LoadingController, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -61,6 +77,7 @@ export class TratamenduakPage implements OnInit {
       // Llamar a las funciones necesarias
       this.zerbiztuakLortu();
     });
+    this.cargarImagenesDelServidor();
   }
 
   ngOnDestroy() {
@@ -70,12 +87,67 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
-  onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.crearCategoria.imagen = file; // Guardar la imagen seleccionada
-    }
+  imagenPreview: string | null = null;
+
+onImageSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.crearCategoria.imagen = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagenPreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
+}
+
+cargarImagenesDelServidor() {
+  this.http.get<string[]>(`${environment.url}uploads/kategoriak/list`).subscribe(
+    (imagenes) => {
+      this.imagenesServidor = imagenes.map(nombre =>
+        `${environment.url}uploads/kategoriak/${nombre}`
+      );
+    },
+    error => console.error('Error al cargar imágenes del servidor', error)
+  );
+}
+
+seleccionarImagenExistente(url: string) {
+  this.crearCategoria.imagen = null; // deseleccionar cualquier archivo local
+  this.crearCategoria.imagenUrl = url;
+  this.imagenPreview = url;
+}
+
+imagenSeleccionadaEditar: File | null = null;
+
+seleccionarImagenExistenteEditar(url: string) {
+  this.imagenSeleccionadaEditar = null;
+
+  // Extraer solo el nombre del archivo de la URL
+  const fileName = url.substring(url.lastIndexOf('/') + 1);
+  this.editarCategoria.irudia = fileName;
+
+  this.imagenPreview = url;
+}
+
+
+onImageSelectedEditar(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.imagenSeleccionadaEditar = file;
+    this.editarCategoria.imagenUrl = null;
+    this.editarCategoria.irudia = file;  
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagenPreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -84,33 +156,42 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
+
   filtrarZerbitzuak() {
-    this.filteredZerbitzuak = this.zerbitzuak.map(categoria => ({
-      ...categoria,
-      zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
-    }));
-
-    if (this.filtroCategoria !== '') {
-      this.filteredZerbitzuak = this.filteredZerbitzuak.filter(categoria =>
-        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
-      );
+    const filtro = this.filtroGeneral.trim().toLowerCase();
+  
+    if (filtro === '') {
+      this.filteredZerbitzuak = [...this.zerbitzuak];
+      return;
     }
-
-    if (this.filtroZerbitzua !== '') {
-      this.filteredZerbitzuak = this.filteredZerbitzuak.map(categoria => ({
-        ...categoria,
-        produktuak: categoria.produktuak.filter((producto: any) =>
-          producto.izena.toLowerCase().includes(this.filtroZerbitzua.toLowerCase())
-        )
-      }));
-    }
+  
+    this.filteredZerbitzuak = this.zerbitzuak
+      .map(categoria => {
+        const coincideCategoria = categoria.izena.toLowerCase().includes(filtro);
+        const serviciosFiltrados = categoria.zerbitzuak.filter((servicio: any) =>
+          servicio.izena.toLowerCase().includes(filtro)
+        );
+  
+        if (coincideCategoria || serviciosFiltrados.length > 0) {
+          return {
+            ...categoria,
+            zerbitzuak: coincideCategoria ? [...categoria.zerbitzuak] : serviciosFiltrados
+          };
+        }
+  
+        return null;
+      })
+      .filter(categoria => categoria !== null);
   }
+  
+  
+  
+  
 
   openServiceModal(service: any, idKat: number) {
     this.isEditingService = true;
     this.editarServicio = service;
     this.editarServicio.idKategoria = idKat;
-    console.log(this.editarServicio);
   }
 
   closeServiceModal() {
@@ -120,12 +201,39 @@ export class TratamenduakPage implements OnInit {
   openKatModal(kategoria: any) {
     this.isEditingCategoria = true;
     this.editarCategoria = kategoria;
-    console.log(this.editarCategoria);
+    this.cargarImagenesDelServidor();
   }
 
   closeKatModal() {
-    this.isEditingCategoria = false;
+    // Cerrar la modal
+    this.isEditingCategoria = false; // Si usas una variable para el estado de la edición
+    
+    // Limpiar los datos del formulario de creación
+    this.crearCategoria = {
+      id: null,
+      izena: '',
+      kolorea: false,
+      extra: false,
+      imagenUrl: null
+    };
+  
+    // Limpiar los datos del formulario de edición
+    this.editarCategoria = {
+      id: null,
+      izena: '',
+      kolorea: false,
+      extra: false,
+      imagenUrl: null
+    };
+  
+    // Limpiar el archivo de imagen
+    this.imagenSeleccionadaEditar = null;
+    this.imagenPreview = null; // Limpiar vista previa de la imagen
+  
+    this.zerbiztuakLortu();
   }
+  
+  
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -148,13 +256,11 @@ export class TratamenduakPage implements OnInit {
           .map((categoria: any) => ({
             ...categoria,
             // Crear la URL completa de la imagen
-            irudiaUrl: this.getCategoriaImageUrl(categoria.irudia),
             zerbitzuak: categoria.zerbitzuak
               .filter((zerbitzua: any) => zerbitzua.ezabatzeData === null)
           }));
   
         this.filteredZerbitzuak = this.zerbitzuak;
-        console.log('zerbitzuak kargatu:', this.zerbitzuak);
       },
       (error) => {
         console.error('Errorea zerbitzuak kargatzerakoan:', error);
@@ -220,24 +326,47 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
-  eliminarServicio(id: number) {
-    const url = `${environment.url}zerbitzuak/${id}`;
-
-    this.http.delete(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Servicio eliminado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
-      },
-      (error) => {
-        console.error('Errorea zerbitzua ezabatzerakoan:', error);
-      }
-    );
+  async eliminarServicio(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estás seguro de que deseas eliminar este servicio?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Eliminación del servicio cancelada');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            // Proceder con la eliminación del servicio si el usuario confirma
+            const url = `${environment.url}zerbitzuak/${id}`;
+    
+            this.http.delete(url, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+              }
+            }).subscribe(
+              (response) => {
+                console.log('Servicio eliminado correctamente');
+                this.zerbiztuakLortu();  // Actualizar la lista de servicios
+              },
+              (error) => {
+                console.error('Error al eliminar el servicio:', error);
+              }
+            );
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
+  
 
   crearKategoria() {
     const categoriaData = {
@@ -245,88 +374,132 @@ export class TratamenduakPage implements OnInit {
       kolorea: this.crearCategoria.kolorea,
       extra: this.crearCategoria.extra
     };
-
+  
     // Paso 1: Crear la categoría sin imagen
     this.http.post(`${environment.url}zerbitzu_kategoria`, categoriaData).subscribe(
       (response: any) => {
         const id = response.id;
-
-        // Paso 2: Si hay imagen, subirla
-        if (this.crearCategoria.imagen) {
+  
+        // Paso 2: Si hay una imagen URL seleccionada, asignarla
+        if (this.crearCategoria.imagenUrl) {
+          this.http.post(`${environment.url}zerbitzu_kategoria/${id}/assign-image-url`, this.crearCategoria.imagenUrl)
+            .subscribe(
+              (response: any) => {
+                if (response.message) {
+                  this.zerbiztuakLortu();
+                } else if (response.error) {
+                  console.error(response.error); // Maneja el error
+                }
+              },
+              (error) => {
+                console.error('Error al asignar la URL de la imagen:', error);
+              }
+            );
+        } else if (this.crearCategoria.imagen) {
+          // Si hay una imagen local, sube la imagen
           const formData = new FormData();
           formData.append('imagen', this.crearCategoria.imagen, this.crearCategoria.imagen.name);
-
-          console.log(this.crearCategoria.imagen);
+  
           this.http.post(`${environment.url}zerbitzu_kategoria/${id}/upload-irudia`, formData, {
             responseType: 'text' // 👈 Indicamos que esperamos texto plano
           }).subscribe(
             () => {
               console.log('Imagen subida correctamente');
               this.zerbiztuakLortu();
-              this.closeKatModal();
             },
-            error => console.error('Error al subir la imagen:', error)
+            error => {
+              console.error('Error al subir la imagen:', error);
+            }
           );
         } else {
+          // No hay imagen, solo crear la categoría
           this.zerbiztuakLortu();
-          this.closeKatModal();
         }
       },
       error => console.error('Error al crear la categoría:', error)
     );
   }
+  
+  
+  
 
 
   getCategoriaImageUrl(fileName: string): string {
     const ruta = `${environment.url}uploads/kategoriak/${fileName}`;
-    console.log(ruta);
     return ruta;
   }
-  
-
-
 
   editarKategoria() {
-    const json_data = {
-      "id": this.editarCategoria.id,
-      "izena": this.editarCategoria.izena,
-      "kolorea": this.editarCategoria.kolorea,
-      "extra": this.editarCategoria.extra
-    };
-    console.log(json_data);
-
-    this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría editada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
+    const formData = new FormData();
+  
+    formData.append('id', this.editarCategoria.id.toString());
+    formData.append('izena', this.editarCategoria.izena);
+    formData.append('kolorea', this.editarCategoria.kolorea.toString());
+    formData.append('extra', this.editarCategoria.extra.toString());
+  
+    // Si es nueva imagen (tipo File)
+    if (this.imagenSeleccionadaEditar instanceof File) {
+      formData.append('imagen', this.imagenSeleccionadaEditar, this.imagenSeleccionadaEditar.name);
+      formData.append('irudia', ''); // Por si es obligatorio en el servidor
+    } else if (typeof this.editarCategoria.irudia === 'string') {
+      // Si es imagen existente, enviar el nombre del archivo
+      formData.append('irudia', this.editarCategoria.irudia);
+    }
+  
+    this.http.put(`${environment.url}zerbitzu_kategoria/edit-with-image`, formData).subscribe(
+      (response: any) => {
+        console.log('Categoría editada correctamente:', response);
+        this.zerbiztuakLortu();
+        this.closeKatModal();
       },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      error => {
+        console.error('Error al editar la categoría:', error);
       }
     );
   }
+  
+  
+  
+  
 
-  eliminarKategoria(id: number) {
-    this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría eliminada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-      },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
-      }
-    );
+  async eliminarKategoria(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estás seguro de que deseas eliminar esta categoría?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Eliminación cancelada');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            // Proceder con la eliminación si el usuario confirma
+            this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+              }
+            }).subscribe(
+              (response) => {
+                console.log('Categoría eliminada correctamente');
+                this.zerbiztuakLortu(); // Actualizar la lista de servicios
+              },
+              (error) => {
+                console.error('Error al eliminar la categoría:', error);
+              }
+            );
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
+  
 
 }

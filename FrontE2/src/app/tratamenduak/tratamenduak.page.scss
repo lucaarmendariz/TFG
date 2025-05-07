@@ -53,3 +53,34 @@ ion-item{
     font-weight: 500;
   }
   
+
+  ion-modal {
+    --width: 90vw;
+    --height: 90vh;
+    --border-radius: 20px;
+    --box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  .selected-card {
+    border: 3px solid var(--ion-color-primary);
+    box-shadow: 0 0 8px rgba(56, 128, 255, 0.7);
+    transform: scale(1.02);
+    transition: 0.2s ease-in-out;
+  }
+
+
+
+ion-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.categoria-card:hover {
+  transform: scale(1.05);
+}
+
+
+#cat-service-sortu-modal,
+#service-sortu-modal {
+  --background: #007bff;  /* Azul personalizado */
+  --color: white;         /* Texto blanco */
+}
