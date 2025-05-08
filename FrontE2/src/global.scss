@@ -98,26 +98,27 @@ $color-light-blue-alt: #C4E7F1;
   }
   
   ion-segment-button {
-    --background: transparent; /* Fondo transparente en los botones */
-    --color: white; /* Color del texto en los botones */
-    --border-radius: 5px;
-    --padding-top: 12px;
-    --padding-bottom: 12px;
+    --color-checked: #63D6F5; // texto cuando está seleccionado
+    --indicator-color: #63D6F5; // subrayado del segmento
+    color:#00C7BE;
   }
   
-  ion-segment-button.ion-selected {
-    --background: #7ac0e9; /* Fondo azul más claro cuando el botón está seleccionado */
-    --color: black; /* Color del texto cuando está seleccionado */
+  ion-segment-button::part(indicator) {
+    background: #63D6F5;
+  }
+  
+  ion-segment-button.ion-activated {
+    background-color: #63D6F5;
+    color: #63D6F5; // texto negro
+  }
+  
+  ion-segment-button:hover {
+    background-color: $color-light-blue; // Color cuando el ratón pasa por encima
   }
   
 ion-list{
   background: transparent;
 }
-
-  ion-segment-label {
-    font-weight: bold; /* Hace que los textos sean negritas */
-  }
-
     
   
 ion-card {
