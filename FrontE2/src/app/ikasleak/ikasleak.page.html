@@ -26,10 +26,14 @@
     <ion-segment-view>
       <ion-segment-content id="taldeKudeatu">
         <ion-toolbar>
-            <ion-button slot="start" id="prod-gestionatu-modal" class="Botoiak">{{ "ikaslePage.SortuTaldea" | translate }}</ion-button>
-            <ion-button id="prod-sortu-modal" class="Botoiak">{{ "ikaslePage.SortuIkaslea" | translate }}</ion-button>
-            <ion-button id="atera-modal" class="Botoiak" slot="end">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
-        </ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button  id="prod-gestionatu-modal">{{ "ikaslePage.SortuTaldea" | translate }}</ion-button>
+            <ion-button id="prod-sortu-modal">{{ "ikaslePage.SortuIkaslea" | translate }}</ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button id="atera-modal">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
+          </ion-buttons>
+          </ion-toolbar>
 
         <ion-card>
           <ion-card-header>
@@ -83,6 +87,7 @@
           <ion-header>
             <ion-toolbar>
               <ion-title>{{ "ikaslePage.EditIkaslea" | translate }}</ion-title>
+              
             </ion-toolbar>
           </ion-header>
           <ion-content>
@@ -280,7 +285,9 @@
 </ion-segment-content>
 <ion-segment-content id="taldeOrdutegi">
   <ion-toolbar>
-    <ion-button id="egutegia" class="Botoiak">{{ 'ikaslePage.SortuOrdutegia' | translate }}</ion-button>
+    <ion-buttons>
+    <ion-button id="egutegia">{{ 'ikaslePage.SortuOrdutegia' | translate }}</ion-button>
+  </ion-buttons>
   </ion-toolbar>
   <ion-card>
     <ion-card-header>

@@ -14,20 +14,12 @@
   </ion-header>
   <ion-content [fullscreen]="true">
     <ion-toolbar>
-      <ion-buttons *ngIf="!isIkasle" slot="start">
-        <ion-button id="cat-prod-sortu-modal">{{ 'productos.botones.crearCategoria' | translate }}</ion-button>
-      </ion-buttons>
-      <ion-buttons *ngIf="!isIkasle" slot="start">
-        <ion-button id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button [disabled]="productosSeleccionados.length==0" id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button id="bottom-center">
+        <ion-button *ngIf="!isIkasle" slot="start" id="cat-prod-sortu-modal">{{ 'productos.botones.crearCategoria' | translate }}</ion-button>
+        <ion-button *ngIf="!isIkasle" slot="start" id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
+        <ion-button slot="end" [disabled]="productosSeleccionados.length==0" id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
+        <ion-button slot="end" id="bottom-center">
           <ion-icon name="cart" size="large"></ion-icon>
         </ion-button>
-      </ion-buttons>
     </ion-toolbar>
     <ion-popover trigger="bottom-center" side="bottom" alignment="center">
       <ng-template>

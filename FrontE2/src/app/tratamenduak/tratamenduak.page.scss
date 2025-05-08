@@ -73,3 +73,29 @@ ion-card {
   border-radius: 0;
 }
 
+ion-buttons {
+  --background: #00C7BE; /* $color-dark-teal */
+  --color: white;
+  --border-radius: 10px;
+  --box-shadow: 0 4px 10px rgba(0, 199, 190, 0.4);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: 0.3s ease all;
+  margin-top: 10px;
+}
+
+ion-button:hover {
+  filter: brightness(1.1);
+}
+
+ion-button[disabled] {
+  opacity: 0.6;
+  --background: $color-light-gray;
+  --color: #999;
+  --box-shadow: none;
+}

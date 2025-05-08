@@ -30,17 +30,12 @@
               <ion-icon name="search"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-buttons *ngIf="!isIkasle" slot="start">
-            <ion-button [disabled]="checkboxHabilitado" id="cat-mat-sortu-modal">{{ 'materiales.botones.crearCategoria' | translate }} </ion-button>
-          </ion-buttons>
-          <ion-buttons *ngIf="!isIkasle" slot="start">
-            <ion-button [disabled]="checkboxHabilitado" id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
-          </ion-buttons>
+            <ion-button *ngIf="!isIkasle" slot="start" [disabled]="checkboxHabilitado" id="cat-mat-sortu-modal">{{ 'materiales.botones.crearCategoria' | translate }} </ion-button>
+            <ion-button *ngIf="!isIkasle" slot="start"[disabled]="checkboxHabilitado" id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
 
-          <ion-buttons slot="end">
-            <ion-checkbox slot="start" (click)="toggleMostrarCheckbox()" [(ngModel)]="checkboxHabilitado"></ion-checkbox>
-            <ion-button id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0 || !checkboxHabilitado">{{'materiales.botones.sacarMateriales' | translate }}</ion-button>
-          </ion-buttons>
+            <ion-checkbox slot="end" (click)="toggleMostrarCheckbox()" [(ngModel)]="checkboxHabilitado"></ion-checkbox>
+            <ion-button slot="end" id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0 || !checkboxHabilitado">{{'materiales.botones.sacarMateriales' | translate }}</ion-button>
+          
         </ion-toolbar>
 
         <!-- Filtro por Categoría -->
@@ -93,9 +88,7 @@
 
       <ion-segment-content id="bueltatu">
         <ion-toolbar>
-          <ion-buttons slot="end">
-            <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0">{{'materiales.botones.devolverMateriales' | translate }}</ion-button>
-          </ion-buttons>
+            <ion-button slot="end" id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0">{{'materiales.botones.devolverMateriales' | translate }}</ion-button>
         </ion-toolbar>
         <ion-card>
           <ion-card-header>
@@ -347,8 +340,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.editarCategoria' | translate }}</ion-title>
-            <ion-buttons slot="end">
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -386,8 +377,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.devolverMateriales' | translate }}</ion-title>
-            <ion-buttons slot="end">
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
