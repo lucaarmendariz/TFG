@@ -5,7 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, IonModal, LoadingController, ModalController } from '@ionic/angular';
 
 interface Servicio {
   id: number;
@@ -26,7 +26,9 @@ interface Servicio {
 
 
 
+
 export class TratamenduakPage implements OnInit {
+  @ViewChild('modalServiceCrear', { static: true }) modalServiceCrear!: IonModal;
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
@@ -64,7 +66,6 @@ export class TratamenduakPage implements OnInit {
   ngOnInit() {
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
-      console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta
 
       // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
       this.isIkasle = this.loginService.isAlumno();
@@ -184,7 +185,9 @@ onImageSelectedEditar(event: any) {
       .filter(categoria => categoria !== null);
   }
   
-  
+  cerrarModalServicio() {
+    this.modalServiceCrear.dismiss();
+  }
   
   
 
@@ -196,6 +199,7 @@ onImageSelectedEditar(event: any) {
 
   closeServiceModal() {
     this.isEditingService = false;
+    this.zerbiztuakLortu();
   }
 
   openKatModal(kategoria: any) {
@@ -295,6 +299,8 @@ onImageSelectedEditar(event: any) {
         console.error('Errorea zerbitzua sortzerakoan:', error);
       }
     );
+    this.cerrarModalServicio();
+    this.zerbiztuakLortu();
   }
 
   editarServicios() {
@@ -324,6 +330,8 @@ onImageSelectedEditar(event: any) {
         console.error('Errorea zerbitzua eguneratzerakoan:', error);
       }
     );
+    this.closeServiceModal();
+    this.zerbiztuakLortu();
   }
 
   async eliminarServicio(id: number) {
@@ -353,7 +361,7 @@ onImageSelectedEditar(event: any) {
             }).subscribe(
               (response) => {
                 console.log('Servicio eliminado correctamente');
-                this.zerbiztuakLortu();  // Actualizar la lista de servicios
+                this.zerbiztuakLortu();  
               },
               (error) => {
                 console.error('Error al eliminar el servicio:', error);

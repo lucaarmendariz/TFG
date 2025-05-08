@@ -1,25 +1,12 @@
-// // Colores
-// $color-light-blue: #E4FEFF;
-// $color-medium-blue: #88E4E8;
-// $color-dark-teal: #00C7BE;
-// $color-light-teal: #63D6F5;
-// $color-white: #FFFFFF;
-// $color-black: #000000;
-// $color-light-gray: #E9E9E9;
-// $color-light-blue-alt: #C4E7F1;
-
-// // Estructura general
-// ion-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
-
-// ion-header {
-//   background-color: $color-light-teal;
-//   color: $color-white;
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
+// Colores
+$color-light-blue: #E4FEFF;
+$color-medium-blue: #88E4E8;
+$color-dark-teal: #00C7BE;
+$color-light-teal: #63D6F5;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-light-gray: #E9E9E9;
+$color-light-blue-alt: #C4E7F1;
 
 ion-list{
     background-color: rgb(255,255,255,0);
@@ -69,7 +56,6 @@ ion-item{
   }
 
 
-
 ion-card {
   transition: transform 0.3s ease-in-out;
 }
@@ -79,8 +65,11 @@ ion-card {
 }
 
 
-#cat-service-sortu-modal,
-#service-sortu-modal {
-  --background: #007bff;  /* Azul personalizado */
-  --color: white;         /* Texto blanco */
+.boton-cerrar {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
 }
+

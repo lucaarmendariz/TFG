@@ -96,7 +96,14 @@
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>{{ 'servicios.botones.crearServicio' | translate }}</ion-title>
+          <ion-title class="ion-text-center">
+            {{ 'servicios.botones.crearServicio' | translate }}
+          </ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalServicio()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -156,7 +163,7 @@
           <ion-title>{{ 'servicios.botones.editarServicio' | translate }}</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="closeServiceModal()">
-              <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
+              <ion-icon name="close"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -219,13 +226,13 @@
   <ion-modal [isOpen]="isEditingCategoria" backdropDismiss="false">
     <ng-template>
       <ion-header>
-        <ion-toolbar color="primary">
+        <ion-toolbar>
           <ion-title class="ion-text-center">
             {{ 'servicios.botones.editarCategoria' | translate }}
           </ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="closeKatModal()">
-              <ion-icon name="close-circle-outline" color="light" size="large"></ion-icon>
+              <ion-icon name="close"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -301,13 +308,13 @@
   <ion-modal #modalKatCrear trigger="cat-service-sortu-modal">
     <ng-template>
       <ion-header>
-        <ion-toolbar color="primary">
+        <ion-toolbar>
           <ion-title class="ion-text-center">
             {{ 'productos.botones.crearCategoria' | translate }}
           </ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="modalKatCrear.dismiss()">
-              <ion-icon name="close-circle-outline" size="large" color="light"></ion-icon>
+              <ion-icon name="close"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
