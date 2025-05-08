@@ -47,6 +47,7 @@ export class IkasleakPage implements OnInit {
   filteredGroups: any[] = [];
   isIkasle!:boolean;
   private routeSubscription: any;
+  modalAlumnoCrear: any;
 
 
   constructor(
@@ -64,6 +65,9 @@ export class IkasleakPage implements OnInit {
     this.translate.use(this.selectedLanguage);
   }
 
+  cerrarModalAlumno() {
+    this.modalAlumnoCrear.dismiss(); // Cierra el modal
+  }
   lortuData(): string {
     const gaur = new Date();
     const urtea = gaur.getFullYear();

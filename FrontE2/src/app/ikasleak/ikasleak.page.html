@@ -118,54 +118,67 @@
       </ion-modal>
 
       <!-- Modal para crear Ikaslea -->
-      <ion-modal trigger="prod-sortu-modal">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ "ikaslePage.SortuIkaslea" | translate }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #sortuIkasleForm="ngForm" (ngSubmit)="agregarAlumno()" novalidate>
-              <ion-item>
-                <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoAlumno.izena" name="izena" required #izena="ngModel"
-                           placeholder="{{ 'ikaslePage.Izena' | translate }}"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="izena.invalid && izena.touched">
-                {{ "ikaslePage.Validaciones.izena" | translate }}
-              </ion-text>
-      
-              <ion-item>
-                <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoAlumno.abizenak" name="abizenak" required #abizenak="ngModel"
-                           placeholder="{{ 'ikaslePage.Abizena' | translate }}"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="abizenak.invalid && abizenak.touched">
-                {{ "ikaslePage.Validaciones.abizena" | translate }}
-              </ion-text>
-      
-              <ion-item>
-                <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
-                <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
-                            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" interface="popover">
-                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
-                    {{ grupo.kodea }}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-text color="danger" *ngIf="taldeKodea.invalid && taldeKodea.touched">
-                {{ "ikaslePage.Validaciones.kodeaSelec" | translate }}
-              </ion-text>
-      
-              <!-- El botón se deshabilita si el formulario es inválido -->
-              <ion-button expand="full" type="submit" [disabled]="sortuIkasleForm.invalid">
-                {{ 'ikaslePage.SortuIkaslea' | translate }}
-              </ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
+<ion-modal #modalAlumnoCrear trigger="prod-sortu-modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="ion-text-center">
+          {{ "ikaslePage.SortuIkaslea" | translate }}
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModalAlumno()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <ion-card class="ion-padding">
+        <form #sortuIkasleForm="ngForm" (ngSubmit)="agregarAlumno()" novalidate>
+
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoAlumno.izena" name="izena" required #izena="ngModel"
+                       placeholder="{{ 'ikaslePage.Izena' | translate }}"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="izena.invalid && izena.touched">
+            {{ "ikaslePage.Validaciones.izena" | translate }}
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoAlumno.abizenak" name="abizenak" required #abizenak="ngModel"
+                       placeholder="{{ 'ikaslePage.Abizena' | translate }}"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="abizenak.invalid && abizenak.touched">
+            {{ "ikaslePage.Validaciones.abizena" | translate }}
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
+            <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
+                        placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" interface="popover">
+              <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                {{ grupo.kodea }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="taldeKodea.invalid && taldeKodea.touched">
+            {{ "ikaslePage.Validaciones.kodeaSelec" | translate }}
+          </ion-text>
+
+          <ion-button type="submit" expand="block" class="ion-margin-top" [disabled]="sortuIkasleForm.invalid">
+            {{ 'ikaslePage.SortuIkaslea' | translate }}
+          </ion-button>
+
+        </form>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
       
 
 
