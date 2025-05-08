@@ -533,7 +533,11 @@ grupoArray: Taldea[] = [];
               text: 'Ir a Txandas',
               handler: () => {
                 // Redirigir a la página de txandas
-                this.router.navigate(['/txandak']); // Descomenta esta línea si usas Router
+                this.router.navigate(['/txandak']).then(() => {
+                  window.location.reload();
+                });
+                // Descomenta esta línea si usas Router
+                
               }
             }
           ]
