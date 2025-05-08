@@ -296,7 +296,11 @@ export class MaterialakPage implements OnInit {
       this.materialakLortu();
       this.materialakLortuDevolver();
       this.vaciarDatos();
+
     });
+      this.materialakLortuDevolver();
+      this.vaciarDatos();
+
   }
 
   materialakAteraKargatu(){
@@ -385,28 +389,31 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
-  filtrarMateriales() {
-    this.filteredMaterialak = this.materialak.map(categoria => ({
-      ...categoria,
-      materialak: categoria.materialak.map((material: any) => ({ ...material }))
-    }));
+  filtroUnico: string = '';
 
-    if(this.filtroCategoria !== '')
-    {
-      this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
-        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
-      );
-    }
+filtrarMateriales() {
+  this.filteredMaterialak = this.materialak.map(categoria => ({
+    ...categoria,
+    materialak: categoria.materialak.map((material: any) => ({ ...material }))
+  }));
 
-    if (this.filtroMaterial !== '') {
-      this.filteredMaterialak = this.filteredMaterialak.map(categoria => ({
+  if (this.filtroUnico.trim() !== '') {
+    const filtro = this.filtroUnico.toLowerCase();
+
+    // Filtrar por categoría o por material dentro de la categoría
+    this.filteredMaterialak = this.filteredMaterialak
+      .map(categoria => ({
         ...categoria,
         materialak: categoria.materialak.filter((materiala: any) =>
-          materiala.izena.toLowerCase().includes(this.filtroMaterial.toLowerCase())
+          materiala.izena.toLowerCase().includes(filtro)
         )
-      }));
-    }
+      }))
+      .filter(categoria =>
+        categoria.izena.toLowerCase().includes(filtro) || categoria.materialak.length > 0
+      );
   }
+}
+
 
   constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');

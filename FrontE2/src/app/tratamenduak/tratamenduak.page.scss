@@ -93,9 +93,3 @@ ion-button:hover {
   filter: brightness(1.1);
 }
 
-ion-button[disabled] {
-  opacity: 0.6;
-  --background: $color-light-gray;
-  --color: #999;
-  --box-shadow: none;
-}

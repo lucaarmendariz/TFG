@@ -8,29 +8,39 @@
 </ion-header>
 
 <ion-content>
-  <!-- Selección de cliente existente -->
-  <ion-item>
-    <ion-label position="floating">Selecciona un cliente</ion-label>
-    <ion-select [(ngModel)]="clienteId" placeholder="Selecciona un cliente">
-      <ion-select-option *ngFor="let bezero of bezeroak" [value]="bezero.id">
-        {{ bezero.izena }} {{ bezero.abizena }}
-      </ion-select-option>
-    </ion-select>
-    <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
-  </ion-item>
+  <!-- Card para asignar la cita -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalles de la Cita</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Selección de cliente existente -->
+      <ion-item>
+        <ion-label position="floating">Selecciona un cliente</ion-label>
+        <ion-select [(ngModel)]="clienteId" placeholder="Selecciona un cliente">
+          <ion-select-option *ngFor="let bezero of bezeroak" [value]="bezero.id">
+            {{ bezero.izena }} {{ bezero.abizena }}
+          </ion-select-option>
+        </ion-select>
+        <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
+      </ion-item>
 
-  <!-- Descripción de la cita -->
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-input [(ngModel)]="descripcion" placeholder="Descripción de la cita" type="text"></ion-input>
-  </ion-item>
+      <!-- Descripción de la cita -->
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input [(ngModel)]="descripcion" placeholder="Descripción de la cita" type="text"></ion-input>
+      </ion-item>
 
-  <!-- ¿Pertenece al centro? -->
-  <ion-item>
-    <ion-label>¿Pertenece al centro?</ion-label>
-    <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
-  </ion-item>
+      <!-- ¿Pertenece al centro? -->
+      <ion-item>
+        <ion-label>¿Pertenece al centro?</ion-label>
+        <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
+  <!-- Botón para confirmar la cita -->
   <ion-button expand="full" (click)="confirmarCita()" [disabled]="!clienteId || !descripcion">
     Confirmar Cita
   </ion-button>

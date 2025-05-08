@@ -10,6 +10,7 @@
   },
   "menu": {
     "title": "Menu",
+    "accesosRapidos":"Accesos Rapidos",
     "home":"Home",
     "hitzorduak": "Citas",
     "grafikoak": "Graficos",
@@ -76,6 +77,7 @@
     "botones": {
       "gestionarMateriales": "Gestionar Materiales",
       "devolverMateriales": "Devolver Materiales",
+      "devolver":"Devolver",
       "agregarMaterial": "Agregar Material",
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
@@ -109,7 +111,7 @@
     },
     "validaciones":{
       "seleccionaGrupoError":"Debe seleccionar un grupo",
-      "seleccionaAlumnoError":"Debe seleccionar un grupo",
+      "seleccionaAlumnoError":"Debe seleccionar un alumno",
       "nombre":"Debe insertar un nombre valido",
       "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
       "categoria":"Seleccione una categoria"            

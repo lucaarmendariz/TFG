@@ -85,6 +85,14 @@ export class HitzorduakPage implements OnInit {
   });
 }
 
+isGenerarTicketDisabled(): boolean {
+  // Verificar si el alumno está seleccionado, al menos un servicio está seleccionado, y el dinero recibido es mayor que 0
+  return !(this.citaEditar.langilea &&
+           this.tratamenduArray.some(katTrat => katTrat.zerbitzuak.some((trat: any) => trat.selected)) &&
+           this.dineroCliente > 0);
+}
+
+
   cambiarCliente(telefonoSeleccionado: string) {
     const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
 
