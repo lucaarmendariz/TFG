@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonModal, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonModal, ModalController, NavController, ToastController } from '@ionic/angular';
 import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
@@ -58,7 +58,8 @@ export class IkasleakPage implements OnInit {
     private router: Router,
     private loginService: LoginServiceService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private navCtrl: NavController,
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -532,8 +533,9 @@ grupoArray: Taldea[] = [];
             {
               text: 'Ir a Txandas',
               handler: () => {
-                // Redirigir a la página de txandas
-                this.router.navigate(['/txandak']); // Descomenta esta línea si usas Router
+                this.navCtrl.navigateForward('/txandak').then(() => {
+                  window.location.reload();
+                });
               }
             }
           ]

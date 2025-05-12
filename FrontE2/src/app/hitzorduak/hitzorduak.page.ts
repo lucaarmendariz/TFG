@@ -1189,7 +1189,9 @@ calculateElapsedTime(cita: any): string {
               {
                 text: this.translate.instant('citas.botones.confirmar'),
                 handler: () => {
-                  this.navCtrl.navigateForward('/produktuak');
+                  this.navCtrl.navigateForward('/produktuak').then(() => {
+                    window.location.reload();
+                  });
                 }
               }
             ]
