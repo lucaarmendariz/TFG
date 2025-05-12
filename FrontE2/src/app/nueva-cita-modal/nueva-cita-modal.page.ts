@@ -88,6 +88,8 @@ export class NuevaCitaModalPage implements OnInit {
 
   await modal.present();
 }
+
+
 async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
   const toast = await this.toastController.create({
     message: mensaje,

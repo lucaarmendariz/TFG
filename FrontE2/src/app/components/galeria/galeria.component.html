@@ -10,17 +10,18 @@
 </ion-header>
 
 <ion-content>
-  <swiper-container 
-    [attr.navigation]="true" 
-    [attr.pagination]="true"
-    [attr.loop]="true"
-    (slidechange)="swiperSlideChanged($event)">
-    
-    <swiper-slide *ngFor="let img of imagenes">
-      <ion-card>
-        <img [src]="transformarURL(img)" alt="Imagen de galería" />
-      </ion-card>
-    </swiper-slide>
+  <ion-card class="galeria-card">
+    <swiper-container 
+      [attr.navigation]="true" 
+      [attr.pagination]="true"
+      (slidechange)="swiperSlideChanged($event)">
+      
+      <swiper-slide *ngFor="let img of imagenes">
+        <div class="img-wrapper">
+          <img [src]="transformarURL(img)" alt="Imagen de galería" />
+        </div>
+      </swiper-slide>
 
-  </swiper-container>
+    </swiper-container>
+  </ion-card>
 </ion-content>
