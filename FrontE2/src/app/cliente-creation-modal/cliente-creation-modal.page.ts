@@ -48,4 +48,8 @@ export class ClienteCreationModalPage {
       console.error('Faltan datos para crear el cliente.');
     }
   }
+
+  cancelar() {
+      this.modalController.dismiss(null, 'cancel'); // <- CANCEL role
+    }
 }
