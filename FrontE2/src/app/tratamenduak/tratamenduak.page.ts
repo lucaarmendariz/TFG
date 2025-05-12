@@ -94,12 +94,14 @@ onImageSelected(event: any) {
   const file = event.target.files[0];
   if (file) {
     this.crearCategoria.imagen = file;
+    this.crearCategoria.imagenUrl = null; // Priorizar imagen local
 
     const reader = new FileReader();
     reader.onload = () => {
       this.imagenPreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+    
   }
 }
 
