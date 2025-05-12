@@ -2,10 +2,13 @@
   <ion-toolbar>
     <ion-title>Nueva Cita</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">Cerrar</ion-button>
+      <ion-button (click)="cancelar()" fill="clear">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content>
   <!-- Card para asignar la cita -->
@@ -18,13 +21,17 @@
       <!-- Selección de cliente existente -->
       <ion-item>
         <ion-label position="floating">Selecciona un cliente</ion-label>
+      
         <ion-select [(ngModel)]="clienteId" placeholder="Selecciona un cliente">
           <ion-select-option *ngFor="let bezero of bezeroak" [value]="bezero.id">
             {{ bezero.izena }} {{ bezero.abizena }}
           </ion-select-option>
         </ion-select>
-        <ion-button expand="full" (click)="crearNuevoCliente()">Nuevo Cliente</ion-button>
+        <ion-button slot="end" (click)="crearNuevoCliente()">
+          <ion-icon name="add" slot="icon-only"></ion-icon>
+        </ion-button>
       </ion-item>
+      
 
       <!-- Descripción de la cita -->
       <ion-item>
