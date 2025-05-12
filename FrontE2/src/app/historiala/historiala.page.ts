@@ -6,6 +6,8 @@ import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
+import { GaleriaComponent } from '../components/galeria/galeria.component';
+import { ModalController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-historiala',
@@ -46,7 +48,9 @@ export class HistorialaPage implements OnInit {
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private modalController: ModalController,
+    private toastController: ToastController
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -57,6 +61,38 @@ export class HistorialaPage implements OnInit {
       telefonoa: ['', Validators.required],
       azalSentikorra: ['', Validators.required]
     });
+  }
+
+  async abrirGaleria() {
+    const imagenes = this.editingBezero.historiala
+      .filter((h:any) => h.img_url && h.img_url.trim() !== '')
+      .map((h:any) => h.img_url);
+      console.log(imagenes)
+  
+console.log(this.editingBezero.historiala.map((h: any) => h.img_url));
+    if (imagenes.length === 0) {
+      // Puedes mostrar un toast si no hay imágenes
+      this.translate.get('productos.toast.img').subscribe((texto) => {
+        this.mostrarToast(texto, 2000, 'warning');
+      });
+      return;
+    }
+  
+    // Abre el modal o una galería externa, por ejemplo:
+    this.modalController.create({
+      component: GaleriaComponent,
+      componentProps: { imagenes },
+      cssClass: 'galeria-modal'
+    }).then((modal:any) => modal.present());
+  }
+  
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color
+    });
+    toast.present();
   }
 
   filterProduktos() {

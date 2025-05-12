@@ -6,17 +6,18 @@ import { HomeBotoiakKonponenteaComponent } from './home-botoiak-konponentea/home
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastsComponent } from './toasts/toasts.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 
 
 
 @NgModule({
-  declarations: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastsComponent],
+  declarations: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastsComponent, GaleriaComponent],
   imports: [
     CommonModule,
     IonicModule,
     RouterModule,
     TranslateModule,
   ],
-  exports: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastsComponent]
+  exports: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastsComponent, GaleriaComponent]
 })
 export class ComponentsModule { }

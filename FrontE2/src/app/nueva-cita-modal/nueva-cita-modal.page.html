@@ -44,6 +44,11 @@
         <ion-label>¿Pertenece al centro?</ion-label>
         <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
       </ion-item>
+
+      <ion-button expand="block" color="medium" (click)="abrirGaleria()" [disabled]="!clienteId">
+  Ver Galería del Cliente
+</ion-button>
+
     </ion-card-content>
   </ion-card>
 

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { BezeroService } from '../zerbitzuak/bezero.service';
 import { ClienteCreationModalPage } from '../cliente-creation-modal/cliente-creation-modal.page';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CitaService } from '../zerbitzuak/zitak.service.ts.service';
+import { GaleriaComponent } from '../components/galeria/galeria.component';
 
 @Component({
   selector: 'app-nueva-cita-modal',
@@ -37,10 +38,11 @@ export class NuevaCitaModalPage implements OnInit {
 
 
   constructor(
-    private modalController: ModalController,
     private bezeroService: BezeroService,
     private http: HttpClient,
-    private citaService: CitaService
+    private citaService: CitaService,
+    private modalController: ModalController,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -59,6 +61,40 @@ export class NuevaCitaModalPage implements OnInit {
     });
   }
   
+  async abrirGaleria() {
+  const clienteSeleccionado = this.bezeroak.find(b => b.id === this.clienteId);
+
+  if (!clienteSeleccionado || !clienteSeleccionado.historiala) {
+    console.warn('No hay cliente seleccionado o no tiene historial.');
+    return;
+  }
+
+  const imagenes = clienteSeleccionado.historiala
+    .filter((h: any) => h.img_url && h.img_url.trim() !== '')
+    .map((h: any) => h.img_url);
+
+  if (imagenes.length === 0) {
+    // Mostrar toast si no hay imágenes
+    this.mostrarToast('Este cliente no tiene imágenes en su historial.', 2000, 'warning');
+    return;
+  }
+
+  const modal = await this.modalController.create({
+    component: GaleriaComponent,
+    componentProps: { imagenes },
+    cssClass: 'galeria-modal'
+  });
+
+  await modal.present();
+}
+async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
+  const toast = await this.toastController.create({
+    message: mensaje,
+    duration: duracion,
+    color: color
+  });
+  toast.present();
+}
 
   async confirmarCita() {
   const clienteSeleccionado = this.bezeroak.find((bezero) => bezero.id === this.clienteId);
