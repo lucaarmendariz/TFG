@@ -472,6 +472,12 @@
                         <ion-icon name="trash"></ion-icon>
                       </ion-button>
                     </ion-item>
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.imagen' | translate }}</ion-label>
+                      <ion-input [(ngModel)]="hist.img_url" name="img_url{{i}}" type="text" #img_url="ngModel"
+                        class="img-url-input"></ion-input>
+                    </ion-item>
+
                   </ng-container>
                 </ion-list>
                 <ion-button (click)="add_historial()" expand="full">{{ 'historial.botones.añadir' | translate

@@ -87,6 +87,13 @@ console.log(this.editingBezero.historiala.map((h: any) => h.img_url));
 
   }
   
+verImagen(url: string) {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  const finalURL = match ? `https://drive.google.com/uc?id=${match[1]}` : url;
+  window.open(finalURL, '_blank');
+}
+
+
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
     const toast = await this.toastController.create({
       message: mensaje,

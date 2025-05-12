@@ -50,3 +50,14 @@ ion-list{
   display: flex;
   flex-direction: column;
 }
+
+.img-url-input {
+  --padding-start: 0;
+  --padding-end: 0;
+
+  input {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
