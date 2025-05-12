@@ -43,9 +43,10 @@ export interface Horario {
 }
 
 @Component({
-  selector: 'app-txandak',
-  templateUrl: './txandak.page.html',
-  styleUrls: ['./txandak.page.scss'],
+    selector: 'app-txandak',
+    templateUrl: './txandak.page.html',
+    styleUrls: ['./txandak.page.scss'],
+    standalone: false
 })
 
 export class TxandakPage implements OnInit {

@@ -18,9 +18,10 @@ interface Servicio {
 }
 
 @Component({
-  selector: 'app-tratamenduak',
-  templateUrl: './tratamenduak.page.html',
-  styleUrls: ['./tratamenduak.page.scss'],
+    selector: 'app-tratamenduak',
+    templateUrl: './tratamenduak.page.html',
+    styleUrls: ['./tratamenduak.page.scss'],
+    standalone: false
 })
 
 

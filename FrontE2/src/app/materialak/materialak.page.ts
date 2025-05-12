@@ -14,9 +14,10 @@ export interface Alumno {
 }
 
 @Component({
-  selector: 'app-materialak',
-  templateUrl: './materialak.page.html',
-  styleUrls: ['./materialak.page.scss'],
+    selector: 'app-materialak',
+    templateUrl: './materialak.page.html',
+    styleUrls: ['./materialak.page.scss'],
+    standalone: false
 })
 export class MaterialakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;

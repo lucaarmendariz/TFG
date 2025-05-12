@@ -8,9 +8,10 @@ import { CitaService } from '../zerbitzuak/zitak.service.ts.service';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
 
 @Component({
-  selector: 'app-nueva-cita-modal',
-  templateUrl: './nueva-cita-modal.page.html',
-  styleUrls: ['./nueva-cita-modal.page.scss'],
+    selector: 'app-nueva-cita-modal',
+    templateUrl: './nueva-cita-modal.page.html',
+    styleUrls: ['./nueva-cita-modal.page.scss'],
+    standalone: false
 })
 export class NuevaCitaModalPage implements OnInit {
   bezeroak: any[] = [];

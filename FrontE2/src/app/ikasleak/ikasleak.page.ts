@@ -10,9 +10,10 @@ import { HttpClient } from '@angular/common/http';
 import { Txanda } from '../txandak/txandak.page';
 
 @Component({
-  selector: 'app-ikasleak',
-  templateUrl: './ikasleak.page.html',
-  styleUrls: ['./ikasleak.page.scss'],
+    selector: 'app-ikasleak',
+    templateUrl: './ikasleak.page.html',
+    styleUrls: ['./ikasleak.page.scss'],
+    standalone: false
 })
 
 

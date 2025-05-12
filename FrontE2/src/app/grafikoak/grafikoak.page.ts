@@ -12,9 +12,10 @@ declare var Chart: any;
 declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente
 
 @Component({
-  selector: 'app-grafikoak',
-  templateUrl: './grafikoak.page.html',
-  styleUrls: ['./grafikoak.page.scss'],
+    selector: 'app-grafikoak',
+    templateUrl: './grafikoak.page.html',
+    styleUrls: ['./grafikoak.page.scss'],
+    standalone: false
 })
 export class GrafikoakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;

@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home-botoiak-konponentea',
-  templateUrl: './home-botoiak-konponentea.component.html',
-  styleUrls: ['./home-botoiak-konponentea.component.scss'],
+    selector: 'app-home-botoiak-konponentea',
+    templateUrl: './home-botoiak-konponentea.component.html',
+    styleUrls: ['./home-botoiak-konponentea.component.scss'],
+    standalone: false
 })
 export class HomeBotoiakKonponenteaComponent  implements OnInit {
   @Input() botoiTitulua!:string;

@@ -42,3 +42,11 @@ ion-list{
   --max-height: 100%;
   --border-radius: 16px; // opcional, para que no quede cuadrado
 }
+
+.galeria-modal {
+  --width: 90vw;
+  --height: 90vh;
+  --border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}

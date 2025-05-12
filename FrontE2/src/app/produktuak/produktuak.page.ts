@@ -15,9 +15,10 @@ export interface Alumno {
 }
 
 @Component({
-  selector: 'app-produktuak',
-  templateUrl: './produktuak.page.html',
-  styleUrls: ['./produktuak.page.scss'],
+    selector: 'app-produktuak',
+    templateUrl: './produktuak.page.html',
+    styleUrls: ['./produktuak.page.scss'],
+    standalone: false
 })
 export class ProduktuakPage implements OnInit {
 

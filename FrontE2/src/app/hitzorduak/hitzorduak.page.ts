@@ -14,9 +14,10 @@ import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page';
 
 
 @Component({
-  selector: 'app-hitzorduak',
-  templateUrl: './hitzorduak.page.html',
-  styleUrls: ['./hitzorduak.page.scss'],
+    selector: 'app-hitzorduak',
+    templateUrl: './hitzorduak.page.html',
+    styleUrls: ['./hitzorduak.page.scss'],
+    standalone: false
 })
 export class HitzorduakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;

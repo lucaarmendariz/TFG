@@ -2,11 +2,14 @@ import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 register();
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 @Component({
-  selector: 'app-galeria',
-  templateUrl: './galeria.component.html',
-  styleUrls: ['./galeria.component.scss'],
+    selector: 'app-galeria',
+    templateUrl: './galeria.component.html',
+    styleUrls: ['./galeria.component.scss'],
+    
+    standalone: false
 })
 export class GaleriaComponent {
   @Input() imagenes: string[] = [];

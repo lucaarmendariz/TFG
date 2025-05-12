@@ -4,9 +4,10 @@ import { BezeroService } from '../zerbitzuak/bezero.service';  // Asegúrate de 
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-cliente-creation-modal',
-  templateUrl: './cliente-creation-modal.page.html',
-  styleUrls: ['./cliente-creation-modal.page.scss'],
+    selector: 'app-cliente-creation-modal',
+    templateUrl: './cliente-creation-modal.page.html',
+    styleUrls: ['./cliente-creation-modal.page.scss'],
+    standalone: false
 })
 export class ClienteCreationModalPage {
   selectedLanguage: string = 'es';

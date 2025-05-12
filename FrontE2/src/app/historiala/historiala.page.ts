@@ -10,9 +10,10 @@ import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { ModalController, ToastController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-historiala',
-  templateUrl: './historiala.page.html',
-  styleUrls: ['./historiala.page.scss'],
+    selector: 'app-historiala',
+    templateUrl: './historiala.page.html',
+    styleUrls: ['./historiala.page.scss'],
+    standalone: false
 })
 export class HistorialaPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
@@ -78,12 +79,12 @@ console.log(this.editingBezero.historiala.map((h: any) => h.img_url));
       return;
     }
   
-    // Abre el modal o una galería externa, por ejemplo:
     this.modalController.create({
-      component: GaleriaComponent,
-      componentProps: { imagenes },
-      cssClass: 'galeria-modal'
-    }).then((modal:any) => modal.present());
+  component: GaleriaComponent,
+  componentProps: { imagenes },
+  cssClass: 'galeria-modal' // importante
+}).then((modal:any) => modal.present());
+
   }
   
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
