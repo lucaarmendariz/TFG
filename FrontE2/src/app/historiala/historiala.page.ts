@@ -7,13 +7,13 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
-import { ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 
 @Component({
-    selector: 'app-historiala',
-    templateUrl: './historiala.page.html',
-    styleUrls: ['./historiala.page.scss'],
-    standalone: false
+  selector: 'app-historiala',
+  templateUrl: './historiala.page.html',
+  styleUrls: ['./historiala.page.scss'],
+  standalone: false
 })
 export class HistorialaPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
@@ -27,11 +27,11 @@ export class HistorialaPage implements OnInit {
   bezeroak: any[] = [];
   bezeroakFiltered: any[] = [];
   produktuak: any[] = [];
-  crearNombre!:String;
-  crearApellido!:String;
-  crearTelefono!:String;
-  crearPiel!:boolean;
-  historialaVisible:any[] = [];
+  crearNombre!: String;
+  crearApellido!: String;
+  crearTelefono!: String;
+  crearPiel!: boolean;
+  historialaVisible: any[] = [];
 
   isEditingBezero: boolean = false; // Controla si se muestra el modal de edición
   editingBezero: any = null;        // Objeto del cliente que se está editando
@@ -44,18 +44,19 @@ export class HistorialaPage implements OnInit {
   fechaFinFilterMat: any = null;
   fechaInicioFilterTicket: any = null;
   fechaFinFilterTicket: any = null;
-  filtroIzena!:string;
+  filtroIzena!: string;
 
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
     private http: HttpClient,
     private modalController: ModalController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
-  
+
     this.bezeroForm = this.fb.group({
       izena: ['', Validators.required],
       abizena: ['', Validators.required],
@@ -66,11 +67,9 @@ export class HistorialaPage implements OnInit {
 
   async abrirGaleria() {
     const imagenes = this.editingBezero.historiala
-      .filter((h:any) => h.img_url && h.img_url.trim() !== '')
-      .map((h:any) => h.img_url);
-      console.log(imagenes)
-  
-console.log(this.editingBezero.historiala.map((h: any) => h.img_url));
+      .filter((h: any) => h.img_url && h.img_url.trim() !== '')
+      .map((h: any) => h.img_url);
+
     if (imagenes.length === 0) {
       // Puedes mostrar un toast si no hay imágenes
       this.translate.get('productos.toast.img').subscribe((texto) => {
@@ -78,20 +77,20 @@ console.log(this.editingBezero.historiala.map((h: any) => h.img_url));
       });
       return;
     }
-  
+
     this.modalController.create({
-  component: GaleriaComponent,
-  componentProps: { imagenes },
-  cssClass: 'galeria-modal' // importante
-}).then((modal:any) => modal.present());
+      component: GaleriaComponent,
+      componentProps: { imagenes },
+      cssClass: 'galeria-modal' // importante
+    }).then((modal: any) => modal.present());
 
   }
-  
-verImagen(url: string) {
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  const finalURL = match ? `https://drive.google.com/uc?id=${match[1]}` : url;
-  window.open(finalURL, '_blank');
-}
+
+  verImagen(url: string) {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const finalURL = match ? `https://drive.google.com/uc?id=${match[1]}` : url;
+    window.open(finalURL, '_blank');
+  }
 
 
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
@@ -108,12 +107,12 @@ verImagen(url: string) {
       ...prod,
       // cualquier otra transformación que necesites
     }));
-  
+
     this.produktuMugimenduFiltered = this.produktuMugimenduFiltered.filter(prod => {
       const horarioFecha = this.convertToDate(prod.data); // Convertir a objeto Date
       const inicio = this.fechaInicioFilterProd ? this.convertToDate(this.fechaInicioFilterProd) : null;
       const fin = this.fechaFinFilterProd ? this.convertToDate(this.fechaFinFilterProd) : null;
-  
+
       return (
         (!inicio || horarioFecha >= inicio) &&
         (!fin || horarioFecha <= fin)
@@ -125,12 +124,12 @@ verImagen(url: string) {
     this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
       ...mat,
     }));
-  
+
     this.materialMugimenduFiltered = this.materialMugimenduFiltered.filter(mat => {
       const horarioFecha = this.convertToDate(mat.hasieraData); // Convertir a objeto Date
       const inicio = this.fechaInicioFilterMat ? this.convertToDate(this.fechaInicioFilterMat) : null;
       const fin = this.fechaFinFilterMat ? this.convertToDate(this.fechaFinFilterMat) : null;
-  
+
       return (
         (!inicio || horarioFecha >= inicio) &&
         (!fin || horarioFecha <= fin)
@@ -142,12 +141,12 @@ verImagen(url: string) {
     this.ticketsFiltered = this.tickets.map(ticket => ({
       ...ticket,
     }));
-  
+
     this.ticketsFiltered = this.ticketsFiltered.filter(ticket => {
       const horarioFecha = this.convertToDate(ticket.data); // Convertir a objeto Date
       const inicio = this.fechaInicioFilterTicket ? this.convertToDate(this.fechaInicioFilterTicket) : null;
       const fin = this.fechaFinFilterTicket ? this.convertToDate(this.fechaFinFilterTicket) : null;
-  
+
       return (
         (!inicio || horarioFecha >= inicio) &&
         (!fin || horarioFecha <= fin)
@@ -159,30 +158,30 @@ verImagen(url: string) {
     this.bezeroakFiltered = this.bezeroak.map(bezero => ({
       ...bezero,
     }));
-  
+
     if (this.filtroIzena !== '') {
       this.bezeroakFiltered = this.bezeroakFiltered.filter(bezero =>
-        (this.filtroIzena === '' ||
-          bezero.izena.toLowerCase().includes(this.filtroIzena.toLowerCase()) ||
-          bezero.abizena.toLowerCase().includes(this.filtroIzena.toLowerCase()))
+      (this.filtroIzena === '' ||
+        bezero.izena.toLowerCase().includes(this.filtroIzena.toLowerCase()) ||
+        bezero.abizena.toLowerCase().includes(this.filtroIzena.toLowerCase()))
       );
     }
   }
-  
-  
+
+
   // Función para convertir la fecha a un objeto Date sin hora
   convertToDate(date: any): Date {
     const d = new Date(date);
     d.setHours(0, 0, 0, 0); // Asegúrate de que las horas, minutos, segundos y milisegundos sean 0
     return d;
   }
-  
+
   resetProduktos() {
     this.fechaInicioFilterProd = null;
     this.fechaFinFilterProd = null;
     this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
       ...prod,
-    }));  
+    }));
   }
 
   resetMateriales() {
@@ -190,7 +189,7 @@ verImagen(url: string) {
     this.fechaFinFilterMat = null;
     this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
       ...mat,
-    }));  
+    }));
   }
 
   resetTickets() {
@@ -198,7 +197,7 @@ verImagen(url: string) {
     this.fechaFinFilterTicket = null;
     this.ticketsFiltered = this.tickets.map(ticket => ({
       ...ticket,
-    }));  
+    }));
   }
 
   // Función: cargarHitzordu
@@ -259,7 +258,7 @@ verImagen(url: string) {
         // Filtramos los tickets activos (sin `ezabatzeData`)
         this.tickets = datuak.filter((citas: any) => citas.ezabatzeData === null);
         this.ticketsFiltered = this.tickets;
-        
+
       },
       (error) => {
         console.error("Error al cargar tickets:", error);
@@ -345,7 +344,7 @@ verImagen(url: string) {
       }
     );
   }
-  
+
   cargarProductos() {
     this.produktuak = [];
     this.http.get(`${environment.url}produktuak`, {
@@ -370,33 +369,143 @@ verImagen(url: string) {
     console.log(this.editingBezero)
   }
 
-  cerrarModal() {
-    this.isEditingBezero = false; // Cierra el modal
+  isEditingBezeroHistoriala = false;
+
+  openBezeroHistoriala(bezero: any) {
+    this.isEditingBezeroHistoriala = true;
+    this.editingBezero = bezero;
+    console.log(this.editingBezero.izena)
   }
 
-  add_historial(){
+  cerrarModalHistoriala() {
+    this.isEditingBezeroHistoriala = false;
+  }
+
+  cerrarModal() {
+    this.isEditingBezero = false;
+  }
+
+  add_historial() {
     const hist = {
-      data:null,
-      kantitatea:0,
-      bolumena:"",
+      data: null,
+      kantitatea: 0,
+      bolumena: "",
       oharrak: "",
-      produktuIzena:""
+      produktuIzena: "",
+      img_url: ""
     }
     this.editingBezero.historiala.push(hist);
-    console.log(this.editingBezero)
   }
 
-  remove_historial(index: number) {
-    let historial = this.editingBezero.historiala[index];
-    if (historial.id) {
-        historial.ezabatzeData = new Date().toISOString(); // Marca como eliminado
-    } else {
-        this.editingBezero.historiala.splice(index, 1); // Si es nuevo, elimínalo
+  editar_historial(historial: any) {
+    if (!historial.id) {
+      console.warn('Historial sin ID, no se puede editar');
+      return;
     }
+    console.log(historial)
+
+    historial.eguneratzeData = new Date(); // O puedes dejar que el backend lo genere
+
+    this.http.put(`${environment.url}kolore_historiala/${historial.id}`, historial, {
+  headers: {
+    'Content-Type': 'application/json'
   }
-  
+}).subscribe({
+  next: (res) => {
+    console.log('Historial editado con éxito', res);
+  },
+  error: (err) => {
+    console.error('Error al editar historial:', err);
+  }
+});
+
+  }
+  private apiUrl = `${environment.url}kolore_historiala`; // URL base para los historiales
+
+  // Actualizar historial de colores (PUT)
+  update(id: number, historial: any) {
+    return this.http.put(`${this.apiUrl}/${id}`, historial, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+
+  // Eliminar historial de colores (DELETE)
+  delete(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+
+  async eliminar_historial(historial: any) {
+     // Si ya tiene ID, confirmamos la eliminación
+  const alert = await this.alertController.create({
+    header: 'Confirmar eliminación',
+    message: '¿Estás seguro de que deseas eliminar este historial?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel'
+      },
+      {
+        text: 'Eliminar',
+        role: 'destructive',
+        handler: () => {
+          this.delete(historial.id).subscribe({
+            next: () => {
+              console.log('Historial eliminado:', historial.id);
+              // Filtrar el historial eliminando el objeto con ese id
+              this.editingBezero.historiala = this.editingBezero.historiala.filter(
+                (h: { id: number }) => h.id !== historial.id
+              );
+            },
+            error: (err) => {
+              console.error('Error al eliminar historial:', err);
+            }
+          });
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+  }
+
+
+  async remove_historial(index: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que quieres eliminar este historial?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => {
+            let historial = this.editingBezero.historiala[index];
+            if (historial.id) {
+              historial.ezabatzeData = new Date().toISOString(); // Marca como eliminado
+            } else {
+              this.editingBezero.historiala.splice(index, 1); // Elimina si es nuevo
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
   guardarBezero() {
-    console.log(JSON.stringify(this.editingBezero));
     this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
       headers: {
         'Content-Type': 'application/json',
@@ -406,6 +515,7 @@ verImagen(url: string) {
       () => {
         this.cargarClientes();
         this.cerrarModal();
+        this.cerrarModalHistoriala();
       },
       (error) => {
         console.error("Error al asignar la cita:", error);
@@ -420,7 +530,6 @@ verImagen(url: string) {
       "telefonoa": this.crearTelefono,
       "azalSentikorra": this.crearPiel ? "B" : "E",
     };
-    console.log(JSON.stringify(json_data));
 
     this.http.post(`${environment.url}bezero_fitxak`, json_data, {
       headers: {
@@ -443,7 +552,6 @@ verImagen(url: string) {
     const json_data = {
       "id": id
     };
-    console.log(JSON.stringify(json_data));
 
     this.http.delete(`${environment.url}bezero_fitxak`, {
       headers: {
@@ -473,7 +581,7 @@ verImagen(url: string) {
     const urtea = gaur.getFullYear();
     let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
     let eguna: string | number = gaur.getDate();
-  
+
     if (eguna < 10) {
       eguna = '0' + eguna;
     }

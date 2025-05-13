@@ -186,6 +186,7 @@
   "historial": {
     "titulo": "Historial",
     "botones": {
+      "abrirGaleria": "Abrir Galeria",
       "productos": "Movimientos de productos",
       "materiales": "Movimientos de materiales",
       "ticket": "Tickets",
@@ -196,6 +197,7 @@
       "editar": "Editar"
     },
     "modal": {
+      "imagen":"Imagen",
       "proceso": "En proceso",
       "trabajador": "Trabajador",
       "fechaInicio": "Fecha Inicio",
@@ -213,7 +215,7 @@
       "piel": "Piel Sensible",
       "producto": "Producto",
       "fecha": "Fecha",
-      "volumen": "volumen",
+      "volumen": "Volumen",
       "comentarios": "Comentarios",
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",

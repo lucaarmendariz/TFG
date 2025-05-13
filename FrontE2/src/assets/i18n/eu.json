@@ -188,6 +188,7 @@
     "historial": {
         "titulo": "Historiala",
         "botones": {
+            "abrirGaleria": "Abrir Galeria",
             "productos": "Produktu mugimenduak",
             "materiales": "Material mugimenduak",
             "ticket": "Ticket-ak",
@@ -198,6 +199,7 @@
             "editar": "Editar"
         },
         "modal": {
+            "imagen":"Irudia",
             "proceso": "Erabiltzen",
             "trabajador": "Langilea",
             "fechaInicio": "Hasiera Data",
