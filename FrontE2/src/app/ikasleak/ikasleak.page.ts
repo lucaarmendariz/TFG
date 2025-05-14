@@ -259,16 +259,55 @@ grupoArray: Taldea[] = [];
   
 
   eliminarAlumnos() {
+    // Obtener los nombres de los alumnos seleccionados
+    const nombresAlumnos = this.filteredAlumnos
+      .filter(alumno => this.selectedIkasleak.has(alumno.id))
+      .map(alumno => `${alumno.izena} ${alumno.abizenak}`);
+
+    // Mostrar alerta de confirmación
+    this.showDeleteConfirmation(nombresAlumnos);
+  }
+
+  // Función para mostrar alerta de confirmación
+  async showDeleteConfirmation(nombresAlumnos: string[]) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Eliminación',
+      message: `¿Estás seguro de que deseas eliminar los siguientes alumno(s)?: ${nombresAlumnos.join(', ')}`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Eliminación cancelada');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            // Proceder con la eliminación
+            this.proceedToDelete();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // Función para eliminar los alumnos seleccionados
+  proceedToDelete() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
         // Eliminar el alumno de la lista
         this.getAlumnos();
         this.getGrupos();
         this.closeModal();
-        this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 'danger');
+        this.mostrarToast('Alumnos eliminados', 'danger');
       });
     });
-    this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
+
+    // Limpiar la selección después de eliminar
+    this.selectedIkasleak.clear();
   }
 
   // Abre el modal para editar un talde
@@ -297,6 +336,10 @@ grupoArray: Taldea[] = [];
         console.error(error);
       }
     );
+  }
+
+  hayAlumnosSeleccionados(): boolean {
+    return this.filteredAlumnos.some(alumno => alumno.selected);
   }
 
   onAlumnoSelected(alumnoId: number | undefined) {

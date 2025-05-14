@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 register();
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 @Component({
     selector: 'app-galeria',

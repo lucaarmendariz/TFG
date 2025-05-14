@@ -8,6 +8,20 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { register } from 'swiper/element/bundle';
+import { Observable } from 'rxjs';
+register();
+
+
+interface KoloreHistoriala {
+  id: number;
+  id_produktua: number;
+  data: string;
+  kantitatea: number;
+  bolumena: string;
+  oharrak: string;
+  img_url: string;
+}
 
 @Component({
   selector: 'app-historiala',
@@ -15,6 +29,7 @@ import { AlertController, ModalController, ToastController } from '@ionic/angula
   styleUrls: ['./historiala.page.scss'],
   standalone: false
 })
+
 export class HistorialaPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
@@ -83,15 +98,7 @@ export class HistorialaPage implements OnInit {
       componentProps: { imagenes },
       cssClass: 'galeria-modal' // importante
     }).then((modal: any) => modal.present());
-
   }
-
-  verImagen(url: string) {
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const finalURL = match ? `https://drive.google.com/uc?id=${match[1]}` : url;
-    window.open(finalURL, '_blank');
-  }
-
 
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'primary') {
     const toast = await this.toastController.create({
@@ -153,6 +160,12 @@ export class HistorialaPage implements OnInit {
       );
     });
   }
+
+// Transformar URL de Drive a miniatura
+transformarURL(url: string): string {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+}
 
   filterBezero() {
     this.bezeroakFiltered = this.bezeroak.map(bezero => ({
@@ -326,6 +339,22 @@ export class HistorialaPage implements OnInit {
     pdf.save(`ticket_${datuak.id}.pdf`);
   }
 
+  bezeroId: number = 1; // Este ID puede venir dinámicamente
+  historial: KoloreHistoriala[] = [];
+
+ // Obtener historial por ID de cliente
+  getHistorialPorCliente(id: number): Observable<KoloreHistoriala[]> {
+    return this.http.get<KoloreHistoriala[]>(`${this.apiUrl}/cliente/${id}`);
+  }
+
+  loadHistorial() {
+    this.getHistorialPorCliente(this.bezeroId).subscribe((data) => {
+      console.log(this.bezeroId);
+      this.historial = data;
+      console.log('Historial del cliente:', this.historial);
+    });
+  }
+
   cargarClientes() {
     this.bezeroak = [];
     this.http.get(`${environment.url}bezero_fitxak`, {
@@ -338,11 +367,33 @@ export class HistorialaPage implements OnInit {
         // Filtramos los clientes activos (sin `ezabatzeData`)
         this.bezeroak = datuak.filter((bezero: any) => bezero.ezabatzeData === null);
         this.bezeroakFiltered = this.bezeroak;
+        this.loadBezeroak(); // Método para cargar los clientes filtrados (esto depende de tu lógica)
+
+        this.bezeroakFiltered.forEach(bezero => {
+    });
       },
       (error) => {
         console.error("Error al cargar clientes:", error);
       }
     );
+  }
+
+  loadBezeroak() {
+    // Aquí debes cargar tus clientes filtrados de alguna manera.
+    // Suponiendo que ya tienes el array `bezeroakFiltered` con los clientes filtrados.
+
+    this.bezeroakFiltered.forEach((bezero) => {
+      this.loadHistorialPorCliente(bezero.id);
+    });
+  }
+  
+  historialPorCliente: { [id: number]: KoloreHistoriala[] } = {}; // Un objeto para almacenar los historiales por cliente
+
+  loadHistorialPorCliente(id: number) {
+    this.getHistorialPorCliente(id).subscribe((data) => {
+      this.historialPorCliente[id] = data; // Guardamos el historial del cliente por su ID
+      console.log('Historial de cliente', id, data);
+    });
   }
 
   cargarProductos() {
@@ -477,7 +528,16 @@ export class HistorialaPage implements OnInit {
 
 
   guardarBezero() {
-    this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
+    console.log(this.editingBezero.id);
+    const json_data = {
+      "id": this.editingBezero.id,  // Ensure the ID is included
+      "izena": this.editingBezero.izena,
+      "abizena": this.editingBezero.abizena,
+      "telefonoa": this.editingBezero.telefonoa,
+      "azalSentikorra": this.editingBezero.azalSentikorra ? "B" : "E",
+    };
+
+    this.http.put(`${environment.url}bezero_fitxak/update`, json_data, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -492,7 +552,26 @@ export class HistorialaPage implements OnInit {
         console.error("Error al asignar la cita:", error);
       }
     );
-  }
+}
+
+guardarBezeroHistoriala(){
+  this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      () => {
+        this.cargarClientes();
+        this.cerrarModal();
+        this.cerrarModalHistoriala();
+      },
+      (error) => {
+        console.error("Error al asignar la cita:", error);
+      }
+    );
+}
+
 
   crearBezero() {
     const json_data = {
@@ -588,6 +667,7 @@ export class HistorialaPage implements OnInit {
     this.cargarTickets();
     this.cargarClientes();
     this.cargarProductos();
+
   }
 
 }

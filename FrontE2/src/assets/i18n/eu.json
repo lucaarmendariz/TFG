@@ -1,17 +1,17 @@
 {
-    "login":{
-        "user":"Erabiltzailea",
-        "password":"Pasahitza",
-        "boton":"Saioa Hasi",
-        "vacio":"Mesedes, erabiltzailea eta pasahitza sartu.",
+    "login": {
+        "user": "Erabiltzailea",
+        "password": "Pasahitza",
+        "boton": "Saioa Hasi",
+        "vacio": "Mesedes, erabiltzailea eta pasahitza sartu.",
         "messageOk": "Saioa hasi da arrakastaz.",
         "messageFail": "Erabiltzailea edo pasahitza okerra.",
         "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
     },
     "menu": {
-        "title":"Menua",
-        "accesosRapidos":"Sarbide Azkarrak",
-        "home":"Home",
+        "title": "Menua",
+        "accesosRapidos": "Sarbide Azkarrak",
+        "home": "Home",
         "hitzorduak": "Hitzorduak",
         "grafikoak": "Grafikoak",
         "materialak": "Materialak",
@@ -19,15 +19,13 @@
         "historiala": "Historiala",
         "ikasleak": "Ikasleak",
         "zerbitzuak": "Zerbitzuak",
-        "txandak":"Txandak",
-        "inbentario":"Inbentarioa",
-        "parametrizacion":"Parametrizazioa",
+        "txandak": "Txandak",
+        "inbentario": "Inbentarioa",
+        "parametrizacion": "Parametrizazioa",
         "productosBajoStock": "Stock baxuko produktuak",
         "bajoStock": "Sock baxua",
         "Stock": "Stock-a",
         "Alerta": "Alerta"
-
-
     },
     "productos": {
         "title": "Produktuen kudeaketa",
@@ -43,6 +41,9 @@
             "editar": "Editatu"
         },
         "modal": {
+            "filtros": "Filtroak",
+            "buscarCategoriaProducto": "Bilatu Kategoriaz edo Produktuaz",
+            "crearProducto": "Sortu Produktua",
             "sacarProductos": "Produktuak Atera",
             "alumno": "Ikaslea",
             "seleccionaAlumno": "Hautatu ikaslea",
@@ -57,25 +58,28 @@
             "filtroCat": "Kategoriaren Izenaz Filtratu",
             "filtroProd": "Produktuaren Izenaz Filtratu",
             "stockBajo": "Stock Gutxiko Produktuak",
-            "gestionar" : "Hitzordua gestionatu"
+            "gestionar": "Hitzordua gestionatu"
         },
         "categorias": {
             "electronica": "Elektronika"
         },
-        "validaciones":{
-            "seleccionaGrupo":"Talde bat aukeratu behar duzu",
-            "seleccionaAlumno":"Langile bat aukeratu behar duzu",
-            "cantidad":"Baliozko kantitatea sartu behar da",
-            "nombre":"Baliozko izen bat sartu behar da",
-            "marca":"Baliozko marka sartu behar da",
-            "descripcion":"Deskribapena derrigorrezkoa da",
-            "stockRequerido":"Baliozko stock-a sartu behar da",
-            "stockAlertaRequerido":"Baliozko stock alerta sartu behar da",
-            "categoria":"Kategoria bat aukeratu"            
+        "validaciones": {
+            "seleccionaGrupo": "Talde bat aukeratu behar duzu",
+            "seleccionaAlumno": "Langile bat aukeratu behar duzu",
+            "cantidad": "Baliozko kantitatea sartu behar da",
+            "nombre": "Baliozko izen bat sartu behar da",
+            "marca": "Baliozko marka sartu behar da",
+            "descripcion": "Deskribapena derrigorrezkoa da",
+            "stockRequerido": "Baliozko stock-a sartu behar da",
+            "stockAlertaRequerido": "Baliozko stock alerta sartu behar da",
+            "categoria": "Kategoria bat aukeratu"
+        },
+        "mensajes": {
+            "sinResultados": "No existen productos compatibles con esta búsqueda"
         }
     },
     "materiales": {
-        "title": "Materialen kudeaketa",
+        "titulo": "Materialen kudeaketa",
         "botones": {
             "gestionarMateriales": "Materialak Kudeatu",
             "devolverMateriales": "Materialak Bueltatu",
@@ -110,12 +114,12 @@
             "materiales": "Materialak",
             "filtros": "Filtroak"
         },
-        "validaciones":{
-            "seleccionaGrupoError":"Talde bat aukeratu behar duzu",
-            "seleccionaAlumnoError":"Langile bat aukeratu behar duzu",
-            "nombre":"Baliozko izen bat sartu behar da",
-            "etiqueta":"Baliozko etika bat sartu (10 char max)",
-            "categoria":"Kategoria bat aukeratu"            
+        "validaciones": {
+            "seleccionaGrupoError": "Talde bat aukeratu behar duzu",
+            "seleccionaAlumnoError": "Langile bat aukeratu behar duzu",
+            "nombre": "Baliozko izen bat sartu behar da",
+            "etiqueta": "Baliozko etika bat sartu (10 char max)",
+            "categoria": "Kategoria bat aukeratu"
         },
         "toasts": {
             "mensajeSacarMats": "Materialak ondo atera dira",
@@ -161,9 +165,8 @@
             "messageCambioAsiento": "Eserlekuz aldatu nahi duzu?",
             "cambioDia": "Egun aldaketa",
             "messageCambioDia": "Egunez aldatu nahi duzu?",
-            "gestionar" : "Hitzordua gestionatu",
+            "gestionar": "Hitzordua gestionatu",
             "alumnoAsignado": "Hitzordu honek badauka ikaslea"
-
         },
         "validaciones": {
             "fecha": "Data derrigorrezkoa da",
@@ -199,7 +202,7 @@
             "editar": "Editar"
         },
         "modal": {
-            "imagen":"Irudia",
+            "imagen": "Irudia",
             "proceso": "Erabiltzen",
             "trabajador": "Langilea",
             "fechaInicio": "Hasiera Data",
@@ -223,15 +226,15 @@
             "filtroFecha": "Data Filtratu",
             "filtroBezero": "Bilatu izena edo abizena"
         },
-        "validaciones":{
-            "nombre":"Izena derrigorrezkoa da",
-            "apellido":"Abizena derrigorrezkoa da",
-            "telefono":"Gutxienez 9 digitu dituen telefono baliodun bat sartu",
-            "producto":"Produktua derrigorrezkoa da",
-            "fecha":"Data derrigorrezkoa da",
-            "cantidad":"Kantitatea derrigorrezkoa da",
-            "volumen":"Baliozko bolumena sartu",
-            "comentarios":"Baliozko oharra sartu"
+        "validaciones": {
+            "nombre": "Izena derrigorrezkoa da",
+            "apellido": "Abizena derrigorrezkoa da",
+            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "producto": "Produktua derrigorrezkoa da",
+            "fecha": "Data derrigorrezkoa da",
+            "cantidad": "Kantitatea derrigorrezkoa da",
+            "volumen": "Baliozko bolumena sartu",
+            "comentarios": "Baliozko oharra sartu"
         }
     },
     "servicios": {
@@ -255,11 +258,11 @@
             "crear": "Sortu",
             "editar": "Editatu"
         },
-        "validaciones":{
-            "nombre":"Baliozko izen bat sartu behar da",
-            "precioFuera":"Kanpoko prezioa sartu behar da",
-            "precioDentro":"Etxeko prezioa sartu behar da",
-            "categoria":"Kategoria bat aukeratu"            
+        "validaciones": {
+            "nombre": "Baliozko izen bat sartu behar da",
+            "precioFuera": "Kanpoko prezioa sartu behar da",
+            "precioDentro": "Etxeko prezioa sartu behar da",
+            "categoria": "Kategoria bat aukeratu"
         }
     },
     "ikaslePage": {
@@ -394,11 +397,10 @@
         "TxandaEzGuardada": "Ez da txanda gorde",
         "TxandaEzabatuta": "Txanda behar bezala ezabatuta",
         "TxandaEzabatutaArazoa": "Arazoa Txanda ezabatzeraoan"
-
     },
     "graficos": {
         "title": "Grafikoak",
-        "graf":"Zerbitzuen Grafikoa",
-        "analisis":"Zerbitzuen Analisia"
+        "graf": "Zerbitzuen Grafikoa",
+        "analisis": "Zerbitzuen Analisia"
     }
 }

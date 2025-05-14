@@ -5,7 +5,7 @@
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title>{{ 'materiales.title' | translate }}</ion-title>
+      <ion-title>{{ 'materiales.titulo' | translate }}</ion-title>
       <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="eu">Euskera</ion-select-option>
@@ -66,12 +66,12 @@
                 <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
 
                 <ion-buttons slot="end" *ngIf="!mostrarCheckbox && !isIkasle">
-                  <ion-button fill="clear" (click)="abrirEditarCategoria(categoria); $event.stopPropagation()">
-                    <ion-icon slot="icon-only" name="create"></ion-icon>
+                  <ion-button (click)="abrirEditarCategoria(categoria); $event.stopPropagation()">
+                    <ion-icon name="create"></ion-icon>
                   </ion-button>
-                  <ion-button fill="clear" color="danger"
+                  <ion-button 
                     (click)="confirmarEliminarCategoria(categoria.id, categoria.izena); $event.stopPropagation()">
-                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                    <ion-icon  name="trash"></ion-icon>
                   </ion-button>
                 </ion-buttons>
 
@@ -93,12 +93,12 @@
 </ion-badge>
 
                   <ion-buttons slot="end" *ngIf="!mostrarCheckbox && !isIkasle">
-                    <ion-button fill="clear" (click)="abrirEditarMaterial(material)">
-                      <ion-icon slot="icon-only" name="create"></ion-icon>
+                    <ion-button  (click)="abrirEditarMaterial(material)">
+                      <ion-icon name="create"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" color="danger"
+                    <ion-button 
                       (click)="confirmarEliminarMaterial(material.id, material.izena)">
-                      <ion-icon slot="icon-only" name="trash"></ion-icon>
+                      <ion-icon  name="trash"></ion-icon>
                     </ion-button>
                   </ion-buttons>
                 </ion-item>
