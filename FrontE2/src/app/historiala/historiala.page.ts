@@ -407,17 +407,17 @@ export class HistorialaPage implements OnInit {
     historial.eguneratzeData = new Date(); // O puedes dejar que el backend lo genere
 
     this.http.put(`${environment.url}kolore_historiala/${historial.id}`, historial, {
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}).subscribe({
-  next: (res) => {
-    console.log('Historial editado con éxito', res);
-  },
-  error: (err) => {
-    console.error('Error al editar historial:', err);
-  }
-});
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).subscribe({
+      next: (res) => {
+        console.log('Historial editado con éxito', res);
+      },
+      error: (err) => {
+        console.error('Error al editar historial:', err);
+      }
+    });
 
   }
   private apiUrl = `${environment.url}kolore_historiala`; // URL base para los historiales
@@ -443,44 +443,10 @@ export class HistorialaPage implements OnInit {
   }
 
   async eliminar_historial(historial: any) {
-     // Si ya tiene ID, confirmamos la eliminación
-  const alert = await this.alertController.create({
-    header: 'Confirmar eliminación',
-    message: '¿Estás seguro de que deseas eliminar este historial?',
-    buttons: [
-      {
-        text: 'Cancelar',
-        role: 'cancel'
-      },
-      {
-        text: 'Eliminar',
-        role: 'destructive',
-        handler: () => {
-          this.delete(historial.id).subscribe({
-            next: () => {
-              console.log('Historial eliminado:', historial.id);
-              // Filtrar el historial eliminando el objeto con ese id
-              this.editingBezero.historiala = this.editingBezero.historiala.filter(
-                (h: { id: number }) => h.id !== historial.id
-              );
-            },
-            error: (err) => {
-              console.error('Error al eliminar historial:', err);
-            }
-          });
-        }
-      }
-    ]
-  });
-
-  await alert.present();
-  }
-
-
-  async remove_historial(index: number) {
+    // Si ya tiene ID, confirmamos la eliminación
     const alert = await this.alertController.create({
       header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que quieres eliminar este historial?',
+      message: '¿Estás seguro de que deseas eliminar este historial?',
       buttons: [
         {
           text: 'Cancelar',
@@ -490,17 +456,22 @@ export class HistorialaPage implements OnInit {
           text: 'Eliminar',
           role: 'destructive',
           handler: () => {
-            let historial = this.editingBezero.historiala[index];
-            if (historial.id) {
-              historial.ezabatzeData = new Date().toISOString(); // Marca como eliminado
-            } else {
-              this.editingBezero.historiala.splice(index, 1); // Elimina si es nuevo
-            }
+            this.delete(historial.id).subscribe({
+              next: () => {
+                console.log('Historial eliminado:', historial.id);
+                // Filtrar el historial eliminando el objeto con ese id
+                this.editingBezero.historiala = this.editingBezero.historiala.filter(
+                  (h: { id: number }) => h.id !== historial.id
+                );
+              },
+              error: (err) => {
+                console.error('Error al eliminar historial:', err);
+              }
+            });
           }
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -548,25 +519,39 @@ export class HistorialaPage implements OnInit {
     );
   }
 
-  deleteBezero(id: number) {
-    const json_data = {
-      "id": id
-    };
-
-    this.http.delete(`${environment.url}bezero_fitxak`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: json_data
-    }).subscribe(
-      () => {
-        this.cargarClientes();
-      },
-      (error) => {
-        console.error("Error al eliminar el cliente:", error);
-      }
-    );
+  async deleteBezero(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este cliente?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            const json_data = { id };
+            this.http.delete(`${environment.url}bezero_fitxak`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+              },
+              body: json_data
+            }).subscribe(
+              () => {
+                this.cargarClientes();
+              },
+              (error) => {
+                console.error("Error al eliminar el cliente:", error);
+              }
+            );
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   changeLanguage() {
