@@ -190,28 +190,31 @@ transformarURL(url: string): string {
   }
 
   resetProduktos() {
-    this.fechaInicioFilterProd = null;
-    this.fechaFinFilterProd = null;
-    this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
-      ...prod,
-    }));
-  }
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterProd = hoy;
+  this.fechaFinFilterProd = hoy;
+  this.busquedaTexto = '';
+  this.cargarMovimientoProductos();
+}
 
-  resetMateriales() {
-    this.fechaInicioFilterMat = null;
-    this.fechaFinFilterMat = null;
-    this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
-      ...mat,
-    }));
-  }
 
-  resetTickets() {
-    this.fechaInicioFilterTicket = null;
-    this.fechaFinFilterTicket = null;
-    this.ticketsFiltered = this.tickets.map(ticket => ({
-      ...ticket,
-    }));
-  }
+resetMateriales() {
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterMat = hoy;
+  this.fechaFinFilterMat = hoy;
+  this.busquedaMaterial = '';
+  this.cargarMovimientoMateriales();
+}
+
+
+resetTickets() {
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterTicket = hoy;
+  this.fechaFinFilterTicket = hoy;
+  this.busquedaTicket = '';
+  this.cargarTickets();
+}
+
 
   // Función: cargarHitzordu
   cargarMovimientoProductos() {
@@ -233,12 +236,50 @@ transformarURL(url: string): string {
     );
   }
 
+busquedaTexto: string = '';
+
+  filtrarProductos() {
+  const texto = this.busquedaTexto.toLowerCase().trim();
+
+  this.produktuMugimenduFiltered = this.produktuMugimendu.filter(prod => {
+    const nombreAlumno = `${prod.langile.izena} ${prod.langile.abizenak}`.toLowerCase();
+    const grupoCodigo = prod.langile.taldeKodea.toLowerCase();
+    const nombreProducto = prod.produktu.izena.toLowerCase();
+
+    return (
+      nombreAlumno.includes(texto) ||
+      grupoCodigo.includes(texto) ||
+      nombreProducto.includes(texto)
+    );
+  });
+}
+
+
   handleRefresh(event: CustomEvent) {
     setTimeout(() => {
       // Any calls to load data go here
       (event.target as HTMLIonRefresherElement).complete();
     }, 2000);
   }
+
+  busquedaMaterial: string = '';
+
+  filtrarMateriales() {
+  const texto = this.busquedaMaterial.toLowerCase().trim();
+
+  this.materialMugimenduFiltered = this.materialMugimendu.filter(mov => {
+    const nombreTrabajador = `${mov.langilea.izena} ${mov.langilea.abizenak}`.toLowerCase();
+    const grupoCodigo = mov.langilea.taldeKodea.toLowerCase();
+    const nombreMaterial = mov.materiala.izena.toLowerCase();
+
+    return (
+      nombreTrabajador.includes(texto) ||
+      grupoCodigo.includes(texto) ||
+      nombreMaterial.includes(texto)
+    );
+  });
+}
+
 
   cargarMovimientoMateriales() {
     this.materialMugimendu = [];
@@ -258,6 +299,23 @@ transformarURL(url: string): string {
       }
     );
   }
+  busquedaTicket: string = '';
+
+filtrarTickets() {
+  const texto = this.busquedaTicket.toLowerCase().trim();
+
+  this.ticketsFiltered = this.tickets.filter(ticket => {
+    const nombre = ticket.izena?.toLowerCase() || '';
+    const id = ticket.id?.toString() || '';
+    const precio = ticket.prezioTotala?.toString() || '';
+
+    return (
+      nombre.includes(texto) ||
+      id.includes(texto) ||
+      precio.includes(texto)
+    );
+  });
+}
 
   cargarTickets() {
     this.tickets = [];

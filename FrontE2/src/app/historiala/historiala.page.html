@@ -34,6 +34,12 @@
             <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
+            <ion-item>
+              <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
+              <ion-input [(ngModel)]="busquedaTexto" (ionInput)="filtrarProductos()"
+                placeholder="Buscar alumno, grupo o producto..."></ion-input>
+            </ion-item>
+
             <ion-grid>
               <ion-row class="ion-align-items-center">
                 <ion-col size="5">
@@ -94,6 +100,11 @@
             <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
+            <ion-item>
+  <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
+  <ion-input [(ngModel)]="busquedaMaterial" (ionInput)="filtrarMateriales()" placeholder="Buscar trabajador, grupo o material..."></ion-input>
+</ion-item>
+
             <ion-grid>
               <ion-row class="ion-align-items-center">
                 <ion-col size="5">
@@ -176,6 +187,14 @@
             <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
+            <ion-item>
+  <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
+  <ion-input
+    [(ngModel)]="busquedaTicket"
+    (ionInput)="filtrarTickets()"
+    placeholder="Buscar por nombre, ID o precio total...">
+  </ion-input>
+</ion-item>
             <ion-grid>
               <ion-row class="ion-align-items-center">
                 <ion-col size="5">
@@ -458,10 +477,16 @@
                 </ion-item>
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{
                   'historial.validaciones.telefono' | translate }}</ion-text>
-                <ion-item>
-                  <ion-label position="stacked">{{ 'historial.modal.piel' | translate }}</ion-label>
-                  <ion-checkbox [(ngModel)]="editingBezero.azalSentikorra" name="piel" #piel="ngModel"></ion-checkbox>
-                </ion-item>
+               <ion-item lines="none">
+  <ion-label>{{ 'historial.modal.piel' | translate }}</ion-label>
+  <ion-checkbox
+    slot="end"
+    [checked]="editingBezero.azalSentikorra === 'B'"
+    (ionChange)="editingBezero.azalSentikorra = $event.detail.checked ? 'B' : 'E'">
+  </ion-checkbox>
+</ion-item>
+
+
                 <div class="botones-derecha">
                   <ion-button [disabled]="formCliente.invalid" (click)="guardarBezero()" expand="full">{{
                     'historial.botones.guardar' | translate }}</ion-button>
