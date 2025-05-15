@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Añadir Cliente</ion-title>
+    <ion-title>{{ 'cliente.crearTitulo' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="cancelar()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
@@ -15,33 +15,35 @@
       <form #form="ngForm" (ngSubmit)="crearBezero()" novalidate>
         <!-- Nombre del cliente -->
         <ion-item>
-          <ion-label position="stacked">Nombre</ion-label>
+          <ion-label position="stacked">{{ 'cliente.nombre' | translate }}</ion-label>
           <ion-input [(ngModel)]="crearNombre" name="nombre" required #nombre="ngModel"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">Nombre</ion-text>
+        <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">{{ 'cliente.errorNombre' | translate }}</ion-text>
 
         <!-- Apellido del cliente -->
         <ion-item>
-          <ion-label position="stacked">Apellido</ion-label>
+          <ion-label position="stacked">{{ 'cliente.apellido' | translate }}</ion-label>
           <ion-input [(ngModel)]="crearApellido" name="apellido" required #apellido="ngModel"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">Apellido</ion-text>
+        <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">{{ 'cliente.errorApellido' | translate }}</ion-text>
 
         <!-- Teléfono -->
         <ion-item>
-          <ion-label position="stacked">Teléfono</ion-label>
+          <ion-label position="stacked">{{ 'cliente.telefono' | translate }}</ion-label>
           <ion-input [(ngModel)]="crearTelefono" name="telefono" pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">Teléfono</ion-text>
+        <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ 'cliente.errorTelefono' | translate }}</ion-text>
 
         <!-- Piel -->
         <ion-item lines="none">
-          <ion-label>Piel sensible</ion-label>
+          <ion-label>{{ 'cliente.pielSensible' | translate }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="crearPiel" name="piel" #piel="ngModel"></ion-checkbox>
         </ion-item>
 
         <!-- Botón Crear -->
-        <ion-button expand="full" type="submit" [disabled]="form.invalid" class="ion-margin-top">Crear</ion-button>
+        <ion-button expand="full" type="submit" [disabled]="form.invalid" class="ion-margin-top">
+          {{ 'cliente.crear' | translate }}
+        </ion-button>
 
       </form>
     </ion-card-content>

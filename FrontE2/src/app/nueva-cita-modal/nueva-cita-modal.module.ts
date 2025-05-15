@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { NuevaCitaModalPageRoutingModule } from './nueva-cita-modal-routing.module';
 
 import { NuevaCitaModalPage } from './nueva-cita-modal.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NuevaCitaModalPageRoutingModule
+    NuevaCitaModalPageRoutingModule,
+    TranslateModule,
   ],
   declarations: [NuevaCitaModalPage]
 })

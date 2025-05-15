@@ -441,7 +441,7 @@
                   <div>
                     <!-- Selección de grupo -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
                       <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel"
                         interface="popover">
                         <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
@@ -455,7 +455,7 @@
 
                     <!-- Selección de día -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
                       <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel"
                         interface="popover">
                         <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
@@ -471,7 +471,7 @@
 
                     <!-- Fecha de inicio -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
                       <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
                         #fechaInicioField="ngModel"></ion-input>
                     </ion-item>
@@ -481,7 +481,7 @@
 
                     <!-- Fecha de fin -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
                       <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
                         #fechaFinField="ngModel"></ion-input>
                     </ion-item>
@@ -494,7 +494,7 @@
 
                     <!-- Hora de inicio -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
                       <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
                         #horaInicioField="ngModel"></ion-input>
                     </ion-item>
@@ -504,7 +504,7 @@
 
                     <!-- Hora de fin -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
                       <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
                         #horaFinField="ngModel"></ion-input>
                     </ion-item>
@@ -548,7 +548,7 @@
                   <div>
                     <!-- Grupo -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
                       <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel"
                         interface="popover">
                         <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
@@ -562,7 +562,7 @@
 
                     <!-- Día de la semana -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
                       <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel"
                         interface="popover">
                         <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
@@ -583,7 +583,7 @@
 
                     <!-- Fecha de inicio -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
                       <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
                         #fechaInicioInput="ngModel"></ion-input>
                     </ion-item>
@@ -593,7 +593,7 @@
 
                     <!-- Fecha de fin -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
                       <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
                         #fechaFinInput="ngModel"></ion-input>
                     </ion-item>
@@ -606,7 +606,7 @@
 
                     <!-- Hora de inicio -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
                       <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
                         #horaInicioInput="ngModel"></ion-input>
                     </ion-item>
@@ -616,7 +616,7 @@
 
                     <!-- Hora de fin -->
                     <ion-item>
-                      <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
+                      <ion-label position="stacked">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
                       <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
                         #horaFinInput="ngModel"></ion-input>
                     </ion-item>

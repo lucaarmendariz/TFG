@@ -420,5 +420,27 @@
     "title": "Graficos",
     "graf": "Gráfico de Servicios",
     "analisis": "Análisis de Servicios"
+  },
+  "cliente": {
+    "crearTitulo": "Añadir Cliente",
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "Teléfono",
+    "pielSensible": "Piel sensible",
+    "crear": "Crear",
+    "errorNombre": "Por favor, introduce el nombre",
+    "errorApellido": "Por favor, introduce el apellido",
+    "errorTelefono": "Por favor, introduce un teléfono válido"
+  },
+  "cita": {
+    "nuevaTitulo": "Nueva Cita",
+    "detallesTitulo": "Detalles de la Cita",
+    "seleccionarCliente": "Selecciona un cliente",
+    "descripcion": "Descripción",
+    "descripcionPlaceholder": "Descripción de la cita",
+    "perteneceCentro": "¿Pertenece al centro?",
+    "verGaleria": "Ver Galería del Cliente",
+    "confirmar": "Confirmar Cita"
   }
+  
 }

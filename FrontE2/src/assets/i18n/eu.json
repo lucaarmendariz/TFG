@@ -402,5 +402,26 @@
         "title": "Grafikoak",
         "graf": "Zerbitzuen Grafikoa",
         "analisis": "Zerbitzuen Analisia"
-    }
+    },
+    "cliente": {
+    "crearTitulo": "Bezeroa Gehitu",
+    "nombre": "Izena",
+    "apellido": "Abizena",
+    "telefono": "Telefonoa",
+    "pielSensible": "Azala sentikorra",
+    "crear": "Sortu",
+    "errorNombre": "Mesedez, sartu izena",
+    "errorApellido": "Mesedez, sartu abizena",
+    "errorTelefono": "Mesedez, sartu telefono balioduna"
+  },
+  "cita": {
+    "nuevaTitulo": "Bisitari Berria",
+    "detallesTitulo": "Bisitariaren Xehetasunak",
+    "seleccionarCliente": "Bezero bat hautatu",
+    "descripcion": "Deskribapena",
+    "descripcionPlaceholder": "Bisitariaren deskribapena",
+    "perteneceCentro": "Zentrora dagozkion?",
+    "verGaleria": "Bezeroaren Galeria Ikusi",
+    "confirmar": "Baieztatu"
+  }
 }
