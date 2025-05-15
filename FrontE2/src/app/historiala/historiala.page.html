@@ -299,61 +299,64 @@
           </ion-card-content>
         </ion-card>
         <!-- Lista de Bezero -->
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let bezero of bezeroakFiltered">
-        <ion-card class="custom-card">
-          <!-- Comprobamos si hay imágenes en el historial -->
-          <div class="image-container">
-            <swiper-container 
-  *ngIf="historialPorCliente[bezero.id] && historialPorCliente[bezero.id].length > 0; else defaultImage"
-  [navigation]="true" 
-  [pagination]="true" 
-  [loop]="false">
-  
-  <swiper-slide *ngFor="let historial of historialPorCliente[bezero.id]">
-    <div class="img-wrapper">
-      <ion-img [src]="transformarURL(historial.img_url)" alt="Imagen del historial"></ion-img>
-    </div>
-  </swiper-slide>
-</swiper-container>
+        <ion-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6" *ngFor="let bezero of bezeroakFiltered">
+                <ion-card class="custom-card">
+                  <!-- Comprobamos si hay imágenes en el historial -->
+                  <div class="image-container">
+                    <swiper-container
+                      *ngIf="historialPorCliente[bezero.id] && historialPorCliente[bezero.id].length > 0; else defaultImage"
+                      [navigation]="true" [pagination]="true" [loop]="false">
+
+                      <swiper-slide *ngFor="let historial of historialPorCliente[bezero.id]">
+                        <div class="img-wrapper">
+                          <ion-img [src]="transformarURL(historial.img_url)" alt="Imagen del historial"></ion-img>
+                        </div>
+                      </swiper-slide>
+                    </swiper-container>
 
 
-            <ng-template #defaultImage>
-              <ion-img src="..\assets\IMP_Logotipoa.png" alt="Avatar por defecto"></ion-img>
-            </ng-template>
-          </div>
+                    <ng-template #defaultImage>
+                      <ion-img src="..\assets\IMP_Logotipoa.png" alt="Avatar por defecto"></ion-img>
+                    </ng-template>
+                  </div>
 
-          <ion-card-header>
-            <ion-card-title>{{ bezero.izena }} {{ bezero.abizena }}</ion-card-title>
-          </ion-card-header>
+                  <ion-card-header>
+                    <ion-card-title>{{ bezero.izena }} {{ bezero.abizena }}</ion-card-title>
+                  </ion-card-header>
 
-          <ion-card-content>
-            <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
-            <p>Azal Sentikorra: {{ bezero.azalSentikorra }}</p>
-            <ion-buttons slot="end">
-              <ion-button color="primary" (click)="openBezero(bezero)">
-                <ion-icon name="pencil-outline"></ion-icon>
-              </ion-button>
+                  <ion-card-content>
+                    <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
+                    <p>
+                      Azal Sentikorra:
+                      <ion-icon *ngIf="bezero.azalSentikorra === 'B'" name="checkmark-circle" color="success">
+                      </ion-icon>
+                      <ion-icon *ngIf="bezero.azalSentikorra === 'E'" name="close-circle" color="danger">
+                      </ion-icon>
+                    </p> <ion-buttons slot="end">
+                      <ion-button color="primary" (click)="openBezero(bezero)">
+                        <ion-icon name="pencil-outline"></ion-icon>
+                      </ion-button>
 
-              <ion-button color="primary" (click)="openBezeroHistoriala(bezero)">
-                <ion-icon name="eye-outline"></ion-icon>
-              </ion-button>
+                      <ion-button color="primary" (click)="openBezeroHistoriala(bezero)">
+                        <ion-icon name="eye-outline"></ion-icon>
+                      </ion-button>
 
-              <ion-button color="danger" (click)="deleteBezero(bezero.id)">
-                <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+                      <ion-button color="danger" (click)="deleteBezero(bezero.id)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-content>
 
 
-     </ion-segment-content>
+      </ion-segment-content>
 
     </ion-segment-view>
 
