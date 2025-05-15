@@ -14,9 +14,10 @@ export interface Alumno {
 }
 
 @Component({
-  selector: 'app-materialak',
-  templateUrl: './materialak.page.html',
-  styleUrls: ['./materialak.page.scss'],
+    selector: 'app-materialak',
+    templateUrl: './materialak.page.html',
+    styleUrls: ['./materialak.page.scss'],
+    standalone: false
 })
 export class MaterialakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
@@ -79,6 +80,23 @@ export class MaterialakPage implements OnInit {
     }
   }
 
+  private actualizarEstadoOcupado(materialLista: any[]) {
+  return materialLista.map(material => {
+    const nuevosMaterialak = material.materialak.map((m: any) => {
+      const estaOcupado = this.materialaDevolver.some((devolver: any) => devolver.materiala.etiketa === m.etiketa);
+      return {
+        ...m,
+        estaOcupado
+      };
+    });
+    return {
+      ...material,
+      materialak: nuevosMaterialak
+    };
+  });
+}
+
+
   actualizarMaterialesSeleccionados(material:any) {
     const index = this.materialesSeleccionados.findIndex(p => p.id === material.id);
     if (material.selected && index === -1) {
@@ -102,23 +120,22 @@ export class MaterialakPage implements OnInit {
   }
   
   toggleMostrarCheckbox() {
-    this.mostrarCheckbox = !this.mostrarCheckbox;
-    if(this.mostrarCheckbox){
-      this.filteredMaterialak = this.filteredMaterialak.map(material => {
-        return {
-            ...material,
-            materialak: material.materialak.filter((m:any) => 
-                !this.materialaDevolver.some((devolver:any) => devolver.materiala.etiketa === m.etiketa)
-            )
-        };
-    }).filter(material => material.materialak.length > 0);
-    
-    }else{
-      this.filteredMaterialak = this.materialak;
-    }
-    console.log(this.filteredMaterialak)
-    console.log(this.materialaDevolver)
+  this.mostrarCheckbox = !this.mostrarCheckbox;
+
+  if (this.mostrarCheckbox) {
+    this.filteredMaterialak = this.actualizarEstadoOcupado(this.filteredMaterialak)
+      .map(material => ({
+        ...material,
+        materialak: material.materialak.filter((m: any) => !m.estaOcupado)
+      }))
+      .filter(material => material.materialak.length > 0);
+  } else {
+    this.filteredMaterialak = this.actualizarEstadoOcupado(this.materialak);
   }
+}
+
+
+
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -216,21 +233,56 @@ export class MaterialakPage implements OnInit {
     this.mostrarFiltros
   }
 
-  materialakLortu(){
-    let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
+  // materialakLortu(){
+  //   let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
+  //   observableRest.subscribe(datuak => {
+  //     console.log(datuak);
 
-    this.materialak = datuak
-    .filter((categoria:any) => categoria.ezabatzeData === null)
-    .map((categoria:any) => ({
-      ...categoria,
-      materialak: categoria.materialak
-        .filter((material:any) => material.ezabatzeData === null)
-    }));
-    this.filteredMaterialak = this.materialak;
+  //   this.materialak = datuak
+  //   .filter((categoria:any) => categoria.ezabatzeData === null)
+  //   .map((categoria:any) => ({
+  //     ...categoria,
+  //     materialak: categoria.materialak
+  //       .filter((material:any) => material.ezabatzeData === null)
+  //   }));
+  //   this.filteredMaterialak = this.materialak;
+  //   });
+  // }
+
+// AÑADIDO: Para identificar si un material está ocupado
+private materialesEnUso: Set<number> = new Set();
+
+materialakLortu() {
+  // Primero obtenemos los materiales en préstamo
+  this.restServer.get<any>(`${environment.url}material_mailegua`)
+    .subscribe(maileguak => {
+      // Guardamos IDs de materiales que están prestados y no devueltos
+      this.materialesEnUso = new Set(
+        maileguak
+          .filter((mailegu: any) => mailegu.amaieraData === null)
+          .map((mailegu: any) => mailegu.materiala.id)
+      );
+
+      // Después obtenemos los materiales con su categoría
+      this.restServer.get<any>(`${environment.url}material_kategoria`)
+        .subscribe(kategorias => {
+          this.materialak = kategorias
+            .filter((categoria: any) => categoria.ezabatzeData === null)
+            .map((categoria: any) => ({
+              ...categoria,
+              materialak: categoria.materialak
+                .filter((material: any) => material.ezabatzeData === null)
+                .map((material: any) => ({
+                  ...material,
+                  estado: this.materialesEnUso.has(material.id) ? 'Ocupado' : 'Libre'
+                }))
+            }));
+          
+          this.filteredMaterialak = this.materialak;
+        });
     });
-  }
+}
+
 
   materialakLortuAtera() {
     let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
@@ -280,6 +332,7 @@ export class MaterialakPage implements OnInit {
       this.vaciarDatos();
       this.materialakLortu();
       this.materialakLortuDevolver();
+      window.location.reload();
     });
   }
 
@@ -288,20 +341,22 @@ export class MaterialakPage implements OnInit {
       "id": mailegu.id
   }));
 
-    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
+let observableRest: Observable<any> = this.restServer.put(
+  `${environment.url}material_mailegua`,
+  data,
+  { responseType: 'text' as 'json' } // 👈 indica que esperas texto, pero sin romper el tipado
+);
     observableRest.subscribe(datuak => {
       console.log(datuak);
-
       this.materialaDevolver = datuak
       this.materialakLortu();
       this.materialakLortuDevolver();
       this.vaciarDatos();
+      window.location.reload();
+
     });
   }
 
-  materialakAteraKargatu(){
-    
-  }
 
   langileakLortu(){
     let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}taldeak`);
@@ -385,28 +440,31 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
-  filtrarMateriales() {
-    this.filteredMaterialak = this.materialak.map(categoria => ({
-      ...categoria,
-      materialak: categoria.materialak.map((material: any) => ({ ...material }))
-    }));
+  filtroUnico: string = '';
 
-    if(this.filtroCategoria !== '')
-    {
-      this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
-        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
-      );
-    }
+filtrarMateriales() {
+  this.filteredMaterialak = this.materialak.map(categoria => ({
+    ...categoria,
+    materialak: categoria.materialak.map((material: any) => ({ ...material }))
+  }));
 
-    if (this.filtroMaterial !== '') {
-      this.filteredMaterialak = this.filteredMaterialak.map(categoria => ({
+  if (this.filtroUnico.trim() !== '') {
+    const filtro = this.filtroUnico.toLowerCase();
+
+    // Filtrar por categoría o por material dentro de la categoría
+    this.filteredMaterialak = this.filteredMaterialak
+      .map(categoria => ({
         ...categoria,
         materialak: categoria.materialak.filter((materiala: any) =>
-          materiala.izena.toLowerCase().includes(this.filtroMaterial.toLowerCase())
+          materiala.izena.toLowerCase().includes(filtro)
         )
-      }));
-    }
+      }))
+      .filter(categoria =>
+        categoria.izena.toLowerCase().includes(filtro) || categoria.materialak.length > 0
+      );
   }
+}
+
 
   constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');

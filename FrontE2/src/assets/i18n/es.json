@@ -1,16 +1,17 @@
 {
-  "login":{
-    "user":"Usuario",
-    "password":"Contraseña",
-    "boton":"Inicio Sesion",
-    "vacio":"Por favor, ingresa usuario y contraseña.",
-    "messageOk":"Inicio de sesión exitoso.",
-    "messageFail":"Usuario o contraseña incorrectos.",
-    "messageNotOk":"Ocurrió un error inesperado. Inténtalo de nuevo."
+  "login": {
+    "user": "Usuario",
+    "password": "Contraseña",
+    "boton": "Inicio Sesion",
+    "vacio": "Por favor, ingresa usuario y contraseña.",
+    "messageOk": "Inicio de sesión exitoso.",
+    "messageFail": "Usuario o contraseña incorrectos.",
+    "messageNotOk": "Ocurrió un error inesperado. Inténtalo de nuevo."
   },
   "menu": {
     "title": "Menu",
-    "home":"Home",
+    "accesosRapidos": "Accesos Rapidos",
+    "home": "Home",
     "hitzorduak": "Citas",
     "grafikoak": "Graficos",
     "materialak": "Materiales",
@@ -18,9 +19,9 @@
     "historiala": "Historial",
     "ikasleak": "Estudiantes",
     "zerbitzuak": "Servicios",
-    "txandak":"Turnos",
-    "inbentario":"Inventario",
-    "parametrizacion":"Parametrizacion",
+    "txandak": "Turnos",
+    "inbentario": "Inventario",
+    "parametrizacion": "Parametrizacion",
     "productosBajoStock": "Productos bajo Stock",
     "bajoStock": "Bajo Stock",
     "Stock": "Stock",
@@ -40,6 +41,9 @@
       "editar": "Editar"
     },
     "modal": {
+      "filtros": "Filtros",
+      "buscarCategoriaProducto": "Buscar por Categoria y por Producto",
+      "crearProducto": "Crear Producto",
       "sacarProductos": "Sacar Productos",
       "alumno": "Alumno",
       "seleccionaAlumno": "Selecciona a un alumno",
@@ -54,28 +58,32 @@
       "filtroCat": "Filtrar por Nombre de Categoria",
       "filtroProd": "Filtrar por Nombre de Producto",
       "stockBajo": "Productos Bajo Stock",
-      "gestionar" : "Gestion de cita"
+      "gestionar": "Gestion de cita"
     },
     "categorias": {
       "electronica": "Electrónica"
     },
-    "validaciones":{
-        "seleccionaGrupo":"Debe seleccionar un grupo",
-        "seleccionaAlumno":"Debe seleccionar un grupo",
-        "cantidad":"Inserta una cantidad valida",
-        "nombre":"Debe insertar un nombre valido",
-        "marca":"Debe insertar una marca valida",
-        "descripcion":"La descripcion es obligatoria",
-        "stockRequerido":"Debe insertar un stock valido",
-        "stockAlertaRequerido":"Debe insertar un stock de lerta valido",
-        "categoria":"Seleccione una categoria"            
+    "validaciones": {
+      "seleccionaGrupo": "Debe seleccionar un grupo",
+      "seleccionaAlumno": "Debe seleccionar un grupo",
+      "cantidad": "Inserta una cantidad valida",
+      "nombre": "Debe insertar un nombre valido",
+      "marca": "Debe insertar una marca valida",
+      "descripcion": "La descripcion es obligatoria",
+      "stockRequerido": "Debe insertar un stock valido",
+      "stockAlertaRequerido": "Debe insertar un stock de lerta valido",
+      "categoria": "Seleccione una categoria"
+    },
+    "mensajes": {
+      "sinResultados": "No existen productos compatibles con esta búsqueda"
     }
   },
   "materiales": {
-    "title": "Gestion de materiales",
+    "titulo": "Gestion de materiales",
     "botones": {
       "gestionarMateriales": "Gestionar Materiales",
       "devolverMateriales": "Devolver Materiales",
+      "devolver": "Devolver",
       "agregarMaterial": "Agregar Material",
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
@@ -107,12 +115,12 @@
       "materiales": "Materiales",
       "filtros": "Filtros"
     },
-    "validaciones":{
-      "seleccionaGrupoError":"Debe seleccionar un grupo",
-      "seleccionaAlumnoError":"Debe seleccionar un grupo",
-      "nombre":"Debe insertar un nombre valido",
-      "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
-      "categoria":"Seleccione una categoria"            
+    "validaciones": {
+      "seleccionaGrupoError": "Debe seleccionar un grupo",
+      "seleccionaAlumnoError": "Debe seleccionar un alumno",
+      "nombre": "Debe insertar un nombre valido",
+      "etiqueta": "Debe insertar una etiqueta valida(10 char max)",
+      "categoria": "Seleccione una categoria"
     },
     "toasts": {
       "mensajeSacarMats": "Los materiales se han sacado correctamente",
@@ -158,7 +166,7 @@
       "messageCambioAsiento": "¿Desea cambiar el asiento?",
       "cambioDia": "Cambio Dia",
       "messageCambioDia": "¿Desea cambiar de Dia?",
-      "gestionar" : "Gestion de cita",
+      "gestionar": "Gestion de cita",
       "alumnoAsignado": "Esta cita ya tiene un alumno asignado"
     },
     "validaciones": {
@@ -184,6 +192,7 @@
   "historial": {
     "titulo": "Historial",
     "botones": {
+      "abrirGaleria": "Abrir Galeria",
       "productos": "Movimientos de productos",
       "materiales": "Movimientos de materiales",
       "ticket": "Tickets",
@@ -194,6 +203,7 @@
       "editar": "Editar"
     },
     "modal": {
+      "imagen": "Imagen",
       "proceso": "En proceso",
       "trabajador": "Trabajador",
       "fechaInicio": "Fecha Inicio",
@@ -211,21 +221,21 @@
       "piel": "Piel Sensible",
       "producto": "Producto",
       "fecha": "Fecha",
-      "volumen": "volumen",
+      "volumen": "Volumen",
       "comentarios": "Comentarios",
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",
       "filtroBezero": "Busca nombre o apellido"
     },
     "validaciones": {
-        "nombre": "El nombre es obligatorio",
-        "apellido": "El apellido es obligatorio",
-        "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
-        "producto": "El producto es obligatorio",
-        "fecha": "La fecha es obligatoria",
-        "cantidad": "La cantidad es obligatoria",
-        "volumen": "Introduce un volumen válido",
-        "comentarios": "Introduce un comentario válido"
+      "nombre": "El nombre es obligatorio",
+      "apellido": "El apellido es obligatorio",
+      "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
+      "producto": "El producto es obligatorio",
+      "fecha": "La fecha es obligatoria",
+      "cantidad": "La cantidad es obligatoria",
+      "volumen": "Introduce un volumen válido",
+      "comentarios": "Introduce un comentario válido"
     }
   },
   "informes": {
@@ -269,7 +279,7 @@
       "nombre": "Introduce un nombre valido",
       "precioFuera": "Introduce el precio de fuera",
       "precioDentro": "Introduce el precio de dentro",
-      "categoria":"Seleccione una categoria"            
+      "categoria": "Seleccione una categoria"
     }
   },
   "ikaslePage": {
@@ -357,18 +367,18 @@
     "enProceso": "En proceso...",
     "finalizada": "Finalizada",
     "enEspera": "En espera...",
-    "Validaciones":{
-      "kodea":"Inserta un codigo de grupo valido (5 caracteres maximo)",
-      "kodeaSelec":"Selecciona un grupo",
-      "abizena":"Inserta un apellido valido",
-      "izena":"Inserta un nombre valido",
-      "dia":"Debe escoger un dia",
-      "FechaInicio":"Debe insertar una fecha de inicio",
-      "FechaFin":"Debe insertar una fecha fin",
-      "FechaInicioMenor":"La fecha final no puede ser menor que la de inicio",
-      "HoraInicio":"Debe insertar una hora de inicio",
-      "HoraFin":"Debe insertar una hora fin",
-      "HoraInicioMenor":"La hora inicio no puede ser menor que la hora fin",
+    "Validaciones": {
+      "kodea": "Inserta un codigo de grupo valido (5 caracteres maximo)",
+      "kodeaSelec": "Selecciona un grupo",
+      "abizena": "Inserta un apellido valido",
+      "izena": "Inserta un nombre valido",
+      "dia": "Debe escoger un dia",
+      "FechaInicio": "Debe insertar una fecha de inicio",
+      "FechaFin": "Debe insertar una fecha fin",
+      "FechaInicioMenor": "La fecha final no puede ser menor que la de inicio",
+      "HoraInicio": "Debe insertar una hora de inicio",
+      "HoraFin": "Debe insertar una hora fin",
+      "HoraInicioMenor": "La hora inicio no puede ser menor que la hora fin",
       "insertarAlumno": "Debe asignar un alumno antes de poder generar un ticket"
     }
   },
@@ -379,7 +389,7 @@
     "fechaInicio": "Fecha Inicio",
     "fechaFin": "Fecha Fin",
     "botonHoy": "Hoy",
-    "botonReset": "Reset",
+    "botonReset": "Resetear",
     "filtrarTipo": "Filtrar por Tipo",
     "tipoPlaceholder": "Selecciona tipo de Turno",
     "todas": "Todos",
@@ -401,7 +411,6 @@
     "alumnoPlaceholderModal": "Selecciona un alumno",
     "MessageEliminar": "Eliminar Turno",
     "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar este Turno?",
-    
     "TxandaGuardada": "Turno guardado correctamente",
     "TxandaEzGuardada": "No se ha guardado el Turno, intentalo de nuevo o contacta con un desarrollador",
     "TxandaEzabatuta": "Turno eliminado correctamente",
@@ -409,7 +418,7 @@
   },
   "graficos": {
     "title": "Graficos",
-    "graf":"Gráfico de Servicios",
-    "analisis":"Análisis de Servicios"
+    "graf": "Gráfico de Servicios",
+    "analisis": "Análisis de Servicios"
   }
 }

@@ -5,7 +5,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
@@ -15,9 +14,10 @@ import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page';
 
 
 @Component({
-  selector: 'app-hitzorduak',
-  templateUrl: './hitzorduak.page.html',
-  styleUrls: ['./hitzorduak.page.scss'],
+    selector: 'app-hitzorduak',
+    templateUrl: './hitzorduak.page.html',
+    styleUrls: ['./hitzorduak.page.scss'],
+    standalone: false
 })
 export class HitzorduakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
@@ -85,6 +85,14 @@ export class HitzorduakPage implements OnInit {
     );
   });
 }
+
+isGenerarTicketDisabled(): boolean {
+  // Verificar si el alumno está seleccionado, al menos un servicio está seleccionado, y el dinero recibido es mayor que 0
+  return !(this.citaEditar.langilea &&
+           this.tratamenduArray.some(katTrat => katTrat.zerbitzuak.some((trat: any) => trat.selected)) &&
+           this.dineroCliente > 0);
+}
+
 
   cambiarCliente(telefonoSeleccionado: string) {
     const clienteSeleccionado = this.bezeroak.find(cliente => cliente.telefonoa === telefonoSeleccionado);
@@ -1182,7 +1190,9 @@ calculateElapsedTime(cita: any): string {
               {
                 text: this.translate.instant('citas.botones.confirmar'),
                 handler: () => {
-                  this.navCtrl.navigateForward('/produktuak');
+                  this.navCtrl.navigateForward('/produktuak').then(() => {
+                    window.location.reload();
+                  });
                 }
               }
             ]

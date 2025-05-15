@@ -34,3 +34,158 @@ ion-list{
     background-color: rgb(255,255,255,0);
 }
   
+
+.modal-grande {
+  --width: 90vw;
+  --height: 90vh;
+  --max-width: 100%;
+  --max-height: 100%;
+  --border-radius: 16px; // opcional, para que no quede cuadrado
+}
+
+.galeria-modal {
+  --width: 90vw;
+  --height: 90vh;
+  --border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.img-url-input {
+  --padding-start: 0;
+  --padding-end: 0;
+
+  input {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+.custom-card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center; /* Centra la imagen horizontalmente */
+  align-items: center;     /* Centra la imagen verticalmente */
+  height: 150px;           /* Tamaño fijo de la imagen */
+  width: 100%;             /* La imagen ocupará todo el ancho de la card */
+}
+
+.image-container ion-img {
+  object-fit: cover;  /* Asegura que la imagen se recorte adecuadamente */
+  width: 120px;       /* Ancho fijo de la imagen */
+  height: 120px;      /* Altura fija de la imagen */
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  overflow: hidden;   /* Recorta cualquier parte de la imagen que sobresalga */
+}
+
+ion-card-header {
+  padding: 10px;
+  text-align: center;
+}
+
+ion-card-content {
+  padding: 5px 10px;
+}
+
+.botones-derecha {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.botones-derecha ion-button {
+  flex: 1 1 auto;
+  max-width: 150px; /* Controla el tamaño de los botones */
+}
+
+/* Personaliza el estilo de la card */
+.custom-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: white;
+}
+
+/* Asegura que el swiper se ajuste al contenedor de la imagen */
+.image-container {
+  position: relative;
+  height: 200px;  /* Ajusta el tamaño según el diseño que quieras */
+  width: 100%;
+  overflow: hidden;
+}
+/* Asegúrate de que los controles de navegación sean visibles y estén posicionados correctamente */
+swiper-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilos de las flechas de navegación */
+.swiper-button-next, .swiper-button-prev {
+  color: white;  /* Color de las flechas, puedes cambiarlo a otro color */
+  font-size: 30px;  /* Tamaño de las flechas */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);  /* Centra las flechas verticalmente */
+  z-index: 10;
+}
+
+.swiper-button-next {
+  right: 10px;  /* Posición de la flecha "siguiente" */
+}
+
+.swiper-button-prev {
+  left: 10px;  /* Posición de la flecha "anterior" */
+}
+
+/* Estilos para la paginación (si se desea personalizar) */
+.swiper-pagination-bullet {
+  background-color: white;  /* Color de las paginación */
+  opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #4CAF50;  /* Color de la paginación activa */
+}
+/* Estilo de las imágenes dentro de cada slide */
+.img-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Asegura que la imagen ocupe todo el espacio sin distorsionarse */
+  border-radius: 10px;
+}
+
+/* Estilos para el logo por defecto cuando no hay imágenes */
+ion-img[src*="IMP_Logotipoa.png"] {
+  object-fit: contain;  /* La imagen del logo no se estirará, se mantendrá en su proporción original */
+  max-width: 60%; /* Ajusta el tamaño del logo */
+  margin: 0 auto;  /* Centra la imagen */
+}
+
+/* Estilo para el contenido de la card */
+ion-card-content {
+  padding: 16px;
+}
+
+/* Botones al final de la card */
+ion-buttons {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}

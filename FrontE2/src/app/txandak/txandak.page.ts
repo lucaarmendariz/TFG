@@ -43,9 +43,10 @@ export interface Horario {
 }
 
 @Component({
-  selector: 'app-txandak',
-  templateUrl: './txandak.page.html',
-  styleUrls: ['./txandak.page.scss'],
+    selector: 'app-txandak',
+    templateUrl: './txandak.page.html',
+    styleUrls: ['./txandak.page.scss'],
+    standalone: false
 })
 
 export class TxandakPage implements OnInit {
@@ -300,12 +301,6 @@ export class TxandakPage implements OnInit {
       // Si no hay fechas seleccionadas, mostrar todas las txandas
       this.filteredTxandak = [...this.txandak];
     }
-  }
-
-  resetFilters() {
-    this.fechaInicio = '';
-    this.fechaFin = '';
-    this.filteredTxandak = [...this.txandak];
   }
 
   filterToday() {

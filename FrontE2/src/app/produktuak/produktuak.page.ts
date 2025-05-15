@@ -5,6 +5,8 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
+import { AlertController, IonModal } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -15,9 +17,10 @@ export interface Alumno {
 }
 
 @Component({
-  selector: 'app-produktuak',
-  templateUrl: './produktuak.page.html',
-  styleUrls: ['./produktuak.page.scss'],
+    selector: 'app-produktuak',
+    templateUrl: './produktuak.page.html',
+    styleUrls: ['./produktuak.page.scss'],
+    standalone: false
 })
 export class ProduktuakPage implements OnInit {
 
@@ -53,42 +56,46 @@ export class ProduktuakPage implements OnInit {
   private routeSubscription: any;
 
   
-  filtroCategoria: string = '';
-  filtroProducto: string = '';
-  filtroStockBajo: boolean = false;
-  filteredProduktuak: any[] = []; 
+  filtroBusqueda: string = '';
+filtroStockBajo: boolean = false;
+filteredProduktuak: any[] = [];
 
-  filtrarProductos() {
-    this.filteredProduktuak = this.produktuak.map(categoria => ({
-      ...categoria,
-      produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
-    }));
+filtrarProductos() {
+  const busqueda = this.filtroBusqueda.toLowerCase();
 
-    if(this.filtroCategoria !== '')
-    {
-      this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
-        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
-      );
-    }
+  // Copiar datos originales
+  this.filteredProduktuak = this.produktuak.map(categoria => ({
+    ...categoria,
+    produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
+  }));
 
-    if (this.filtroProducto !== '') {
-      this.filteredProduktuak = this.filteredProduktuak.map(categoria => ({
+  // Filtrar por texto (categoría o producto)
+  if (busqueda !== '') {
+    this.filteredProduktuak = this.filteredProduktuak
+      .map(categoria => ({
         ...categoria,
         produktuak: categoria.produktuak.filter((producto: any) =>
-          producto.izena.toLowerCase().includes(this.filtroProducto.toLowerCase())
+          producto.izena.toLowerCase().includes(busqueda)
         )
-      }));
-    }
-  
-    if (this.filtroStockBajo) {
-      this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
-        categoria.produktuak = categoria.produktuak.filter((producto: any) =>
-          producto.stock <= producto.stockAlerta
-        );
-        return categoria.produktuak.length > 0;
-      });
-    }
+      }))
+      .filter(categoria =>
+        categoria.izena.toLowerCase().includes(busqueda) || categoria.produktuak.length > 0
+      );
   }
+
+  // Filtrar por stock bajo
+  if (this.filtroStockBajo) {
+    this.filteredProduktuak = this.filteredProduktuak
+      .map(categoria => ({
+        ...categoria,
+        produktuak: categoria.produktuak.filter((producto: any) =>
+          producto.stock <= producto.stockAlerta
+        )
+      }))
+      .filter(categoria => categoria.produktuak.length > 0);
+  }
+}
+
 
 
   ngOnDestroy() {
@@ -126,56 +133,89 @@ export class ProduktuakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  crearProducto() {
-    const json_data = {
-      "izena": this.crearNombre,
-      "produktuKategoria": {
-        "id": this.crearCategoria
-      },
-      "deskribapena": this.crearDescripcion,
-      "marka": this.crearMarca,
-      "stock": this.crearStock,
-      "stockAlerta": this.crearStockAlerta
-    };
+  @ViewChild('modalSortu') modalSortu: IonModal | undefined;  // Referencia a la modal de creación
 
-    console.log(json_data);
+crearProducto() {
+  const json_data = {
+    "izena": this.crearNombre,
+    "produktuKategoria": {
+      "id": this.crearCategoria
+    },
+    "deskribapena": this.crearDescripcion,
+    "marka": this.crearMarca,
+    "stock": this.crearStock,
+    "stockAlerta": this.crearStockAlerta
+  };
 
-    this.http.post(`${environment.url}produktuak`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+  console.log(json_data);
+
+  this.http.post(`${environment.url}produktuak`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      // Vaciar los campos del formulario después de crear el producto
+      this.crearNombre = '';
+      this.crearDescripcion = '';
+      this.crearCategoria = 0;  // Cambiado a null ya que espera un número
+      this.crearMarca = '';
+      this.crearStock = 0;  // Cambiado a 0 ya que espera un número
+      this.crearStockAlerta = 0;  // Cambiado a 0 ya que espera un número
+
+      // Resetear el formulario para limpiar cualquier validación o estado
+      if (this.modalSortu) {
+        this.modalSortu.dismiss(); // Cerrar la modal
       }
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al crear el producto:", error);
-      }
-    );
-  }
 
-  kategoriaSortu() {
-    const json_data = {
-      "izena": this.crearKatNombre
-    };
+      // Actualizar la lista de productos si es necesario
+      await this.produktuakLortu();
+    },
+    (error) => {
+      console.error("Error al crear el producto:", error);
+    }
+  );
+}
 
-    console.log(json_data);
 
-    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+
+  @ViewChild('catprodsormodal') catprodsormodal: IonModal | undefined;  // Referencia a la modal
+
+kategoriaSortu(categoriaForm: NgForm) {
+  const json_data = {
+    "izena": this.crearKatNombre
+  };
+
+  console.log(json_data);
+
+  this.http.post(`${environment.url}produktu_kategoria`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      // Vaciar el campo del nombre de la categoría
+      this.crearKatNombre = '';  // Limpiar el campo
+      categoriaForm.resetForm();  // Resetear el formulario para limpiar cualquier validación o estado
+
+      // Comprobar que la referencia a la modal no es undefined
+      if (this.catprodsormodal) {
+        this.catprodsormodal.dismiss(); // Cerrar la modal
       }
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al crear la categoría:", error);
-      }
-    );
-  }
+
+      // Actualizar la lista de categorías si es necesario
+      await this.produktuakLortu();
+    },
+    (error) => {
+      console.error("Error al crear la categoría:", error);
+    }
+  );
+}
+
+
+
 
   openProdModal(product:any, idKat:number){
     this.isEditingProduct = true;
@@ -231,63 +271,87 @@ export class ProduktuakPage implements OnInit {
 
   
 
-  eliminarProducto(id: number) {
-    const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
-    if (!confirmacion) {
-      console.log('Operación cancelada por el usuario.');
-      return;
-    }
-
-    const json_data = {
-      "id": id
-    };
-
-    console.log(json_data);
-
-    this.http.delete(`${environment.url}produktuak`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+  async eliminarProducto(id: number) {
+  const alert = await this.alertController.create({
+    header: 'Confirmación',
+    message: '¿Estás seguro de que quieres eliminar este producto?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          console.log('Operación cancelada por el usuario.');
+        }
       },
-      body: JSON.stringify(json_data)
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al eliminar el producto:", error);
+      {
+        text: 'Eliminar',
+        handler: () => {
+          const json_data = { "id": id };
+          console.log(json_data);
+
+          this.http.delete(`${environment.url}produktuak`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(json_data)
+          }).subscribe(
+            async (response) => {
+              await this.produktuakLortu();
+            },
+            (error) => {
+              console.error("Error al eliminar el producto:", error);
+            }
+          );
+        }
       }
-    );
-  }
+    ]
+  });
 
-  eliminarKategoriaProducto(id: number) {
-    const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
-    if (!confirmacion) {
-      console.log('Operación cancelada por el usuario.');
-      return;
-    }
+  await alert.present();
+}
 
-    const json_data = {
-      "id": id
-    };
 
-    console.log(json_data);
-
-    this.http.delete(`${environment.url}produktu_kategoria`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+  async eliminarKategoriaProducto(id: number) {
+  const alert = await this.alertController.create({
+    header: 'Confirmación',
+    message: '¿Estás seguro de que quieres eliminar esta categoría?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          console.log('Operación cancelada por el usuario.');
+        }
       },
-      body: JSON.stringify(json_data)
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al eliminar la categoría del producto:", error);
+      {
+        text: 'Eliminar',
+        handler: () => {
+          const json_data = { "id": id };
+          console.log(json_data);
+
+          this.http.delete(`${environment.url}produktu_kategoria`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(json_data)
+          }).subscribe(
+            async (response) => {
+              await this.produktuakLortu();
+            },
+            (error) => {
+              console.error("Error al eliminar la categoría del producto:", error);
+            }
+          );
+        }
       }
-    );
-  }
+    ]
+  });
+
+  await alert.present();
+}
+
 
   editarKategoriaProducto() {
     const json_data = { izena: this.editingKategoria.izena };
@@ -411,7 +475,7 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private translate: TranslateService, private alertController: AlertController,private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }

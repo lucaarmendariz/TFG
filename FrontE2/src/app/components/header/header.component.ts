@@ -3,9 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoginServiceService } from 'src/app/zerbitzuak/login-service.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
   public appPages: any[] = [];

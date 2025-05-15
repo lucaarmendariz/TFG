@@ -1,30 +1,73 @@
-// // Colores
-// $color-light-blue: #E4FEFF;
-// $color-medium-blue: #88E4E8;
-// $color-dark-teal: #00C7BE;
-// $color-light-teal: #63D6F5;
-// $color-white: #FFFFFF;
-// $color-black: #000000;
-// $color-light-gray: #E9E9E9;
-// $color-light-blue-alt: #C4E7F1;
+// Colores
+$color-light-blue: #E4FEFF;
+$color-medium-blue: #88E4E8;
+$color-dark-teal: #00C7BE;
+$color-light-teal: #63D6F5;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-light-gray: #E9E9E9;
+$color-light-blue-alt: #C4E7F1;
 
-// // Estructura general
-// ion-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
+.categoria-card {
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .categoria-img {
+    height: 550px;
+    object-fit: cover;
+    width: 100%;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .categoria-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .servicio-nombre {
+    font-weight: 500;
+  }
+  
 
-// ion-header {
-//   background-color: $color-light-teal;
-//   color: $color-white;
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
+  ion-modal {
+    --width: 90vw;
+    --height: 90vh;
+    --border-radius: 20px;
+    --box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  .selected-card {
+    border: 3px solid var(--ion-color-primary);
+    box-shadow: 0 0 8px rgba(56, 128, 255, 0.7);
+    transform: scale(1.02);
+    transition: 0.2s ease-in-out;
+  }
 
-ion-list{
-    background-color: rgb(255,255,255,0);
+
+ion-card {
+  transition: transform 0.3s ease-in-out;
 }
 
-ion-item{
-    background-color: transparent;
+.categoria-card:hover {
+  transform: scale(1.05);
 }
+
+
+.boton-cerrar {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+
+ion-button:hover {
+  filter: brightness(1.1);
+}
+

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonModal, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonModal, ModalController, NavController, ToastController } from '@ionic/angular';
 import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
@@ -10,9 +10,10 @@ import { HttpClient } from '@angular/common/http';
 import { Txanda } from '../txandak/txandak.page';
 
 @Component({
-  selector: 'app-ikasleak',
-  templateUrl: './ikasleak.page.html',
-  styleUrls: ['./ikasleak.page.scss'],
+    selector: 'app-ikasleak',
+    templateUrl: './ikasleak.page.html',
+    styleUrls: ['./ikasleak.page.scss'],
+    standalone: false
 })
 
 
@@ -47,6 +48,7 @@ export class IkasleakPage implements OnInit {
   filteredGroups: any[] = [];
   isIkasle!:boolean;
   private routeSubscription: any;
+  modalAlumnoCrear: any;
 
 
   constructor(
@@ -58,12 +60,16 @@ export class IkasleakPage implements OnInit {
     private router: Router,
     private loginService: LoginServiceService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private navCtrl: NavController,
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
+  cerrarModalAlumno() {
+    this.modalAlumnoCrear.dismiss(); // Cierra el modal
+  }
   lortuData(): string {
     const gaur = new Date();
     const urtea = gaur.getFullYear();
@@ -253,16 +259,55 @@ grupoArray: Taldea[] = [];
   
 
   eliminarAlumnos() {
+    // Obtener los nombres de los alumnos seleccionados
+    const nombresAlumnos = this.filteredAlumnos
+      .filter(alumno => this.selectedIkasleak.has(alumno.id))
+      .map(alumno => `${alumno.izena} ${alumno.abizenak}`);
+
+    // Mostrar alerta de confirmación
+    this.showDeleteConfirmation(nombresAlumnos);
+  }
+
+  // Función para mostrar alerta de confirmación
+  async showDeleteConfirmation(nombresAlumnos: string[]) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Eliminación',
+      message: `¿Estás seguro de que deseas eliminar los siguientes alumno(s)?: ${nombresAlumnos.join(', ')}`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Eliminación cancelada');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            // Proceder con la eliminación
+            this.proceedToDelete();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // Función para eliminar los alumnos seleccionados
+  proceedToDelete() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
         // Eliminar el alumno de la lista
         this.getAlumnos();
         this.getGrupos();
         this.closeModal();
-        this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 'danger');
+        this.mostrarToast('Alumnos eliminados', 'danger');
       });
     });
-    this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
+
+    // Limpiar la selección después de eliminar
+    this.selectedIkasleak.clear();
   }
 
   // Abre el modal para editar un talde
@@ -291,6 +336,10 @@ grupoArray: Taldea[] = [];
         console.error(error);
       }
     );
+  }
+
+  hayAlumnosSeleccionados(): boolean {
+    return this.filteredAlumnos.some(alumno => alumno.selected);
   }
 
   onAlumnoSelected(alumnoId: number | undefined) {
@@ -533,7 +582,11 @@ grupoArray: Taldea[] = [];
               text: 'Ir a Txandas',
               handler: () => {
                 // Redirigir a la página de txandas
-                this.router.navigate(['/txandak']); // Descomenta esta línea si usas Router
+                this.router.navigate(['/txandak']).then(() => {
+                  window.location.reload();
+                });
+                // Descomenta esta línea si usas Router
+                
               }
             }
           ]
