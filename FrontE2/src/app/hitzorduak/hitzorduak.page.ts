@@ -1,4 +1,3 @@
-import { Ikaslea } from './../txandak/txandak.page';
 import { CitaService } from './../zerbitzuak/zitak.service.ts.service';
 import { formatDate } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';

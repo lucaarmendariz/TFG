@@ -206,14 +206,14 @@
 
                     <ion-col>
                       <ion-button expand="block" (click)="prodAteraModal.dismiss()">
-                        Cancelar
+                        {{ "productos.modal.Cancelar" | translate }}
                       </ion-button>
                     </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar -->
                       <ion-button type="submit" expand="block" [disabled]="sacarProdForm.invalid"
                         (click)="prodAteraModal.dismiss()">
-                        Confirmar
+                        {{ "productos.modal.Aceptar" | translate }}
                       </ion-button>
                     </ion-col>
                   </ion-row>
@@ -304,15 +304,15 @@
                 <ion-grid>
                   <ion-row>
                     <ion-col>
-                      <!-- Botón de Cancelar -->
+                      <!-- Botón de cancelar-->
                       <ion-button expand="block" (click)="modalSortu.dismiss()">
-                        Cancelar
+                        {{ "productos.modal.Cancelar" | translate }}
                       </ion-button>
                     </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar -->
                       <ion-button type="submit" expand="block" [disabled]="crearProductoForm.invalid">
-                        Confirmar
+                        {{ "productos.modal.Aceptar" | translate }}
                       </ion-button>
                     </ion-col>
                   </ion-row>
@@ -409,12 +409,12 @@
                     <ion-col>
                       <!-- Botón de Cancelar sin color -->
                       <ion-button expand="block" (click)="closeProdModal()">
-                        Cancelar </ion-button>
+                        {{ "productos.modal.Cancelar" | translate }} </ion-button>
                     </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar sin color -->
                       <ion-button type="submit" expand="block" [disabled]="editarProductoForm.invalid">
-                        Confirmar </ion-button>
+                        {{ "productos.modal.Aceptar" | translate }} </ion-button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -461,12 +461,12 @@
                     <ion-col>
                       <!-- Botón de Cancelar sin color -->
                       <ion-button expand="block" (click)="closeKatModal()">
-                        Cancelar </ion-button>
+                        {{ "productos.modal.Cancelar" | translate }} </ion-button>
                     </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar sin color -->
                       <ion-button type="submit" expand="block" [disabled]="editarCategoriaForm.invalid">
-                        Confirmar </ion-button>
+                        {{ "productos.modal.Aceptar" | translate }} </ion-button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -513,13 +513,13 @@
                     <ion-col>
                       <!-- Botón de Cancelar -->
                       <ion-button expand="block" (click)="catprodsormodal.dismiss()">
-                        Cancelar
+                        {{ "productos.modal.Cancelar" | translate }}
                       </ion-button>
                     </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar -->
                       <ion-button type="submit" expand="block" [disabled]="categoriaForm.invalid">
-                        Confirmar
+                        {{ "productos.modal.Aceptar" | translate }}
                       </ion-button>
                     </ion-col>
                   </ion-row>

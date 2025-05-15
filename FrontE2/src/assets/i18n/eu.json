@@ -58,7 +58,9 @@
             "filtroCat": "Kategoriaren Izenaz Filtratu",
             "filtroProd": "Produktuaren Izenaz Filtratu",
             "stockBajo": "Stock Gutxiko Produktuak",
-            "gestionar": "Hitzordua gestionatu"
+            "gestionar": "Hitzordua gestionatu",
+            "Cancelar": "Ezeztatu",
+            "Aceptar": "Onartu"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -75,7 +77,7 @@
             "categoria": "Kategoria bat aukeratu"
         },
         "mensajes": {
-            "sinResultados": "No existen productos compatibles con esta búsqueda"
+            "sinResultados": "Ez dago bilaketa honekin bateragarria den produkturik"
         }
     },
     "materiales": {
@@ -112,7 +114,8 @@
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
             "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
             "materiales": "Materialak",
-            "filtros": "Filtroak"
+            "filtros": "Filtroak",
+            "buscarCategoriaOMaterial": "Bilatu material edo kategoria"
         },
         "validaciones": {
             "seleccionaGrupoError": "Talde bat aukeratu behar duzu",
@@ -146,6 +149,8 @@
             "descargar": "Deskargatu"
         },
         "modal": {
+            "Tipo de cita": "Hitzordu mota",
+            "Seleccionar": "Aukeratu langile bat",
             "vacio": "Ez dago ordutegirik definituta gaurkorako",
             "nombre": "Izena",
             "descripcion": "Deskribapena",
@@ -202,6 +207,7 @@
             "editar": "Editar"
         },
         "modal": {
+            "entrada": "Hitzordu historiala",
             "imagen": "Irudia",
             "proceso": "Erabiltzen",
             "trabajador": "Langilea",
@@ -224,7 +230,11 @@
             "comentarios": "Oharrak",
             "reset": "Reset",
             "filtroFecha": "Data Filtratu",
-            "filtroBezero": "Bilatu izena edo abizena"
+            "filtroBezero": "Bilatu izena edo abizena",
+            "buscar": "Bilatu",
+            "BuscarAlumnoGrupoProducto": "Bilatu ikasle, talde edo produktu",
+            "BuscarNombreId": "Bilatu izena, id edo prezio totala",
+            "BuscarTrabajadorGrupo": "Bilatu langile, talde edo materiala"
         },
         "validaciones": {
             "nombre": "Izena derrigorrezkoa da",
@@ -247,7 +257,9 @@
             "color": "Kolorea",
             "select": "Kategoria bat aukeratu",
             "categoria": "Kategoria",
-            "filtro": "Bilatu izena edo categorias"
+            "filtro": "Bilatu izena edo categorias",
+            "imagen": "Igo irudia",
+            "seleccionarimagen": "Hautatu zerbitzariko irudia"
         },
         "botones": {
             "crearServicio": "Zerbitzua gehitu",
@@ -404,24 +416,24 @@
         "analisis": "Zerbitzuen Analisia"
     },
     "cliente": {
-    "crearTitulo": "Bezeroa Gehitu",
-    "nombre": "Izena",
-    "apellido": "Abizena",
-    "telefono": "Telefonoa",
-    "pielSensible": "Azala sentikorra",
-    "crear": "Sortu",
-    "errorNombre": "Mesedez, sartu izena",
-    "errorApellido": "Mesedez, sartu abizena",
-    "errorTelefono": "Mesedez, sartu telefono balioduna"
-  },
-  "cita": {
-    "nuevaTitulo": "Bisitari Berria",
-    "detallesTitulo": "Bisitariaren Xehetasunak",
-    "seleccionarCliente": "Bezero bat hautatu",
-    "descripcion": "Deskribapena",
-    "descripcionPlaceholder": "Bisitariaren deskribapena",
-    "perteneceCentro": "Zentrora dagozkion?",
-    "verGaleria": "Bezeroaren Galeria Ikusi",
-    "confirmar": "Baieztatu"
-  }
+        "crearTitulo": "Bezeroa Gehitu",
+        "nombre": "Izena",
+        "apellido": "Abizena",
+        "telefono": "Telefonoa",
+        "pielSensible": "Azala sentikorra",
+        "crear": "Sortu",
+        "errorNombre": "Mesedez, sartu izena",
+        "errorApellido": "Mesedez, sartu abizena",
+        "errorTelefono": "Mesedez, sartu telefono balioduna"
+    },
+    "cita": {
+        "nuevaTitulo": "Bisitari Berria",
+        "detallesTitulo": "Bisitariaren Xehetasunak",
+        "seleccionarCliente": "Bezero bat hautatu",
+        "descripcion": "Deskribapena",
+        "descripcionPlaceholder": "Bisitariaren deskribapena",
+        "perteneceCentro": "Zentrora dagozkion?",
+        "verGaleria": "Bezeroaren Galeria Ikusi",
+        "confirmar": "Baieztatu"
+    }
 }

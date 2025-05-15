@@ -25,11 +25,6 @@
     <ion-segment-view>
       <ion-segment-content id="kudeatu">
         <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button expand="full" (click)="mostrarFiltros = !mostrarFiltros">
-              <ion-icon name="search"></ion-icon>
-            </ion-button>
-          </ion-buttons>
           <ion-button *ngIf="!isIkasle" slot="start" [disabled]="checkboxHabilitado" id="cat-mat-sortu-modal">{{
             'materiales.botones.crearCategoria' | translate }} </ion-button>
           <ion-button *ngIf="!isIkasle" slot="start" [disabled]="checkboxHabilitado" id="mat-sortu-modal">{{
@@ -44,14 +39,12 @@
 
         <!-- Filtro por Categoría y Material en una sola barra -->
         <ion-card>
-          <div *ngIf="mostrarFiltros">
             <ion-card-header>
               <ion-card-title><b>{{ 'materiales.modal.filtros' | translate }}</b></ion-card-title>
             </ion-card-header>
             <ion-searchbar [(ngModel)]="filtroUnico" (ngModelChange)="filtrarMateriales()" animated="true"
               placeholder="{{ 'materiales.modal.buscarCategoriaOMaterial' | translate }}">
             </ion-searchbar>
-          </div>
         </ion-card>
 
 

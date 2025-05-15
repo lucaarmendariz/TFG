@@ -409,7 +409,6 @@ filtrarTickets() {
 
   loadHistorial() {
     this.getHistorialPorCliente(this.bezeroId).subscribe((data) => {
-      console.log(this.bezeroId);
       this.historial = data;
       console.log('Historial del cliente:', this.historial);
     });
@@ -452,7 +451,6 @@ filtrarTickets() {
   loadHistorialPorCliente(id: number) {
     this.getHistorialPorCliente(id).subscribe((data) => {
       this.historialPorCliente[id] = data; // Guardamos el historial del cliente por su ID
-      console.log('Historial de cliente', id, data);
     });
   }
 
@@ -485,7 +483,7 @@ filtrarTickets() {
   openBezeroHistoriala(bezero: any) {
     this.isEditingBezeroHistoriala = true;
     this.editingBezero = bezero;
-    console.log(this.editingBezero.izena)
+    console.log(this.editingBezero.historiala)
   }
 
   cerrarModalHistoriala() {
@@ -612,9 +610,12 @@ filtrarTickets() {
         console.error("Error al asignar la cita:", error);
       }
     );
-}
+  }
+
+compareWithFn = (o1: any, o2: any) => o1 == o2;
 
 guardarBezeroHistoriala(){
+  console.log(this.editingBezero)
   this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
       headers: {
         'Content-Type': 'application/json',

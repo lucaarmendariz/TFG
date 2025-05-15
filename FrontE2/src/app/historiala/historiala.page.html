@@ -37,7 +37,9 @@
             <ion-item>
               <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
               <ion-input [(ngModel)]="busquedaTexto" (ionInput)="filtrarProductos()"
-                placeholder="Buscar alumno, grupo o producto..."></ion-input>
+                [placeholder]="'historial.modal.BuscarAlumnoGrupoProducto' | translate">
+              </ion-input>
+
             </ion-item>
 
             <ion-grid>
@@ -101,9 +103,10 @@
           </ion-card-header>
           <ion-card-content>
             <ion-item>
-  <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
-  <ion-input [(ngModel)]="busquedaMaterial" (ionInput)="filtrarMateriales()" placeholder="Buscar trabajador, grupo o material..."></ion-input>
-</ion-item>
+              <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
+              <ion-input [(ngModel)]="busquedaMaterial" (ionInput)="filtrarMateriales()"
+                [placeholder]="'historial.modal.BuscarTrabajadorGrupo' | translate"></ion-input>
+            </ion-item>
 
             <ion-grid>
               <ion-row class="ion-align-items-center">
@@ -188,13 +191,11 @@
           </ion-card-header>
           <ion-card-content>
             <ion-item>
-  <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
-  <ion-input
-    [(ngModel)]="busquedaTicket"
-    (ionInput)="filtrarTickets()"
-    placeholder="Buscar por nombre, ID o precio total...">
-  </ion-input>
-</ion-item>
+              <ion-label position="stacked">{{ "historial.modal.buscar" | translate }}</ion-label>
+              <ion-input [(ngModel)]="busquedaTicket" (ionInput)="filtrarTickets()"
+                [placeholder]="'historial.modal.BuscarNombreId' | translate">
+              </ion-input>
+            </ion-item>
             <ion-grid>
               <ion-row class="ion-align-items-center">
                 <ion-col size="5">
@@ -379,7 +380,7 @@
 
     </ion-segment-view>
 
-    <ion-modal trigger="add-bezero" cssClass="modal-grande">
+    <ion-modal trigger="add-bezero">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -477,14 +478,12 @@
                 </ion-item>
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{
                   'historial.validaciones.telefono' | translate }}</ion-text>
-               <ion-item lines="none">
-  <ion-label>{{ 'historial.modal.piel' | translate }}</ion-label>
-  <ion-checkbox
-    slot="end"
-    [checked]="editingBezero.azalSentikorra === 'B'"
-    (ionChange)="editingBezero.azalSentikorra = $event.detail.checked ? 'B' : 'E'">
-  </ion-checkbox>
-</ion-item>
+                <ion-item lines="none">
+                  <ion-label>{{ 'historial.modal.piel' | translate }}</ion-label>
+                  <ion-checkbox slot="end" [checked]="editingBezero.azalSentikorra === 'B'"
+                    (ionChange)="editingBezero.azalSentikorra = $event.detail.checked ? 'B' : 'E'">
+                  </ion-checkbox>
+                </ion-item>
 
 
                 <div class="botones-derecha">
@@ -497,6 +496,8 @@
         </ion-content>
       </ng-template>
     </ion-modal>
+
+
     <ion-modal [isOpen]="isEditingBezeroHistoriala" cssClass="modal-grande" backdropDismiss="false">
       <ng-template>
         <ion-content>
@@ -514,96 +515,112 @@
           </ion-header>
 
           <form #formCliente="ngForm" (ngSubmit)="guardarBezeroHistoriala()" novalidate>
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>{{ 'historial.botones.cliente' | translate }}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-list>
-                  <ng-container *ngFor="let hist of editingBezero.historiala; let i = index">
-                    <ion-item *ngIf="hist.ezabatzeData == null">
-                      <ion-item>
-                        <ion-select [(ngModel)]="hist.id_produktua" name="producto{{i}}"
-                          placeholder="Seleccione un producto" required #producto="ngModel">
-                          <ion-select-option *ngFor="let prod of produktuak" [value]="prod.id">
-                            {{prod.izena}}
-                          </ion-select-option>
-                        </ion-select>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="producto.invalid && producto.touched">
-                        {{ 'historial.validaciones.producto' | translate }}
-                      </ion-text>
-                      <ion-item>
-                        <ion-label position="stacked">{{ 'historial.modal.fecha' | translate }}</ion-label>
-                        <ion-input [(ngModel)]="hist.data" name="fecha{{i}}" type="date" required
-                          #fecha="ngModel"></ion-input>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="fecha.invalid && fecha.touched">
-                        {{ 'historial.validaciones.fecha' | translate }}
-                      </ion-text>
-                      <ion-item>
-                        <ion-label position="stacked">{{ 'historial.modal.cantidad' | translate }}</ion-label>
-                        <ion-input [(ngModel)]="hist.kantitatea" name="cantidad{{i}}" type="number" required
-                          #cantidad="ngModel"></ion-input>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="cantidad.invalid && cantidad.touched">
-                        {{ 'historial.validaciones.cantidad' | translate }}
-                      </ion-text>
-                      <ion-item>
-                        <ion-label position="stacked">{{ 'historial.modal.volumen' | translate }}</ion-label>
-                        <ion-input [(ngModel)]="hist.bolumena" name="volumen{{i}}" type="text"
-                          #volumen="ngModel"></ion-input>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="volumen.invalid && volumen.touched">
-                        {{ 'historial.validaciones.volumen' | translate }}
-                      </ion-text>
-                      <ion-item>
-                        <ion-label position="stacked">{{ 'historial.modal.comentarios' | translate }}</ion-label>
-                        <ion-input [(ngModel)]="hist.oharrak" name="comentarios{{i}}" type="text"
-                          #comentarios="ngModel"></ion-input>
-                      </ion-item>
-                      <ion-text color="danger" *ngIf="comentarios.invalid && comentarios.touched">
-                        {{ 'historial.validaciones.comentarios' | translate }}
-                      </ion-text>
+            <ng-container *ngFor="let hist of editingBezero.historiala; let i = index">
+              <ion-card class="historial-card" *ngIf="hist.ezabatzeData == null">
+                <ion-card-header>
+                  <ion-card-title>{{ 'historial.modal.entrada' | translate }} {{ i + 1 }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="12" size-md="6">
+                        <ion-item>
+                          <ion-label position="stacked">
+                            {{ 'historial.modal.producto' | translate }}
+                          </ion-label>
+                          <ion-select [(ngModel)]="hist.id_produktua" name="producto{{i}}" required #producto="ngModel"
+                            placeholder="{{ 'historial.modal.seleccionarProducto' | translate }}" interface="popover"
+                            [compareWith]="compareWithFn">
+                            <ion-select-option *ngFor="let prod of produktuak" [value]="prod.id">
+                              {{ prod.izena }}
+                            </ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                        <ion-text color="danger" *ngIf="producto.invalid && producto.touched">
+                          {{ 'historial.validaciones.producto' | translate }}
+                        </ion-text>
+                      </ion-col>
 
-                      <!-- Campo para la imagen -->
-                      <ion-item>
-                        <ion-label position="stacked">{{ 'historial.modal.imagen' | translate }}</ion-label>
-                        <ion-input [(ngModel)]="hist.img_url" name="img_url{{i}}" type="text" #img_url="ngModel"
-                          class="img-url-input"></ion-input>
-                      </ion-item>
-
-                      <!-- Botón para eliminar historial -->
-                      <ion-button color="danger" (click)="eliminar_historial(hist)">
-                        <ion-icon name="trash"></ion-icon>
-                      </ion-button>
-                    </ion-item>
-                  </ng-container>
-                </ion-list>
-
-                <div class="botones-derecha">
-                  <!-- Botón abrir galería con icono -->
-                  <ion-button expand="block" (click)="abrirGaleria()">
-                    <ion-icon name="image-outline" slot="start"></ion-icon>
-                    {{ 'historial.botones.abrirGaleria' | translate }}
+                      <ion-col size="12" size-md="6">
+                        <ion-item>
+                          <ion-label position="stacked">{{ 'historial.modal.fecha' | translate }}</ion-label>
+                          <ion-input [(ngModel)]="hist.data" name="fecha{{i}}" type="date" required
+                            #fecha="ngModel"></ion-input>
+                        </ion-item>
+                        <ion-text color="danger" *ngIf="fecha.invalid && fecha.touched">
+                          {{ 'historial.validaciones.fecha' | translate }}
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="6">
+                        <ion-item>
+                          <ion-label position="stacked">{{ 'historial.modal.cantidad' | translate }}</ion-label>
+                          <ion-input [(ngModel)]="hist.kantitatea" name="cantidad{{i}}" type="number" required
+                            #cantidad="ngModel"></ion-input>
+                        </ion-item>
+                        <ion-text color="danger" *ngIf="cantidad.invalid && cantidad.touched">
+                          {{ 'historial.validaciones.cantidad' | translate }}
+                        </ion-text>
+                      </ion-col>
+                      <ion-col size="6">
+                        <ion-item>
+                          <ion-label position="stacked">{{ 'historial.modal.volumen' | translate }}</ion-label>
+                          <ion-input [(ngModel)]="hist.bolumena" name="volumen{{i}}" type="text"
+                            #volumen="ngModel"></ion-input>
+                        </ion-item>
+                        <ion-text color="danger" *ngIf="volumen.invalid && volumen.touched">
+                          {{ 'historial.validaciones.volumen' | translate }}
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="12">
+                        <ion-item>
+                          <ion-label position="stacked">{{ 'historial.modal.comentarios' | translate }}</ion-label>
+                          <ion-input [(ngModel)]="hist.oharrak" name="comentarios{{i}}" type="text"
+                            #comentarios="ngModel"></ion-input>
+                        </ion-item>
+                        <ion-text color="danger" *ngIf="comentarios.invalid && comentarios.touched">
+                          {{ 'historial.validaciones.comentarios' | translate }}
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="12">
+                        <ion-item>
+                          <ion-label position="stacked">{{ 'historial.modal.imagen' | translate }}</ion-label>
+                          <ion-input [(ngModel)]="hist.img_url" name="img_url{{i}}" type="text" #img_url="ngModel"
+                            class="img-url-input"></ion-input>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                  <ion-button fill="clear" color="danger" slot="end" (click)="eliminar_historial(hist)">
+                    <ion-icon name="trash" slot="icon-only"></ion-icon>
                   </ion-button>
+                </ion-card-content>
+              </ion-card>
+            </ng-container>
 
-                  <ion-button (click)="add_historial()" expand="block">
-                    {{ 'historial.botones.añadir' | translate }}
-                  </ion-button>
+            <div class="botones-derecha">
+              <ion-button expand="block" (click)="abrirGaleria()">
+                <ion-icon name="image-outline" slot="start"></ion-icon>
+                {{ 'historial.botones.abrirGaleria' | translate }}
+              </ion-button>
 
-                  <ion-button [disabled]="formCliente.invalid" (click)="guardarBezeroHistoriala()" expand="block">
-                    {{ 'historial.botones.guardar' | translate }}
-                  </ion-button>
-                </div>
-              </ion-card-content>
-            </ion-card>
+              <ion-button (click)="add_historial()" expand="block">
+                {{ 'historial.botones.añadir' | translate }}
+              </ion-button>
+
+              <ion-button [disabled]="formCliente.invalid" (click)="guardarBezeroHistoriala()" expand="block">
+                {{ 'historial.botones.guardar' | translate }}
+              </ion-button>
+            </div>
           </form>
 
         </ion-content>
       </ng-template>
     </ion-modal>
-
-
 
   </ion-content>
