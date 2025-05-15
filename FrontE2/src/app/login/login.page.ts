@@ -1,43 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.page.html',
-    styleUrls: ['./login.page.scss'],
-    standalone: false
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
+  standalone: false
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   username: string = '';
   password: string = '';
   submitted: boolean = false;
-  loginMessage: string = ''; // Para mostrar el mensaje de validación
-  loginMessageType: 'success' | 'error' = 'error'; // Para controlar el tipo de mensaje (exito o error)
+  loginMessage: string = '';
+  loginMessageType: 'success' | 'error' = 'error';
   selectedLanguage: string = 'es';
 
-  constructor(private router: Router, private loginService: LoginServiceService, private translate: TranslateService) {}
+  private langSubscription!: Subscription;
+
+  constructor(
+    private router: Router,
+    private loginService: LoginServiceService,
+    private translate: TranslateService,
+    private languageService: LanguageService
+  ) {
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
+  }
 
   ngOnInit() {
-    this.translate.setDefaultLang(this.selectedLanguage);
+    // Suscribirse para actualizar idioma dinámicamente
+    this.langSubscription = this.languageService.currentLang$.subscribe(lang => {
+      this.selectedLanguage = lang;
+      this.translate.use(lang);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 
   selectLanguage(language: string) {
     this.selectedLanguage = language;
     this.changeLanguage();
   }
-  
 
   async onLogin() {
     this.submitted = true;
 
-    // Validar si los campos están vacíos
     if (!this.username || !this.password) {
       this.loginMessage = this.translate.instant('login.vacio');
       this.loginMessageType = 'error';

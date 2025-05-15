@@ -12,38 +12,61 @@
       </ion-select>
     </ion-toolbar>
   </ion-header>
+
   <ion-content [fullscreen]="true">
-    <ng-container *ngFor="let taldea of langileak">
-      <!-- Categoría -->
-      <ion-card>
-        <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
-          <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
-          <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
-        </ion-item>
-  
-        <!-- Lista de productos dentro de la categoría -->
-        <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
-          <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)">
-            <ion-label> {{ langile.izena }}</ion-label>
-            <ion-label> {{ langile.abizenak }} </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card>
-    </ng-container>
-  
+
+    <!-- 🔍 Tarjeta de búsqueda -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>🔎 Buscar alumno o grupo</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-searchbar
+          [(ngModel)]="searchTerm"
+          (ionInput)="filtrarLangileak()"
+          placeholder="Buscar por grupo o alumno">
+        </ion-searchbar>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- 📦 Tarjeta de contenidos -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>📦 Contenidos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+<ng-container *ngFor="let taldea of langileak">
+          <ion-card>
+            <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
+              <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
+              <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+            </ion-item>
+
+            <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
+              <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)">
+                <ion-label>{{ langile.izena }}</ion-label>
+                <ion-label>{{ langile.abizenak }}</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- 📊 Modal con gráfico -->
     <ion-modal [isOpen]="isGraphOpen" (ionModalDidDismiss)="closeGraphModal()" trigger="openGraphModal">
       <ng-template>
         <ion-header>
-          <ion-toolbar color="primary">
+          <ion-toolbar>
             <ion-title>📊 {{ 'graficos.graf' | translate }}</ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="closeGraphModal()">
-                <ion-icon name="close-circle-outline"></ion-icon> Cerrar
+              <ion-button fill="clear" (click)="closeGraphModal()">
+                <ion-icon name="close"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-      
+
         <ion-content class="ion-padding">
           <ion-card>
             <ion-card-header>
@@ -59,7 +82,6 @@
         </ion-content>
       </ng-template>
     </ion-modal>
-    
-    
+
   </ion-content>
 </ion-content>

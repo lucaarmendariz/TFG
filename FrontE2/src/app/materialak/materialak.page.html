@@ -161,7 +161,7 @@
               <!-- Grupo Select -->
               <ion-item>
                 <ion-select [(ngModel)]="selecTaldea" label="{{ 'materiales.modal.grupo' | translate }}"
-                  placeholder="{{ 'materiales.modal.seleccionaGrupo' | translate }}" (ionChange)="onGrupoChange()">
+                  placeholder="{{ 'materiales.modal.seleccionaGrupo' | translate }}" (ionChange)="onGrupoChange()" interface="popover">
                   <ion-select-option *ngFor="let taldea of alumnos" [value]="taldea.kodea">
                     {{ taldea.kodea }} : {{ taldea.izena }}
                   </ion-select-option>
@@ -174,9 +174,9 @@
               <!-- Alumno Select -->
               <ion-item>
                 <ion-select [(ngModel)]="selecAlumno" label="{{ 'materiales.modal.alumno' | translate }}"
-                  placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}" [disabled]="!selecTaldea">
-                  <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno.id">
-                    {{ alumno.id }} : {{ alumno.izena }}
+                  placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}" [disabled]="!selecTaldea" interface="popover">
+                  <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno.id" interface="popover">
+                    {{ alumno.izena }} {{ alumno.abizena }}
                   </ion-select-option>
                 </ion-select>
                 <ion-text color="danger" *ngIf="!selecAlumno">
@@ -263,7 +263,7 @@
                   <ion-label position="stacked">{{ 'materiales.modal.categoria' | translate }}</ion-label>
                   <ion-select [(ngModel)]="crearCategoria" name="categoria"
                     placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}" required
-                    #categoria="ngModel">
+                    #categoria="ngModel" interface="popover">
                     <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{ cat.izena
                       }}</ion-select-option>
                   </ion-select>
@@ -348,7 +348,7 @@
                 placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}"
                 required
                 #categoria="ngModel"
-              >
+              interface="popover">
                 <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">
                   {{ cat.izena }}
                 </ion-select-option>

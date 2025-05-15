@@ -7,6 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, IonModal } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -107,11 +108,8 @@ filtrarProductos() {
 
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   actualizarProductosSeleccionados(producto:any, kategoria_id: number) {
     producto.kategoria_id = kategoria_id;
@@ -475,9 +473,8 @@ kategoriaSortu(categoriaForm: NgForm) {
   }
 
 
-  constructor(private translate: TranslateService, private alertController: AlertController,private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+  constructor(private translate: TranslateService, private languageService: LanguageService, private alertController: AlertController,private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
+      this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
   
   ngOnInit() {

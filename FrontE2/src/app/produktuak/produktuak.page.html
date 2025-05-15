@@ -153,33 +153,37 @@
           <ion-card>
             <ion-card-header>
               <ion-card-title>{{ 'productos.tituloFormulario' | translate }}</ion-card-title>
-              
+
             </ion-card-header>
             <ion-card-content>
               <form #sacarProdForm="ngForm" (ngSubmit)="sacarProductos()" (ngSubmit)="sacarProdForm.resetForm()">
                 <ion-item>
-                  <ion-select [(ngModel)]="selecTaldea" name="selecTaldea" required #taldeaCtrl="ngModel" label="Taldea"
-                    placeholder="Selecciona a un grupo" (ionChange)="onGrupoChange()">
+                  <ion-select interface="popover" [(ngModel)]="selecTaldea" name="selecTaldea" required
+                    #taldeaCtrl="ngModel" label="Taldea" placeholder="Selecciona a un grupo"
+                    (ionChange)="onGrupoChange()">
                     <ion-select-option *ngFor="let taldea of alumnos" [value]="taldea.kodea">
                       {{ taldea.kodea }} : {{ taldea.izena }}
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
+
                 <ion-text color="danger" *ngIf="taldeaCtrl.invalid && taldeaCtrl.touched">
                   {{ "productos.validaciones.seleccionaGrupo" | translate }}
                 </ion-text>
 
                 <ion-item>
-                  <ion-select [(ngModel)]="selecAlumno" name="selecAlumno" required #alumnoCtrl="ngModel" label="Alumno"
-                    placeholder="Selecciona a un alumno">
+                  <ion-select interface="popover" [(ngModel)]="selecAlumno" name="selecAlumno" required
+                    [disabled]="!selecTaldea" #alumnoCtrl="ngModel" label="Alumno" placeholder="Selecciona a un alumno">
                     <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno.id">
                       {{ alumno.id }} : {{ alumno.izena }}
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
+
                 <ion-text color="danger" *ngIf="alumnoCtrl.invalid && alumnoCtrl.touched">
                   {{ "productos.validaciones.seleccionaAlumno" | translate }}
                 </ion-text>
+
 
                 <ion-card>
                   <ion-card-content>
@@ -199,16 +203,17 @@
 
                 <ion-grid>
                   <ion-row>
+
+                    <ion-col>
+                      <ion-button expand="block" (click)="prodAteraModal.dismiss()">
+                        Cancelar
+                      </ion-button>
+                    </ion-col>
                     <ion-col>
                       <!-- Botón de Confirmar -->
                       <ion-button type="submit" expand="block" [disabled]="sacarProdForm.invalid"
                         (click)="prodAteraModal.dismiss()">
                         Confirmar
-                      </ion-button>
-                    </ion-col>
-                    <ion-col>
-                      <ion-button expand="block" (click)="prodAteraModal.dismiss()">
-                        Cancelar
                       </ion-button>
                     </ion-col>
                   </ion-row>
@@ -222,96 +227,102 @@
 
 
     <ion-modal #modalSortu trigger="prod-sortu-modal">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ 'productos.botones.crearProductos' | translate }}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="modalSortu.dismiss()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{ 'productos.modal.crearProducto' | translate }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <form #crearProductoForm="ngForm" (ngSubmit)="crearProducto()">
-            <!-- Campos de entrada -->
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearNombre" name="nombre" required #nombre="ngModel" placeholder="Izena"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
-              {{ "productos.validaciones.nombre" | translate }}
-            </ion-text>
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{{ 'productos.botones.crearProductos' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="modalSortu.dismiss()">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{ 'productos.modal.crearProducto' | translate }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <form #crearProductoForm="ngForm" (ngSubmit)="crearProducto()">
+                <!-- Campos de entrada -->
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearNombre" name="nombre" required #nombre="ngModel"
+                    placeholder="Izena"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+                  {{ "productos.validaciones.nombre" | translate }}
+                </ion-text>
 
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.descripcion' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearDescripcion" name="descripcion" required #descripcion="ngModel" placeholder="Deskribapena"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">
-              {{ "productos.validaciones.descripcion" | translate }}
-            </ion-text>
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.descripcion' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearDescripcion" name="descripcion" required #descripcion="ngModel"
+                    placeholder="Deskribapena"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">
+                  {{ "productos.validaciones.descripcion" | translate }}
+                </ion-text>
 
-            <ion-item>
-              <ion-select [(ngModel)]="crearCategoria" name="categoria" required #categoria="ngModel" label="Kategoria" placeholder="Selecciona una kategoria">
-                <ion-select-option *ngFor="let cat of produktuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-text color="danger" *ngIf="categoria.invalid && categoria.touched">
-              {{ "productos.validaciones.categoria" | translate }}
-            </ion-text>
+                <ion-item>
+                  <ion-select [(ngModel)]="crearCategoria" name="categoria" required #categoria="ngModel"
+                    label="Kategoria" placeholder="Selecciona una kategoria">
+                    <ion-select-option *ngFor="let cat of produktuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <ion-text color="danger" *ngIf="categoria.invalid && categoria.touched">
+                  {{ "productos.validaciones.categoria" | translate }}
+                </ion-text>
 
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.marca' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearMarca" name="marca" required #marca="ngModel" placeholder="Marka"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="marca.invalid && marca.touched">
-              {{ "productos.validaciones.marca" | translate }}
-            </ion-text>
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.marca' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearMarca" name="marca" required #marca="ngModel"
+                    placeholder="Marka"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="marca.invalid && marca.touched">
+                  {{ "productos.validaciones.marca" | translate }}
+                </ion-text>
 
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.stock' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearStock" name="stock" required type="number" min="0" #stock="ngModel" placeholder="Stock"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="stock.invalid && stock.touched">
-              {{ "productos.validaciones.stock" | translate }}
-            </ion-text>
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.stock' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearStock" name="stock" required type="number" min="0" #stock="ngModel"
+                    placeholder="Stock"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="stock.invalid && stock.touched">
+                  {{ "productos.validaciones.stock" | translate }}
+                </ion-text>
 
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearStockAlerta" name="stockAlerta" required type="number" min="0" #stockAlerta="ngModel" placeholder="Stock alerta"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="stockAlerta.invalid && stockAlerta.touched">
-              {{ "productos.validaciones.stockAlerta" | translate }}
-            </ion-text>
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearStockAlerta" name="stockAlerta" required type="number" min="0"
+                    #stockAlerta="ngModel" placeholder="Stock alerta"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="stockAlerta.invalid && stockAlerta.touched">
+                  {{ "productos.validaciones.stockAlerta" | translate }}
+                </ion-text>
 
-            <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <!-- Botón de Confirmar -->
-                  <ion-button type="submit" expand="block" [disabled]="crearProductoForm.invalid">
-                    Confirmar
-                  </ion-button>
-                </ion-col>
-                <ion-col>
-                  <!-- Botón de Cancelar -->
-                  <ion-button expand="block" (click)="modalSortu.dismiss()">
-                    Cancelar
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </form>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      <!-- Botón de Cancelar -->
+                      <ion-button expand="block" (click)="modalSortu.dismiss()">
+                        Cancelar
+                      </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <!-- Botón de Confirmar -->
+                      <ion-button type="submit" expand="block" [disabled]="crearProductoForm.invalid">
+                        Confirmar
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </form>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
 
 
@@ -396,14 +407,14 @@
                 <ion-grid>
                   <ion-row>
                     <ion-col>
-                      <!-- Botón de Confirmar sin color -->
-                      <ion-button type="submit" expand="block" [disabled]="editarProductoForm.invalid">
-                        Confirmar </ion-button>
-                    </ion-col>
-                    <ion-col>
                       <!-- Botón de Cancelar sin color -->
                       <ion-button expand="block" (click)="closeProdModal()">
                         Cancelar </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <!-- Botón de Confirmar sin color -->
+                      <ion-button type="submit" expand="block" [disabled]="editarProductoForm.invalid">
+                        Confirmar </ion-button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -448,14 +459,14 @@
                 <ion-grid>
                   <ion-row>
                     <ion-col>
-                      <!-- Botón de Confirmar sin color -->
-                      <ion-button type="submit" expand="block" [disabled]="editarCategoriaForm.invalid">
-                        Confirmar </ion-button>
-                    </ion-col>
-                    <ion-col>
                       <!-- Botón de Cancelar sin color -->
                       <ion-button expand="block" (click)="closeKatModal()">
                         Cancelar </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <!-- Botón de Confirmar sin color -->
+                      <ion-button type="submit" expand="block" [disabled]="editarCategoriaForm.invalid">
+                        Confirmar </ion-button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -469,55 +480,56 @@
 
 
     <ion-modal #catprodsormodal trigger="cat-prod-sortu-modal">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
-        <!-- Botón de cierre en la esquina superior derecha -->
-        <ion-buttons slot="end">
-          <ion-button (click)="catprodsormodal.dismiss()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <form #categoriaForm="ngForm" (ngSubmit)="kategoriaSortu(categoriaForm)">
-            <ion-item>
-              <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
-              <ion-input [(ngModel)]="crearKatNombre" name="nombre" required #nombre="ngModel" placeholder="Izena"></ion-input>
-            </ion-item>
-            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
-              {{ "productos.validaciones.nombre" | translate }}
-            </ion-text>
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
+            <!-- Botón de cierre en la esquina superior derecha -->
+            <ion-buttons slot="end">
+              <ion-button (click)="catprodsormodal.dismiss()">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <form #categoriaForm="ngForm" (ngSubmit)="kategoriaSortu(categoriaForm)">
+                <ion-item>
+                  <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
+                  <ion-input [(ngModel)]="crearKatNombre" name="nombre" required #nombre="ngModel"
+                    placeholder="Izena"></ion-input>
+                </ion-item>
+                <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+                  {{ "productos.validaciones.nombre" | translate }}
+                </ion-text>
 
-            <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <!-- Botón de Confirmar -->
-                  <ion-button type="submit" expand="block" [disabled]="categoriaForm.invalid">
-                    Confirmar
-                  </ion-button>
-                </ion-col>
-                <ion-col>
-                  <!-- Botón de Cancelar -->
-                  <ion-button expand="block" (click)="catprodsormodal.dismiss()">
-                    Cancelar
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </form>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      <!-- Botón de Cancelar -->
+                      <ion-button expand="block" (click)="catprodsormodal.dismiss()">
+                        Cancelar
+                      </ion-button>
+                    </ion-col>
+                    <ion-col>
+                      <!-- Botón de Confirmar -->
+                      <ion-button type="submit" expand="block" [disabled]="categoriaForm.invalid">
+                        Confirmar
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </form>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
 
 

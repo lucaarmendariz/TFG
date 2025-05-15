@@ -10,6 +10,7 @@ import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { Observable } from 'rxjs';
+import { LanguageService } from '../zerbitzuak/language.service';
 register();
 
 
@@ -67,10 +68,11 @@ export class HistorialaPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private languageService: LanguageService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+    
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
 
     this.bezeroForm = this.fb.group({
       izena: ['', Validators.required],
@@ -692,11 +694,8 @@ guardarBezeroHistoriala(){
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   lortuData(): string {
     const gaur = new Date();

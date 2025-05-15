@@ -11,6 +11,7 @@ import { AlertController, ModalController, NavController } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
 import { BezeroService } from '../zerbitzuak/bezero.service';
 import { NuevaCitaModalPage } from '../nueva-cita-modal/nueva-cita-modal.page';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 
 @Component({
@@ -598,10 +599,9 @@ async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
 
   constructor(private changeDetector: ChangeDetectorRef, private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController,
     private http: HttpClient, private modalController: ModalController, private alertController: AlertController,
-    private bezeroService: BezeroService, private citaService: CitaService,
+    private bezeroService: BezeroService, private citaService: CitaService, private languageService: LanguageService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+      this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
   ngOnInit() {
@@ -1032,11 +1032,8 @@ calculateElapsedTime(cita: any): string {
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   limpiar_campos() {
     this.tratamenduSelec = [];

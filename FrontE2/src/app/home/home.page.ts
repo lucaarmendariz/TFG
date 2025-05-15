@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
     selector: 'app-home',
@@ -12,6 +14,8 @@ import { environment } from 'src/environments/environment';
     standalone: false
 })
 export class HomePage implements OnInit {
+    @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   ikasle!: boolean;
   selectedLanguage: string = 'es';
   produktuak:any []=[];
@@ -20,8 +24,11 @@ export class HomePage implements OnInit {
     private loginService: LoginServiceService,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private languageService: LanguageService
+  ) {
+  this.selectedLanguage = this.languageService.getCurrentLanguage();
+  }
 
   ngOnInit() {
     this.ikasle = this.loginService.isAlumno();
@@ -41,8 +48,8 @@ export class HomePage implements OnInit {
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
 produktuakLortu() {
     this.http.get(`${environment.url}produktu_kategoria`, {
