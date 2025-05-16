@@ -309,6 +309,7 @@
     }
   },
   "ikaslePage": {
+    "precioExtra": "Precio Extra",
     "placeholderBusqueda": "Buscar por cliente, langile, servicio, tratamiento o asiento",
     "cambio": "Cambio",
     "dineroRecibido": "Dinero recibido",

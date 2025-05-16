@@ -292,6 +292,7 @@
         }
     },
     "ikaslePage": {
+        "precioExtra": "Precio Extra",
         "placeholderBusqueda": "Bezeroa, langilea, zerbitzua, tratamendua edo eserlekua bilatu",
         "cambio": "Aldaketak",
         "dineroRecibido": "Jasotako dirua",
