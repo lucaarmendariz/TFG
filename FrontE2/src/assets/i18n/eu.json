@@ -88,6 +88,9 @@
         },
         "mensajes": {
             "sinResultados": "Ez dago bilaketa honekin bateragarria den produkturik"
+        },
+        "toast": {
+            "img": "Bezero honek ez dauka argazkiak galerian"
         }
     },
     "materiales": {
@@ -206,15 +209,15 @@
     "historial": {
         "titulo": "Historiala",
         "botones": {
-            "abrirGaleria": "Abrir Galeria",
+            "abrirGaleria": "Galeria ireki",
             "productos": "Produktu mugimenduak",
             "materiales": "Material mugimenduak",
             "ticket": "Ticket-ak",
             "cliente": "Bezero historiala",
             "crear": "Sortu",
-            "añadir": "Añadir",
+            "añadir": "Gehitu",
             "guardar": "Gorde",
-            "editar": "Editar"
+            "editar": "Editatu"
         },
         "modal": {
             "entrada": "Hitzordu historiala",
@@ -387,12 +390,12 @@
         }
     },
     "seleccionarCliente": {
-    "titulo": "Bezeroa Hautatu",
-    "buscarPlaceholder": "Bilatu izenaren, abizenaren edo telefonoaren arabera",
-    "listaTitulo": "Bezeroen Zerrenda",
-    "asignarBtn": "Esleitu",
-    "crearNuevoBtn": "Bezero berria sortu"
-  },
+        "titulo": "Bezeroa Hautatu",
+        "buscarPlaceholder": "Bilatu izenaren, abizenaren edo telefonoaren arabera",
+        "listaTitulo": "Bezeroen Zerrenda",
+        "asignarBtn": "Esleitu",
+        "crearNuevoBtn": "Bezero berria sortu"
+    },
     "txandakPage": {
         "titulo": "Txandak",
         "botonAñadir": "Txanda Gehitu",

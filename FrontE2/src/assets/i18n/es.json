@@ -88,6 +88,9 @@
     },
     "mensajes": {
       "sinResultados": "No existen productos compatibles con esta búsqueda"
+    },
+    "toast": {
+      "img": "Este usuario no tiene imagenes en la galeria"
     }
   },
   "materiales": {
