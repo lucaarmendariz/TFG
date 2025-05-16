@@ -5,3 +5,14 @@
   display: flex;
   flex-direction: column;
 }
+
+.cliente-card-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.cliente-card {
+  width: 90%;
+  max-width: 400px;
+}

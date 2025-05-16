@@ -552,37 +552,62 @@ filtrarTickets() {
   }
 
   async eliminar_historial(historial: any) {
-    // Si ya tiene ID, confirmamos la eliminación
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que deseas eliminar este historial?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Eliminar',
-          role: 'destructive',
-          handler: () => {
-            this.delete(historial.id).subscribe({
-              next: () => {
-                console.log('Historial eliminado:', historial.id);
-                // Filtrar el historial eliminando el objeto con ese id
-                this.editingBezero.historiala = this.editingBezero.historiala.filter(
-                  (h: { id: number }) => h.id !== historial.id
-                );
-              },
-              error: (err) => {
-                console.error('Error al eliminar historial:', err);
-              }
-            });
+  const header = this.translate.instant('historian.alerta.titulo');
+  const message = this.translate.instant('historian.alerta.mensaje');
+  const cancelar = this.translate.instant('comun.cancelar');
+  const eliminar = this.translate.instant('comun.eliminar');
+
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: [
+      {
+        text: cancelar,
+        role: 'cancel'
+      },
+      {
+        text: eliminar,
+        role: 'destructive',
+        handler: () => {
+          if (!historial.id || !this.historialCompleto(historial)) {
+            // Eliminar del frontend si está incompleto o no tiene ID
+            this.editingBezero.historiala = this.editingBezero.historiala.filter(
+              (h: any) => h !== historial
+            );
+            console.log('Historial eliminado localmente.');
+            return;
           }
+
+          // Eliminar del backend y frontend
+          this.delete(historial.id).subscribe({
+            next: () => {
+              console.log('Historial eliminado del backend:', historial.id);
+              this.editingBezero.historiala = this.editingBezero.historiala.filter(
+                (h: any) => h.id !== historial.id
+              );
+            },
+            error: (err) => {
+              console.error('Error al eliminar historial:', err);
+            }
+          });
         }
-      ]
-    });
-    await alert.present();
-  }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+historialCompleto(historial: any): boolean {
+  return (
+    historial.id_produktua != null &&
+    historial.data != null &&
+    historial.kantitatea != null
+  );
+}
+
+
 
 
   guardarBezero() {
@@ -660,39 +685,46 @@ guardarBezeroHistoriala(){
   }
 
   async deleteBezero(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que deseas eliminar este cliente?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            const json_data = { id };
-            this.http.delete(`${environment.url}bezero_fitxak`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-              },
-              body: json_data
-            }).subscribe(
-              () => {
-                this.cargarClientes();
-              },
-              (error) => {
-                console.error("Error al eliminar el cliente:", error);
-              }
-            );
-          }
+  const header = this.translate.instant('cliente.alerta.titulo');
+  const message = this.translate.instant('cliente.alerta.mensaje');
+  const cancelar = this.translate.instant('comun.cancelar');
+  const eliminar = this.translate.instant('comun.eliminar');
+
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: [
+      {
+        text: cancelar,
+        role: 'cancel',
+        cssClass: 'secondary'
+      },
+      {
+        text: eliminar,
+        handler: () => {
+          const json_data = { id };
+          this.http.delete(`${environment.url}bezero_fitxak`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: json_data
+          }).subscribe(
+            () => {
+              this.cargarClientes();
+            },
+            (error) => {
+              console.error("Error al eliminar el cliente:", error);
+            }
+          );
         }
-      ]
-    });
-    await alert.present();
-  }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
   changeLanguage() {
   this.languageService.setLanguage(this.selectedLanguage);

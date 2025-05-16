@@ -1,4 +1,14 @@
 {
+  "historian": {
+    "alerta": {
+      "titulo": "Confirmar eliminación",
+      "mensaje": "¿Estás seguro de que deseas eliminar este historial?"
+    }
+  },
+  "comun": {
+    "cancelar": "Cancelar",
+    "eliminar": "Eliminar"
+  },
   "login": {
     "user": "Usuario",
     "password": "Contraseña",
@@ -235,7 +245,8 @@
       "buscar": "Bilatu",
       "BuscarAlumnoGrupoProducto": "Buscar alumno, grupo o producto",
       "BuscarNombreId": "Buscar nombre, id o precio total",
-      "BuscarTrabajadorGrupo": "Buscar trabajador, grupo o material"
+      "BuscarTrabajadorGrupo": "Buscar trabajador, grupo o material",
+      "seleccionarProducto": "Selecciona un producto"
     },
     "validaciones": {
       "nombre": "El nombre es obligatorio",
@@ -277,7 +288,6 @@
       "filtro": "Busca nombre o categoria",
       "imagen": "Subir imagen",
       "seleccionarimagen": "Seleccionar imagen del servidor"
-
     },
     "botones": {
       "crearServicio": "Añadir servicio",
@@ -429,12 +439,23 @@
     "TxandaEzabatuta": "Turno eliminado correctamente",
     "TxandaEzabatutaArazoa": "Error al borrar el Turno"
   },
+  "seleccionarCliente": {
+    "titulo": "Seleccionar Cliente",
+    "buscarPlaceholder": "Buscar por nombre, apellido o teléfono",
+    "listaTitulo": "Lista de Clientes",
+    "asignarBtn": "Asignar",
+    "crearNuevoBtn": "Crear nuevo cliente"
+  },
   "graficos": {
     "title": "Graficos",
     "graf": "Gráfico de Servicios",
     "analisis": "Análisis de Servicios"
   },
   "cliente": {
+    "alerta": {
+      "titulo": "Confirmar eliminación",
+      "mensaje": "¿Estás seguro de que deseas eliminar este cliente?"
+    },
     "crearTitulo": "Añadir Cliente",
     "nombre": "Nombre",
     "apellido": "Apellido",
@@ -453,6 +474,7 @@
     "descripcionPlaceholder": "Descripción de la cita",
     "perteneceCentro": "¿Pertenece al centro?",
     "verGaleria": "Ver Galería del Cliente",
-    "confirmar": "Confirmar Cita"
+    "confirmar": "Confirmar Cita",
+    "cambiarCliente": "Cambiar cliente"
   }
 }

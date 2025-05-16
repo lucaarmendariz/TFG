@@ -8,6 +8,8 @@ import { NuevaCitaModalPageRoutingModule } from './nueva-cita-modal-routing.modu
 
 import { NuevaCitaModalPage } from './nueva-cita-modal.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { ModalSeleccionPage } from '../modal-seleccion/modal-seleccion.page';
+import { ModalSeleccionPageModule } from '../modal-seleccion/modal-seleccion.module';
 
 @NgModule({
   imports: [
@@ -16,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     NuevaCitaModalPageRoutingModule,
     TranslateModule,
+    ModalSeleccionPageModule  // <-- importa el módulo
   ],
   declarations: [NuevaCitaModalPage]
 })

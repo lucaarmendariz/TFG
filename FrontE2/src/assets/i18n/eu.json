@@ -8,6 +8,16 @@
         "messageFail": "Erabiltzailea edo pasahitza okerra.",
         "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
     },
+    "historian": {
+        "alerta": {
+            "titulo": "Ezabatzeko berrespena",
+            "mensaje": "Ziur zaude historia hau ezabatu nahi duzula?"
+        }
+    },
+    "comun": {
+        "cancelar": "Utzi",
+        "eliminar": "Ezabatu"
+    },
     "menu": {
         "title": "Menua",
         "accesosRapidos": "Sarbide Azkarrak",
@@ -234,7 +244,8 @@
             "buscar": "Bilatu",
             "BuscarAlumnoGrupoProducto": "Bilatu ikasle, talde edo produktu",
             "BuscarNombreId": "Bilatu izena, id edo prezio totala",
-            "BuscarTrabajadorGrupo": "Bilatu langile, talde edo materiala"
+            "BuscarTrabajadorGrupo": "Bilatu langile, talde edo materiala",
+            "seleccionarProducto": "Aukeratu produktu bat"
         },
         "validaciones": {
             "nombre": "Izena derrigorrezkoa da",
@@ -375,6 +386,13 @@
             "insertarAlumno": "Ikasle bat esleitu behar duzu tiket bat sortu aurretik"
         }
     },
+    "seleccionarCliente": {
+    "titulo": "Bezeroa Hautatu",
+    "buscarPlaceholder": "Bilatu izenaren, abizenaren edo telefonoaren arabera",
+    "listaTitulo": "Bezeroen Zerrenda",
+    "asignarBtn": "Esleitu",
+    "crearNuevoBtn": "Bezero berria sortu"
+  },
     "txandakPage": {
         "titulo": "Txandak",
         "botonAñadir": "Txanda Gehitu",
@@ -416,6 +434,10 @@
         "analisis": "Zerbitzuen Analisia"
     },
     "cliente": {
+        "alerta": {
+            "titulo": "Ezabatzeko berrespena",
+            "mensaje": "Ziur zaude bezero hau ezabatu nahi duzula?"
+        },
         "crearTitulo": "Bezeroa Gehitu",
         "nombre": "Izena",
         "apellido": "Abizena",
@@ -434,6 +456,7 @@
         "descripcionPlaceholder": "Bisitariaren deskribapena",
         "perteneceCentro": "Zentrora dagozkion?",
         "verGaleria": "Bezeroaren Galeria Ikusi",
-        "confirmar": "Baieztatu"
+        "confirmar": "Baieztatu",
+        "cambiarCliente": "Aldatu bezeroa"
     }
 }

@@ -9,18 +9,21 @@ import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../zerbitzuak/language.service';
 import { Subscription } from 'rxjs';
+import { ModalSeleccionPage } from '../modal-seleccion/modal-seleccion.page';
 
 @Component({
-    selector: 'app-nueva-cita-modal',
-    templateUrl: './nueva-cita-modal.page.html',
-    styleUrls: ['./nueva-cita-modal.page.scss'],
-    standalone: false
+  selector: 'app-nueva-cita-modal',
+  templateUrl: './nueva-cita-modal.page.html',
+  styleUrls: ['./nueva-cita-modal.page.scss'],
+  standalone: false
 })
 export class NuevaCitaModalPage implements OnInit, OnDestroy {
   bezeroak: any[] = [];
   clienteId: string = '';
   descripcion: string = '';
   esCentro: boolean = false;
+  clienteSeleccionado: any = null;
+
 
   selectedLanguage: string = 'es';
   private langSubscription!: Subscription;
@@ -50,7 +53,7 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
     private toastController: ToastController,
     private translate: TranslateService,
     private languageService: LanguageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.selectedLanguage = this.languageService.getCurrentLanguage();
@@ -63,12 +66,12 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
 
     // 1. Traer la cita seleccionada desde el otro componente
     const cita = this.citaService.getCita();
-  
+
     this.citaCrear.data = cita.data;
     this.citaCrear.hasieraOrdua = cita.hasieraOrdua;
     this.citaCrear.amaieraOrdua = cita.amaieraOrdua;
     this.citaCrear.eserlekua = cita.eserlekua;
-    
+
     // 2. Cargar clientes
     this.bezeroService.cargarClientes();
     this.bezeroService.bezeroak$.subscribe((clientes) => {
@@ -81,7 +84,7 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
       this.langSubscription.unsubscribe();
     }
   }
-  
+
   async abrirGaleria() {
     const clienteSeleccionado = this.bezeroak.find(b => b.id === this.clienteId);
 
@@ -179,7 +182,7 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
       "deskribapena": deskribapena,
       "etxekoa": etxekoa ? "E" : "K"
     };
-    
+
     this.http.post(`${environment.url}hitzorduak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -202,4 +205,29 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
   cancelar() {
     this.modalController.dismiss(null, 'cancel');
   }
+  async abrirSelectorClientes() {
+    const modal = await this.modalController.create({
+      component: ModalSeleccionPage,
+      componentProps: {
+        clientes: this.bezeroak  // tu lista de clientes
+      }
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+if (data) {
+  this.clienteId = data.id;
+  this.clienteSeleccionado = data;  // Guardamos el cliente completo
+  this.descripcion = '';
+  this.esCentro = false;
+}
+
+  }
+
+  getClienteNombreCompleto(id: string): string {
+  const cliente = this.bezeroak.find(c => c.id === id);
+  return cliente ? `${cliente.izena} ${cliente.abizena}` : '';
+}
+
 }

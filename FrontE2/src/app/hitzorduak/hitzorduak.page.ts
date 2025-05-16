@@ -14,10 +14,10 @@ import { LanguageService } from '../zerbitzuak/language.service';
 
 
 @Component({
-    selector: 'app-hitzorduak',
-    templateUrl: './hitzorduak.page.html',
-    styleUrls: ['./hitzorduak.page.scss'],
-    standalone: false
+  selector: 'app-hitzorduak',
+  templateUrl: './hitzorduak.page.html',
+  styleUrls: ['./hitzorduak.page.scss'],
+  standalone: false
 })
 export class HitzorduakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
@@ -55,43 +55,43 @@ export class HitzorduakPage implements OnInit {
 
   segmentoActivo: string = 'editatu';
 
- // Método para filtrar las citas
- filtrarCitas() {
-  const texto = this.filtroBusqueda?.toLowerCase() || '';
+  // Método para filtrar las citas
+  filtrarCitas() {
+    const texto = this.filtroBusqueda?.toLowerCase() || '';
 
-  if (!texto.trim()) {
-    // Si no hay texto, mostrar todas las citas
-    this.hitzorduArrayFiltrado = [...this.hitzorduArray];
-    return;
+    if (!texto.trim()) {
+      // Si no hay texto, mostrar todas las citas
+      this.hitzorduArrayFiltrado = [...this.hitzorduArray];
+      return;
+    }
+
+    this.hitzorduArrayFiltrado = this.hitzorduArray.filter((cita: any) => {
+      const cliente = cita.izena?.toLowerCase() || '';
+      const telefono = cita.telefonoa?.toLowerCase() || '';
+      const langile = cita.langilea?.izena?.toLowerCase() || '';
+      const tratamiento = cita.etxekoa === 'E' ? 'etxekoa' : 'kanpokoa';
+      const asiento = String(cita.eserlekua);
+      const servicios = (cita.zerbitzuak || [])
+        .map((s: any) => s.izena?.toLowerCase())
+        .join(' ');
+
+      return (
+        cliente.includes(texto) ||
+        langile.includes(texto) ||
+        tratamiento.includes(texto) ||
+        asiento.includes(texto) ||
+        servicios.includes(texto) ||
+        telefono.includes(texto)
+      );
+    });
   }
 
-  this.hitzorduArrayFiltrado = this.hitzorduArray.filter((cita: any) => {
-    const cliente = cita.izena?.toLowerCase() || '';
-    const telefono = cita.telefonoa?.toLowerCase() || '';
-    const langile = cita.langilea?.izena?.toLowerCase() || '';
-    const tratamiento = cita.etxekoa === 'E' ? 'etxekoa' : 'kanpokoa';
-    const asiento = String(cita.eserlekua);
-    const servicios = (cita.zerbitzuak || [])
-      .map((s: any) => s.izena?.toLowerCase())
-      .join(' ');
-
-    return (
-      cliente.includes(texto) ||
-      langile.includes(texto) ||
-      tratamiento.includes(texto) ||
-      asiento.includes(texto) ||
-      servicios.includes(texto) ||
-      telefono.includes(texto)
-    );
-  });
-}
-
-isGenerarTicketDisabled(): boolean {
-  // Verificar si el alumno está seleccionado, al menos un servicio está seleccionado, y el dinero recibido es mayor que 0
-  return !(this.citaEditar.langilea &&
-           this.tratamenduArray.some(katTrat => katTrat.zerbitzuak.some((trat: any) => trat.selected)) &&
-           this.dineroCliente > 0);
-}
+  isGenerarTicketDisabled(): boolean {
+    // Verificar si el alumno está seleccionado, al menos un servicio está seleccionado, y el dinero recibido es mayor que 0
+    return !(this.citaEditar.langilea &&
+      this.tratamenduArray.some(katTrat => katTrat.zerbitzuak.some((trat: any) => trat.selected)) &&
+      this.dineroCliente > 0);
+  }
 
 
   cambiarCliente(telefonoSeleccionado: string) {
@@ -222,19 +222,19 @@ isGenerarTicketDisabled(): boolean {
         this.secondCell = { time, seat: eserlekua };
 
         // Validar que los asientos coincidan
-      if (this.firstCell?.seat !== this.secondCell.seat) {
-        // Resetear los campos si el asiento ha cambiado
-        this.limpiar_campos();
-        
-        // Actualizar las celdas resaltadas inmediatamente con el nuevo asiento
-        this.firstCell = { time, seat: eserlekua };
-        this.highlightedCells = [{ time, seat: eserlekua }];
-        
-        // Llamar a updateHighlightedCells para reflejar los cambios
-        this.updateHighlightedCells();
-        this.resetSelectionToFirst();
-        return;
-      }
+        if (this.firstCell?.seat !== this.secondCell.seat) {
+          // Resetear los campos si el asiento ha cambiado
+          this.limpiar_campos();
+
+          // Actualizar las celdas resaltadas inmediatamente con el nuevo asiento
+          this.firstCell = { time, seat: eserlekua };
+          this.highlightedCells = [{ time, seat: eserlekua }];
+
+          // Llamar a updateHighlightedCells para reflejar los cambios
+          this.updateHighlightedCells();
+          this.resetSelectionToFirst();
+          return;
+        }
 
         // Ordenar las horas sin importar el orden de selección
         const index1 = this.hoursArray.indexOf(this.firstCell.time);
@@ -244,7 +244,7 @@ isGenerarTicketDisabled(): boolean {
 
         // Verificar si ya existe una cita entre el rango de tiempo
         const citasEnRango = await this.verificarCitasExistentes(inicioIndex, finIndex, eserlekua);
-        
+
         if (citasEnRango.length > 0) {
           // Si ya hay citas en el rango, mostrar alerta
           this.mostrarAlertaSuperposicion();
@@ -276,136 +276,136 @@ isGenerarTicketDisabled(): boolean {
   }
 
   // Método para verificar si hay citas existentes entre dos horas
-async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua: number) {
-  // Recorremos todas las citas para verificar si se solapan con el rango de tiempo seleccionado
-  return this.hitzorduArray.filter((cita: any) => {
-    const citaInicioIndex = this.hoursArray.indexOf(cita.hasieraOrdua);
-    const citaFinIndex = this.hoursArray.indexOf(cita.amaieraOrdua);
+  async verificarCitasExistentes(inicioIndex: number, finIndex: number, eserlekua: number) {
+    // Recorremos todas las citas para verificar si se solapan con el rango de tiempo seleccionado
+    return this.hitzorduArray.filter((cita: any) => {
+      const citaInicioIndex = this.hoursArray.indexOf(cita.hasieraOrdua);
+      const citaFinIndex = this.hoursArray.indexOf(cita.amaieraOrdua);
 
-    // Verificamos si la cita se solapa con el rango de la selección
-    const solapa = (cita.eserlekua === eserlekua) &&
-                   ((citaInicioIndex < finIndex && citaFinIndex > inicioIndex));
-    return solapa;
-  });
-}
-
-bloqueoHoraInicio: Date | null = null;
-bloqueoHoraFin: Date | null = null;
-
-
-ajustarHora(campo: 'hasieraOrdua' | 'amaieraOrdua', incremento: number): void {
-  const fecha = this.citaEditar.data;
-  const horaActual = this.citaEditar[campo];
-
-  if (!fecha || !horaActual) {
-    console.warn("Fecha u hora inválida al ajustar");
-    return;
+      // Verificamos si la cita se solapa con el rango de la selección
+      const solapa = (cita.eserlekua === eserlekua) &&
+        ((citaInicioIndex < finIndex && citaFinIndex > inicioIndex));
+      return solapa;
+    });
   }
 
-  const horaNueva = new Date(`${fecha}T${horaActual}`);
+  bloqueoHoraInicio: Date | null = null;
+  bloqueoHoraFin: Date | null = null;
 
-  // Comprobar bloqueos
-  if (campo === 'hasieraOrdua' && this.bloqueoHoraInicio) {
-    if ((incremento > 0 && horaNueva >= this.bloqueoHoraInicio) || (incremento < 0 && horaNueva <= this.bloqueoHoraInicio)) {
-      console.log('Ajuste bloqueado para hora de inicio');
+
+  ajustarHora(campo: 'hasieraOrdua' | 'amaieraOrdua', incremento: number): void {
+    const fecha = this.citaEditar.data;
+    const horaActual = this.citaEditar[campo];
+
+    if (!fecha || !horaActual) {
+      console.warn("Fecha u hora inválida al ajustar");
       return;
     }
-  }
-  if (campo === 'amaieraOrdua' && this.bloqueoHoraFin) {
-    if ((incremento > 0 && horaNueva >= this.bloqueoHoraFin) || (incremento < 0 && horaNueva <= this.bloqueoHoraFin)) {
-      console.log('Ajuste bloqueado para hora de fin');
+
+    const horaNueva = new Date(`${fecha}T${horaActual}`);
+
+    // Comprobar bloqueos
+    if (campo === 'hasieraOrdua' && this.bloqueoHoraInicio) {
+      if ((incremento > 0 && horaNueva >= this.bloqueoHoraInicio) || (incremento < 0 && horaNueva <= this.bloqueoHoraInicio)) {
+        console.log('Ajuste bloqueado para hora de inicio');
+        return;
+      }
+    }
+    if (campo === 'amaieraOrdua' && this.bloqueoHoraFin) {
+      if ((incremento > 0 && horaNueva >= this.bloqueoHoraFin) || (incremento < 0 && horaNueva <= this.bloqueoHoraFin)) {
+        console.log('Ajuste bloqueado para hora de fin');
+        return;
+      }
+    }
+
+    horaNueva.setMinutes(horaNueva.getMinutes() + incremento);
+
+    const horaFormateada = horaNueva.toTimeString().substring(0, 5) + ':00';
+    const citaTemp = { ...this.citaEditar, [campo]: horaFormateada };
+
+    // Validaciones de hora
+    const horaMin = campo === 'hasieraOrdua' ? '09:00:00' : '09:00:00';
+    const horaMax = campo === 'amaieraOrdua' ? '14:30:00' : '14:00:00';
+
+    if (horaFormateada < horaMin || horaFormateada > horaMax) {
+      console.log('Hora fuera de límites permitidos');
       return;
     }
+
+    // Prevenir que la hora de inicio sea igual o posterior a la de fin
+    if (campo === 'hasieraOrdua' && horaFormateada >= this.citaEditar.amaieraOrdua) return;
+    if (campo === 'amaieraOrdua' && horaFormateada <= this.citaEditar.hasieraOrdua) return;
+
+    // Comprobar solapamiento
+    const haySuperposicion = this.checkSuperposicion(citaTemp);
+
+    if (haySuperposicion) {
+      // Bloquear ajustes en esta dirección
+      if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = horaNueva;
+      if (campo === 'amaieraOrdua') this.bloqueoHoraFin = horaNueva;
+
+      this.mostrarAlertaSuperposicion();
+      return;
+    }
+
+    // Si no hay superposición, aplicar hora nueva y limpiar bloqueo
+    this.citaEditar[campo] = horaFormateada;
+    if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = null;
+    if (campo === 'amaieraOrdua') this.bloqueoHoraFin = null;
   }
 
-  horaNueva.setMinutes(horaNueva.getMinutes() + incremento);
 
-  const horaFormateada = horaNueva.toTimeString().substring(0, 5) + ':00';
-  const citaTemp = { ...this.citaEditar, [campo]: horaFormateada };
-
-  // Validaciones de hora
-  const horaMin = campo === 'hasieraOrdua' ? '09:00:00' : '09:00:00';
-  const horaMax = campo === 'amaieraOrdua' ? '14:30:00' : '14:00:00';
-
-  if (horaFormateada < horaMin || horaFormateada > horaMax) {
-    console.log('Hora fuera de límites permitidos');
-    return;
-  }
-
-  // Prevenir que la hora de inicio sea igual o posterior a la de fin
-  if (campo === 'hasieraOrdua' && horaFormateada >= this.citaEditar.amaieraOrdua) return;
-  if (campo === 'amaieraOrdua' && horaFormateada <= this.citaEditar.hasieraOrdua) return;
-
-  // Comprobar solapamiento
-  const haySuperposicion = this.checkSuperposicion(citaTemp);
-
-  if (haySuperposicion) {
-    // Bloquear ajustes en esta dirección
-    if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = horaNueva;
-    if (campo === 'amaieraOrdua') this.bloqueoHoraFin = horaNueva;
-
-    this.mostrarAlertaSuperposicion();
-    return;
-  }
-
-  // Si no hay superposición, aplicar hora nueva y limpiar bloqueo
-  this.citaEditar[campo] = horaFormateada;
-  if (campo === 'hasieraOrdua') this.bloqueoHoraInicio = null;
-  if (campo === 'amaieraOrdua') this.bloqueoHoraFin = null;
-}
-
-
-checkSuperposicion(cita: any): boolean {
-  if (!cita || !cita.data || !cita.hasieraOrdua || !cita.amaieraOrdua || cita.eserlekua == null) {
-    return false;
-  }
-
-  const inicioNueva = new Date(`${cita.data}T${cita.hasieraOrdua}`);
-  const finNueva = new Date(`${cita.data}T${cita.amaieraOrdua}`);
-
-  return this.hitzorduak.some((otraCita: any) => {
-    if (
-      otraCita.id === cita.id || // no compararse consigo misma
-      otraCita.data !== cita.data ||
-      otraCita.eserlekua !== cita.eserlekua
-    ) {
+  checkSuperposicion(cita: any): boolean {
+    if (!cita || !cita.data || !cita.hasieraOrdua || !cita.amaieraOrdua || cita.eserlekua == null) {
       return false;
     }
 
-    const inicioOtra = new Date(`${otraCita.data}T${otraCita.hasieraOrdua}`);
-    const finOtra = new Date(`${otraCita.data}T${otraCita.amaieraOrdua}`);
+    const inicioNueva = new Date(`${cita.data}T${cita.hasieraOrdua}`);
+    const finNueva = new Date(`${cita.data}T${cita.amaieraOrdua}`);
 
-    // Verificar solapamiento
-    return (
-      (inicioNueva < finOtra) && (finNueva > inicioOtra)
-    );
-  });
-}
+    return this.hitzorduak.some((otraCita: any) => {
+      if (
+        otraCita.id === cita.id || // no compararse consigo misma
+        otraCita.data !== cita.data ||
+        otraCita.eserlekua !== cita.eserlekua
+      ) {
+        return false;
+      }
+
+      const inicioOtra = new Date(`${otraCita.data}T${otraCita.hasieraOrdua}`);
+      const finOtra = new Date(`${otraCita.data}T${otraCita.amaieraOrdua}`);
+
+      // Verificar solapamiento
+      return (
+        (inicioNueva < finOtra) && (finNueva > inicioOtra)
+      );
+    });
+  }
 
 
-async mostrarAlertaHorasIguales() {
-  const alert = await this.alertController.create({
-    header: 'Horas inválidas',
-    message: 'La hora de inicio y la de fin no pueden ser iguales.',
-    buttons: ['Entendido']
-  });
+  async mostrarAlertaHorasIguales() {
+    const alert = await this.alertController.create({
+      header: 'Horas inválidas',
+      message: 'La hora de inicio y la de fin no pueden ser iguales.',
+      buttons: ['Entendido']
+    });
 
-  await alert.present();
-}
+    await alert.present();
+  }
 
-async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
-  const mensaje = tipo === 'inicio'
-    ? 'La hora de inicio no puede ser antes de las 09:00.'
-    : 'La hora de fin no puede ser después de las 14:30.';
+  async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
+    const mensaje = tipo === 'inicio'
+      ? 'La hora de inicio no puede ser antes de las 09:00.'
+      : 'La hora de fin no puede ser después de las 14:30.';
 
-  const alert = await this.alertController.create({
-    header: 'Horario no permitido',
-    message: mensaje,
-    buttons: ['Aceptar']
-  });
+    const alert = await this.alertController.create({
+      header: 'Horario no permitido',
+      message: mensaje,
+      buttons: ['Aceptar']
+    });
 
-  await alert.present();
-}
+    await alert.present();
+  }
 
 
 
@@ -416,7 +416,7 @@ async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
       message: 'No se puede asignar una cita para un cliente en dos asientos diferentes.',
       buttons: ['Aceptar']
     });
-  
+
     await alert.present();
   }
 
@@ -600,7 +600,7 @@ async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
     private http: HttpClient, private modalController: ModalController, private alertController: AlertController,
     private bezeroService: BezeroService, private citaService: CitaService, private languageService: LanguageService
   ) {
-      this.selectedLanguage = this.languageService.getCurrentLanguage();
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
   ngOnInit() {
@@ -633,7 +633,7 @@ async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
         servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
       }
     });
-  
+
   }
 
   timeElapsedMap: { [key: string]: string } = {};
@@ -649,38 +649,38 @@ async mostrarAlertaRangoHorario(tipo: 'inicio' | 'fin') {
       if (cita.hasieraOrduaErreala) {
         // Combinar la fecha con la hora real de inicio para formar un timestamp completo
         const startTimeReal = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
-  
+
         // Calcular el tiempo transcurrido desde la hora real de inicio
         const now = Date.now();
         const elapsedTime = now - startTimeReal;
-  
+
         // Asignar el tiempo formateado a timeElapsedMap
         this.timeElapsedMap[cita.id] = this.formatTime(elapsedTime);
-  
+
         // Iniciar el cronómetro para esta cita
         this.startTimer(cita, startTimeReal, elapsedTime);
-  
+
         console.log("Start Time Real:", startTimeReal);
         console.log("Elapsed Time:", elapsedTime);
       }
     });
   }
-  
-// Método para calcular el tiempo transcurrido en minutos y segundos
-calculateElapsedTime(cita: any): string {
-  if (cita.hasieraOrduaErreala && cita.amaieraOrduaErreala) {
-    const startTime = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
-    const endTime = new Date(`${cita.data}T${cita.amaieraOrduaErreala}`).getTime();
-    const elapsedTime = endTime - startTime; // Tiempo en milisegundos
 
-    // Convertir el tiempo transcurrido a minutos y segundos
-    const minutes = Math.floor(elapsedTime / 60000);
-    const seconds = Math.floor((elapsedTime % 60000) / 1000);
+  // Método para calcular el tiempo transcurrido en minutos y segundos
+  calculateElapsedTime(cita: any): string {
+    if (cita.hasieraOrduaErreala && cita.amaieraOrduaErreala) {
+      const startTime = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
+      const endTime = new Date(`${cita.data}T${cita.amaieraOrduaErreala}`).getTime();
+      const elapsedTime = endTime - startTime; // Tiempo en milisegundos
 
-    return `${this.pad(minutes)}:${this.pad(seconds)}`; // Devuelve el tiempo formateado
+      // Convertir el tiempo transcurrido a minutos y segundos
+      const minutes = Math.floor(elapsedTime / 60000);
+      const seconds = Math.floor((elapsedTime % 60000) / 1000);
+
+      return `${this.pad(minutes)}:${this.pad(seconds)}`; // Devuelve el tiempo formateado
+    }
+    return '';
   }
-  return '';
-}
   // Método para empezar el cronómetro
   startTimer(cita: any, startTime?: number, elapsedTime?: number) {
     if (this.intervals[cita.id]) return; // Evitar duplicación del cronómetro
@@ -697,17 +697,17 @@ calculateElapsedTime(cita: any): string {
   divideTimeByTwo(time: string): string {
     // Convertir el tiempo de formato 'MM:SS' a minutos y segundos
     const [minutes, seconds] = time.split(':').map(num => parseInt(num, 10));
-  
+
     // Calcular el total de segundos
     const totalSeconds = (minutes * 60) + seconds;
-  
+
     // Dividir entre 2
     const dividedSeconds = totalSeconds / 2;
-  
+
     // Obtener los minutos y segundos del resultado
     const dividedMinutes = Math.floor(dividedSeconds / 60);
     const dividedSecs = Math.floor(dividedSeconds % 60);
-  
+
     // Formatear el tiempo como 'MM:SS'
     return `${this.pad(dividedMinutes)}:${this.pad(dividedSecs)}`;
   }
@@ -1031,8 +1031,8 @@ calculateElapsedTime(cita: any): string {
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   changeLanguage() {
-  this.languageService.setLanguage(this.selectedLanguage);
-}
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
 
   limpiar_campos() {
     this.tratamenduSelec = [];
@@ -1056,26 +1056,32 @@ calculateElapsedTime(cita: any): string {
   cambio: number = 0;
 
   // Función para actualizar el precio total de los servicios seleccionados
-  actualizarServiciosSeleccionados(servicio: any, extra: boolean, color: boolean) {
-    if (servicio.selected) {
-      if (!extra) {
-        servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
-      }
-      this.precioTotal += servicio.precio;
-    } else {
-      this.precioTotal -= servicio.precio;
-    }
-    servicio.color = color;
-    // Detectar cambios en el precio total
-    this.calcularCambio();
+  actualizarServiciosSeleccionados(trat: any, extraFlag: boolean, color: string) {
+  const index = this.serviciosSeleccionados.findIndex(s => s.id === trat.id);
 
-    const index = this.serviciosSeleccionados.findIndex(s => s.id === servicio.id);
-    if (servicio.selected && index === -1) {
-      this.serviciosSeleccionados.push(servicio);
-    } else if (!servicio.selected && index !== -1) {
+  if (trat.selected) {
+    if (index === -1) {
+      this.serviciosSeleccionados.push({
+        ...trat,
+        extraPrecio: trat.extraPrecio ?? 0,
+        color: color
+      });
+    } else {
+      this.serviciosSeleccionados[index].extraPrecio = trat.extraPrecio ?? 0;
+    }
+  } else {
+    if (index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
   }
+
+  this.calcularPrecioTotal();
+  this.actualizarCambio();
+}
+
+
+
+
 
   limpiarCamposTicket() {
     // Desmarcar todos los servicios en cada categoría
@@ -1085,10 +1091,10 @@ calculateElapsedTime(cita: any): string {
         servicio.color = false;
       });
     });
-  
+
     // Vaciar servicios seleccionados
     this.serviciosSeleccionados = [];
-  
+
     // Reiniciar totales
     this.precioTotal = 0;
     this.dineroCliente = 0;
@@ -1104,12 +1110,22 @@ calculateElapsedTime(cita: any): string {
     }
   }
 
-  // Función que se ejecuta al ingresar el dinero recibido
-  actualizarDineroCliente(event: any) {
-    this.dineroCliente = event.target.value;
-    this.calcularCambio(); // Actualiza el cambio al ingresar dinero
-  }
 
+  calcularPrecioTotal() {
+  this.precioTotal = this.serviciosSeleccionados.reduce((acc, servicio) => {
+    const base = servicio.precio ?? 0;
+    const extra = servicio.extraPrecio ?? 0;  // Aquí sumas el extra solo para el total
+    return acc + base + extra;
+  }, 0);
+}
+  actualizarDineroCliente(event: any) {
+  this.dineroCliente = Number(event.target.value) || 0;
+  this.actualizarCambio();
+}
+actualizarCambio() {
+  this.cambio = this.dineroCliente - this.precioTotal;
+  if (this.cambio < 0) this.cambio = 0;
+}
 
   asignar_cita() {
     const json_data = { "id": this.citaEditar.id };
@@ -1135,75 +1151,92 @@ calculateElapsedTime(cita: any): string {
 
   // Función: generar_ticket
   generar_ticket() {
-    const color = this.serviciosSeleccionados.some(s => s.color === true);
+  const color = this.serviciosSeleccionados.some(s => s.color === true);
 
-    this.stopTimer(this.citaEditar);
+  this.stopTimer(this.citaEditar);
 
-    const json_data = this.serviciosSeleccionados.map(servicio => ({
-      "hitzordua": { "id": this.citaEditar.id },
-      "zerbitzuak": { "id": servicio.id },
-      "prezioa": servicio.precio
-    }));
+  // Preparamos los datos para el PDF (con extra separado)
+  const lineasPDF = this.serviciosSeleccionados.map(servicio => ({
+    izena: servicio.izena,
+    precioBase: servicio.precio ?? 0,
+    extra: servicio.extraPrecio ?? 0,
+    precioTotal: (servicio.precio ?? 0) + (servicio.extraPrecio ?? 0)
+  }));
 
-    this.http.post(`${environment.url}ticket_lerroak`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      async (datuak: any) => {
-        await this.cargarHitzordu();
-        this.limpiar_campos();
+  // Datos a enviar al backend (solo el total, sin campo extra)
+  const json_data = this.serviciosSeleccionados.map(servicio => ({
+    "hitzordua": { "id": this.citaEditar.id },
+    "zerbitzuak": { "id": servicio.id },
+    "prezioa": (servicio.precio ?? 0) + (servicio.extraPrecio ?? 0)
+  }));
 
-        const alert = await this.alertCtrl.create({
-          header: this.translate.instant('citas.modal.ticket'),
-          message: this.translate.instant('citas.modal.messageDownload'),
+  this.http.post(`${environment.url}ticket_lerroak`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (datuak: any) => {
+      await this.cargarHitzordu();
+      this.limpiar_campos();
+
+      // Añadimos los datos del frontend para mostrar en el PDF
+      datuak.lerroak = lineasPDF.map(item => ({
+        zerbitzuak: { izena: item.izena },
+        prezioa: item.precioTotal,
+        extra: item.extra
+      }));
+
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('citas.modal.ticket'),
+        message: this.translate.instant('citas.modal.messageDownload'),
+        buttons: [
+          {
+            text: this.translate.instant('citas.botones.cancelar'),
+            role: this.translate.instant('citas.botones.cancelar'),
+          },
+          {
+            text: this.translate.instant('citas.botones.descargar'),
+            handler: () => {
+              this.descargar_ticket(datuak);
+            }
+          }
+        ]
+      });
+      await alert.present();
+
+      if (color) {
+        const alert2 = await this.alertCtrl.create({
+          header: this.translate.instant('citas.modal.redirect'),
+          message: this.translate.instant('citas.modal.messageRedirect'),
           buttons: [
             {
               text: this.translate.instant('citas.botones.cancelar'),
               role: this.translate.instant('citas.botones.cancelar'),
             },
             {
-              text: this.translate.instant('citas.botones.descargar'),
+              text: this.translate.instant('citas.botones.confirmar'),
               handler: () => {
-                datuak.cambio = this.cambio;
-                this.descargar_ticket(datuak);
+                this.navCtrl.navigateForward('/produktuak').then(() => {
+                  window.location.reload();
+                });
               }
             }
           ]
         });
-        await alert.present();
-
-        if (color) {
-          const alert2 = await this.alertCtrl.create({
-            header: this.translate.instant('citas.modal.redirect'),
-            message: this.translate.instant('citas.modal.messageRedirect'),
-            buttons: [
-              {
-                text: this.translate.instant('citas.botones.cancelar'),
-                role: this.translate.instant('citas.botones.cancelar'),
-              },
-              {
-                text: this.translate.instant('citas.botones.confirmar'),
-                handler: () => {
-                  this.navCtrl.navigateForward('/produktuak').then(() => {
-                    window.location.reload();
-                  });
-                }
-              }
-            ]
-          });
-          await alert2.present();
-        }
-      },
-      (error) => {
-        console.error("Error en generación de cita:", error);
+        await alert2.present();
       }
-    );
-    this.limpiarCamposTicket();
-    this.cerrarFormulario();
-    
-  }
+    },
+    (error) => {
+      console.error("Error en generación de cita:", error);
+    }
+  );
+
+  this.limpiarCamposTicket();
+  this.cerrarFormulario();
+}
+
+
 
 
   inicializarPreciosServicios() {
@@ -1216,54 +1249,63 @@ calculateElapsedTime(cita: any): string {
     });
   }
 
+ descargar_ticket(datuak: any) {
+  const pdf = new jsPDF();
+  const margenIzquierdo = 10;
+  let posicionY = 20;
+
+  pdf.setFontSize(18);
+  pdf.setFont("helvetica", "bold");
+  pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+  posicionY += 10;
+
+  pdf.setFontSize(12);
+  pdf.setFont("helvetica", "normal");
+  pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+  posicionY += 7;
+  pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+  posicionY += 7;
+
+  // Limpiar la hora para mostrar solo hasta los segundos
+  const amaieraOrdua = datuak.amaieraOrduaErreala?.split('.')[0] ?? '-';
+  pdf.text(`Amaiera Ordua: ${amaieraOrdua}`, margenIzquierdo, posicionY);
+  posicionY += 7;
+
+  pdf.text(`Langilea: ${datuak.langilea?.izena ?? '-'}`, margenIzquierdo, posicionY);
+  posicionY += 10;
+
+  const head = [['Zerbitzua', 'Prezioa (€)', 'Extra (€)']];
+
+  const body = (datuak.lerroak ?? []).map((lerro: any) => [
+    lerro.zerbitzuak?.izena ?? '-',
+    ((lerro.prezioa ?? 0) - (lerro.extra ?? 0)).toFixed(2),
+    (lerro.extra ?? 0).toFixed(2)
+  ]);
+
+  autoTable(pdf, {
+    startY: posicionY,
+    margin: { left: margenIzquierdo, right: margenIzquierdo },
+    head: head,
+    body: body,
+    theme: 'grid',
+    styles: { fontSize: 10, halign: 'center' },
+    headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+  });
+
+  posicionY = (pdf as any).lastAutoTable.finalY + 10;
+
+  const precioTotalCalculado = (datuak.lerroak ?? []).reduce((total: number, lerro: any) => {
+    const precio = Number(lerro.prezioa ?? 0);
+    return total + precio;
+  }, 0);
+
+  pdf.setFont("helvetica", "bold");
+  pdf.text(`PREZIO TOTALA: ${precioTotalCalculado.toFixed(2)} €`, margenIzquierdo, posicionY);
+  posicionY += 10;
+
+  pdf.save(`ticket_${datuak.id ?? 'unknown'}.pdf`);
+}
 
 
-
-
-  descargar_ticket(datuak: any) {
-    const pdf = new jsPDF();
-    const margenIzquierdo = 10;
-    let posicionY = 20;
-  
-    pdf.setFontSize(18);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
-    posicionY += 10;
-  
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
-    posicionY += 10;
-  
-    const head = [['Zerbitzua', 'Prezioa (€)']];
-    const body = datuak.lerroak.map((lerro: any) => [
-      lerro.zerbitzuak.izena,
-      lerro.prezioa.toFixed(2)
-    ]);
-  
-    autoTable(pdf, {
-      startY: posicionY,
-      margin: { left: margenIzquierdo, right: margenIzquierdo },
-      head: head,
-      body: body,
-      theme: 'grid',
-      styles: { fontSize: 10, halign: 'center' },
-      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
-    });
-  
-    posicionY = (pdf as any).lastAutoTable.finalY + 10;
-  
-    pdf.setFont("helvetica", "bold");
-    pdf.text(`PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`, margenIzquierdo, posicionY);
-    posicionY += 7;
-  
-    pdf.save(`ticket_${datuak.id}.pdf`);
-  }
 
 }
