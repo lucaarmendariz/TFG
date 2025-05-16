@@ -461,6 +461,7 @@
         "perteneceCentro": "Zentrora dagozkion?",
         "verGaleria": "Bezeroaren Galeria Ikusi",
         "confirmar": "Baieztatu",
-        "cambiarCliente": "Aldatu bezeroa"
+        "cambiarCliente": "Aldatu bezeroa",
+        "noHistorial": "Ez dago bezero honetako irudirik"
     }
 }

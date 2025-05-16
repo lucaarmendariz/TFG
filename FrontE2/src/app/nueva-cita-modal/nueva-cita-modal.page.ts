@@ -98,7 +98,7 @@ export class NuevaCitaModalPage implements OnInit, OnDestroy {
       .map((h: any) => h.img_url);
 
     if (imagenes.length === 0) {
-      const msg = await this.translate.get('cita.noHistorialImages').toPromise();
+      const msg = await this.translate.get('cita.noHistorial').toPromise();
       this.mostrarToast(msg, 2000, 'warning');
       return;
     }

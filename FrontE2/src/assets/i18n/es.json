@@ -479,6 +479,7 @@
     "perteneceCentro": "¿Pertenece al centro?",
     "verGaleria": "Ver Galería del Cliente",
     "confirmar": "Confirmar Cita",
-    "cambiarCliente": "Cambiar cliente"
+    "cambiarCliente": "Cambiar cliente",
+    "noHistorial": "No hay imagenes de este cliente"
   }
 }
