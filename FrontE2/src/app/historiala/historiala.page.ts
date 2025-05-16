@@ -10,6 +10,7 @@ import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { Observable } from 'rxjs';
+import { LanguageService } from '../zerbitzuak/language.service';
 register();
 
 
@@ -67,10 +68,11 @@ export class HistorialaPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private languageService: LanguageService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+    
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
 
     this.bezeroForm = this.fb.group({
       izena: ['', Validators.required],
@@ -190,28 +192,31 @@ transformarURL(url: string): string {
   }
 
   resetProduktos() {
-    this.fechaInicioFilterProd = null;
-    this.fechaFinFilterProd = null;
-    this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
-      ...prod,
-    }));
-  }
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterProd = hoy;
+  this.fechaFinFilterProd = hoy;
+  this.busquedaTexto = '';
+  this.cargarMovimientoProductos();
+}
 
-  resetMateriales() {
-    this.fechaInicioFilterMat = null;
-    this.fechaFinFilterMat = null;
-    this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
-      ...mat,
-    }));
-  }
 
-  resetTickets() {
-    this.fechaInicioFilterTicket = null;
-    this.fechaFinFilterTicket = null;
-    this.ticketsFiltered = this.tickets.map(ticket => ({
-      ...ticket,
-    }));
-  }
+resetMateriales() {
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterMat = hoy;
+  this.fechaFinFilterMat = hoy;
+  this.busquedaMaterial = '';
+  this.cargarMovimientoMateriales();
+}
+
+
+resetTickets() {
+  const hoy = new Date().toISOString().split('T')[0];
+  this.fechaInicioFilterTicket = hoy;
+  this.fechaFinFilterTicket = hoy;
+  this.busquedaTicket = '';
+  this.cargarTickets();
+}
+
 
   // Función: cargarHitzordu
   cargarMovimientoProductos() {
@@ -233,12 +238,50 @@ transformarURL(url: string): string {
     );
   }
 
+busquedaTexto: string = '';
+
+  filtrarProductos() {
+  const texto = this.busquedaTexto.toLowerCase().trim();
+
+  this.produktuMugimenduFiltered = this.produktuMugimendu.filter(prod => {
+    const nombreAlumno = `${prod.langile.izena} ${prod.langile.abizenak}`.toLowerCase();
+    const grupoCodigo = prod.langile.taldeKodea.toLowerCase();
+    const nombreProducto = prod.produktu.izena.toLowerCase();
+
+    return (
+      nombreAlumno.includes(texto) ||
+      grupoCodigo.includes(texto) ||
+      nombreProducto.includes(texto)
+    );
+  });
+}
+
+
   handleRefresh(event: CustomEvent) {
     setTimeout(() => {
       // Any calls to load data go here
       (event.target as HTMLIonRefresherElement).complete();
     }, 2000);
   }
+
+  busquedaMaterial: string = '';
+
+  filtrarMateriales() {
+  const texto = this.busquedaMaterial.toLowerCase().trim();
+
+  this.materialMugimenduFiltered = this.materialMugimendu.filter(mov => {
+    const nombreTrabajador = `${mov.langilea.izena} ${mov.langilea.abizenak}`.toLowerCase();
+    const grupoCodigo = mov.langilea.taldeKodea.toLowerCase();
+    const nombreMaterial = mov.materiala.izena.toLowerCase();
+
+    return (
+      nombreTrabajador.includes(texto) ||
+      grupoCodigo.includes(texto) ||
+      nombreMaterial.includes(texto)
+    );
+  });
+}
+
 
   cargarMovimientoMateriales() {
     this.materialMugimendu = [];
@@ -258,6 +301,23 @@ transformarURL(url: string): string {
       }
     );
   }
+  busquedaTicket: string = '';
+
+filtrarTickets() {
+  const texto = this.busquedaTicket.toLowerCase().trim();
+
+  this.ticketsFiltered = this.tickets.filter(ticket => {
+    const nombre = ticket.izena?.toLowerCase() || '';
+    const id = ticket.id?.toString() || '';
+    const precio = ticket.prezioTotala?.toString() || '';
+
+    return (
+      nombre.includes(texto) ||
+      id.includes(texto) ||
+      precio.includes(texto)
+    );
+  });
+}
 
   cargarTickets() {
     this.tickets = [];
@@ -349,7 +409,6 @@ transformarURL(url: string): string {
 
   loadHistorial() {
     this.getHistorialPorCliente(this.bezeroId).subscribe((data) => {
-      console.log(this.bezeroId);
       this.historial = data;
       console.log('Historial del cliente:', this.historial);
     });
@@ -392,7 +451,6 @@ transformarURL(url: string): string {
   loadHistorialPorCliente(id: number) {
     this.getHistorialPorCliente(id).subscribe((data) => {
       this.historialPorCliente[id] = data; // Guardamos el historial del cliente por su ID
-      console.log('Historial de cliente', id, data);
     });
   }
 
@@ -425,7 +483,7 @@ transformarURL(url: string): string {
   openBezeroHistoriala(bezero: any) {
     this.isEditingBezeroHistoriala = true;
     this.editingBezero = bezero;
-    console.log(this.editingBezero.izena)
+    console.log(this.editingBezero.historiala)
   }
 
   cerrarModalHistoriala() {
@@ -494,37 +552,62 @@ transformarURL(url: string): string {
   }
 
   async eliminar_historial(historial: any) {
-    // Si ya tiene ID, confirmamos la eliminación
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que deseas eliminar este historial?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Eliminar',
-          role: 'destructive',
-          handler: () => {
-            this.delete(historial.id).subscribe({
-              next: () => {
-                console.log('Historial eliminado:', historial.id);
-                // Filtrar el historial eliminando el objeto con ese id
-                this.editingBezero.historiala = this.editingBezero.historiala.filter(
-                  (h: { id: number }) => h.id !== historial.id
-                );
-              },
-              error: (err) => {
-                console.error('Error al eliminar historial:', err);
-              }
-            });
+  const header = this.translate.instant('historian.alerta.titulo');
+  const message = this.translate.instant('historian.alerta.mensaje');
+  const cancelar = this.translate.instant('comun.cancelar');
+  const eliminar = this.translate.instant('comun.eliminar');
+
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: [
+      {
+        text: cancelar,
+        role: 'cancel'
+      },
+      {
+        text: eliminar,
+        role: 'destructive',
+        handler: () => {
+          if (!historial.id || !this.historialCompleto(historial)) {
+            // Eliminar del frontend si está incompleto o no tiene ID
+            this.editingBezero.historiala = this.editingBezero.historiala.filter(
+              (h: any) => h !== historial
+            );
+            console.log('Historial eliminado localmente.');
+            return;
           }
+
+          // Eliminar del backend y frontend
+          this.delete(historial.id).subscribe({
+            next: () => {
+              console.log('Historial eliminado del backend:', historial.id);
+              this.editingBezero.historiala = this.editingBezero.historiala.filter(
+                (h: any) => h.id !== historial.id
+              );
+            },
+            error: (err) => {
+              console.error('Error al eliminar historial:', err);
+            }
+          });
         }
-      ]
-    });
-    await alert.present();
-  }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+historialCompleto(historial: any): boolean {
+  return (
+    historial.id_produktua != null &&
+    historial.data != null &&
+    historial.kantitatea != null
+  );
+}
+
+
 
 
   guardarBezero() {
@@ -552,9 +635,12 @@ transformarURL(url: string): string {
         console.error("Error al asignar la cita:", error);
       }
     );
-}
+  }
+
+compareWithFn = (o1: any, o2: any) => o1 == o2;
 
 guardarBezeroHistoriala(){
+  console.log(this.editingBezero)
   this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
       headers: {
         'Content-Type': 'application/json',
@@ -599,46 +685,50 @@ guardarBezeroHistoriala(){
   }
 
   async deleteBezero(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que deseas eliminar este cliente?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            const json_data = { id };
-            this.http.delete(`${environment.url}bezero_fitxak`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-              },
-              body: json_data
-            }).subscribe(
-              () => {
-                this.cargarClientes();
-              },
-              (error) => {
-                console.error("Error al eliminar el cliente:", error);
-              }
-            );
-          }
+  const header = this.translate.instant('cliente.alerta.titulo');
+  const message = this.translate.instant('cliente.alerta.mensaje');
+  const cancelar = this.translate.instant('comun.cancelar');
+  const eliminar = this.translate.instant('comun.eliminar');
+
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: [
+      {
+        text: cancelar,
+        role: 'cancel',
+        cssClass: 'secondary'
+      },
+      {
+        text: eliminar,
+        handler: () => {
+          const json_data = { id };
+          this.http.delete(`${environment.url}bezero_fitxak`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: json_data
+          }).subscribe(
+            () => {
+              this.cargarClientes();
+            },
+            (error) => {
+              console.error("Error al eliminar el cliente:", error);
+            }
+          );
         }
-      ]
-    });
-    await alert.present();
-  }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   lortuData(): string {
     const gaur = new Date();

@@ -1,27 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: 'home.page.html',
-    styleUrls: ['home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+  standalone: false
 })
 export class HomePage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   ikasle!: boolean;
   selectedLanguage: string = 'es';
-  produktuak:any []=[];
-  filteredProduktuak:any[]=[];
+  produktuak: any[] = [];
+  filteredProduktuak: any[] = [];
   constructor(
     private loginService: LoginServiceService,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private languageService: LanguageService
+  ) {
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
+  }
 
   ngOnInit() {
     this.ikasle = this.loginService.isAlumno();
@@ -41,10 +48,10 @@ export class HomePage implements OnInit {
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 
-produktuakLortu() {
+  produktuakLortu() {
     this.http.get(`${environment.url}produktu_kategoria`, {
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +67,7 @@ produktuakLortu() {
             produktuak: categoria.produktuak
               .filter((producto: any) => producto.ezabatzeData === null)
           }));
-          this.filteredProduktuak = this.produktuak;
+        this.filteredProduktuak = this.produktuak;
       },
       (error) => {
         console.error("Errorea produktuak kargatzerakoan:", error);
@@ -72,7 +79,7 @@ produktuakLortu() {
   getProductosBajoStock(): any[] {
 
     const productosBajoStock: any[] = [];
-  
+
     this.produktuak.forEach((material: any) => {
       if (material.produktuak && Array.isArray(material.produktuak)) {
         const bajoStock = material.produktuak.filter((prod: any) => prod.stock <= prod.stockAlerta);
@@ -81,5 +88,5 @@ produktuakLortu() {
     });
     return productosBajoStock;
   }
-  
+
 }

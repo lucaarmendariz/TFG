@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -50,6 +52,8 @@ export interface Horario {
 })
 
 export class TxandakPage implements OnInit {
+    @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
   filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
@@ -73,8 +77,11 @@ export class TxandakPage implements OnInit {
               private http: HttpClient,
               private toastController: ToastController,              
               private alertCtrl: AlertController,
-              private ikasleService: IkasleZerbitzuakService
-              ) { }
+              private ikasleService: IkasleZerbitzuakService,
+              private languageService: LanguageService
+              ) { 
+                  this.selectedLanguage = this.languageService.getCurrentLanguage();
+              }
 
   ngOnInit() {
     this.fechaInicio = this.lortuData();
@@ -90,8 +97,8 @@ export class TxandakPage implements OnInit {
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);  // Cambiar el idioma según la selección
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   getAlumno(id: number) {
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);

@@ -7,6 +7,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 export interface Alumno {
   nombre: string;
@@ -74,11 +75,8 @@ export class MaterialakPage implements OnInit {
   isIkasle!:boolean;
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
   private actualizarEstadoOcupado(materialLista: any[]) {
   return materialLista.map(material => {
@@ -466,9 +464,8 @@ filtrarMateriales() {
 }
 
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+  constructor(private translate: TranslateService, private languageService: LanguageService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
+      this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
   
   ngOnInit() {

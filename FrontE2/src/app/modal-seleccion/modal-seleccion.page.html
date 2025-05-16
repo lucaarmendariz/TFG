@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'seleccionarCliente.titulo' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" fill="clear">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar 
+      [(ngModel)]="searchTerm" 
+      (ionInput)="filterClientes()" 
+      debounce="300" 
+      [placeholder]="'seleccionarCliente.buscarPlaceholder' | translate">
+    </ion-searchbar>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ 'seleccionarCliente.listaTitulo' | translate }}</ion-card-title>
+      
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button expand="block" color="primary" (click)="crearNuevoCliente()">
+        <ion-icon name="add" slot="start"></ion-icon>
+        {{ 'seleccionarCliente.crearNuevoBtn' | translate }}
+      </ion-button>
+      <ion-list>
+        <ion-item 
+          *ngFor="let cliente of filteredClientes" 
+          [color]="cliente.id === clienteId ? 'tertiary' : ''"
+          (click)="seleccionarCliente(cliente)">
+          
+          <ion-label>
+            <h2>{{ cliente.izena }} {{ cliente.abizena }}</h2>
+            <p>{{ cliente.telefonoa }}</p>
+          </ion-label>
+
+          <ion-button slot="end" (click)="asignarCliente(cliente); $event.stopPropagation();">
+            {{ 'seleccionarCliente.asignarBtn' | translate }}
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      
+    </ion-card-content>
+  </ion-card>
+</ion-content>

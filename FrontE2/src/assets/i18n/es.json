@@ -1,4 +1,14 @@
 {
+  "historian": {
+    "alerta": {
+      "titulo": "Confirmar eliminación",
+      "mensaje": "¿Estás seguro de que deseas eliminar este historial?"
+    }
+  },
+  "comun": {
+    "cancelar": "Cancelar",
+    "eliminar": "Eliminar"
+  },
   "login": {
     "user": "Usuario",
     "password": "Contraseña",
@@ -58,7 +68,9 @@
       "filtroCat": "Filtrar por Nombre de Categoria",
       "filtroProd": "Filtrar por Nombre de Producto",
       "stockBajo": "Productos Bajo Stock",
-      "gestionar": "Gestion de cita"
+      "gestionar": "Gestion de cita",
+      "Aceptar": "Aceptar",
+      "Cancelar": "Cancelar"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -76,6 +88,9 @@
     },
     "mensajes": {
       "sinResultados": "No existen productos compatibles con esta búsqueda"
+    },
+    "toast": {
+      "img": "Este usuario no tiene imagenes en la galeria"
     }
   },
   "materiales": {
@@ -113,7 +128,8 @@
       "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
       "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
       "materiales": "Materiales",
-      "filtros": "Filtros"
+      "filtros": "Filtros",
+      "buscarCategoriaOMaterial": "Buscar material o categoria"
     },
     "validaciones": {
       "seleccionaGrupoError": "Debe seleccionar un grupo",
@@ -147,6 +163,8 @@
       "descargar": "Descargar"
     },
     "modal": {
+      "Tipo de cita": "Tipo de cita",
+      "Seleccionar": "Seleccione un alumno",
       "vacio": "No hay horarios definidos para hoy",
       "nombre": "Nombre",
       "descripcion": "Descripción",
@@ -203,6 +221,7 @@
       "editar": "Editar"
     },
     "modal": {
+      "entrada": "Historial de cita",
       "imagen": "Imagen",
       "proceso": "En proceso",
       "trabajador": "Trabajador",
@@ -225,7 +244,12 @@
       "comentarios": "Comentarios",
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",
-      "filtroBezero": "Busca nombre o apellido"
+      "filtroBezero": "Busca nombre o apellido",
+      "buscar": "Bilatu",
+      "BuscarAlumnoGrupoProducto": "Buscar alumno, grupo o producto",
+      "BuscarNombreId": "Buscar nombre, id o precio total",
+      "BuscarTrabajadorGrupo": "Buscar trabajador, grupo o material",
+      "seleccionarProducto": "Selecciona un producto"
     },
     "validaciones": {
       "nombre": "El nombre es obligatorio",
@@ -264,7 +288,9 @@
       "color": "Color",
       "select": "Seleccione una Categoria",
       "categoria": "Categoría",
-      "filtro": "Busca nombre o categoria"
+      "filtro": "Busca nombre o categoria",
+      "imagen": "Subir imagen",
+      "seleccionarimagen": "Seleccionar imagen del servidor"
     },
     "botones": {
       "crearServicio": "Añadir servicio",
@@ -283,6 +309,7 @@
     }
   },
   "ikaslePage": {
+    "precioExtra": "Precio Extra",
     "placeholderBusqueda": "Buscar por cliente, langile, servicio, tratamiento o asiento",
     "cambio": "Cambio",
     "dineroRecibido": "Dinero recibido",
@@ -416,9 +443,42 @@
     "TxandaEzabatuta": "Turno eliminado correctamente",
     "TxandaEzabatutaArazoa": "Error al borrar el Turno"
   },
+  "seleccionarCliente": {
+    "titulo": "Seleccionar Cliente",
+    "buscarPlaceholder": "Buscar por nombre, apellido o teléfono",
+    "listaTitulo": "Lista de Clientes",
+    "asignarBtn": "Asignar",
+    "crearNuevoBtn": "Crear nuevo cliente"
+  },
   "graficos": {
     "title": "Graficos",
     "graf": "Gráfico de Servicios",
     "analisis": "Análisis de Servicios"
+  },
+  "cliente": {
+    "alerta": {
+      "titulo": "Confirmar eliminación",
+      "mensaje": "¿Estás seguro de que deseas eliminar este cliente?"
+    },
+    "crearTitulo": "Añadir Cliente",
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "Teléfono",
+    "pielSensible": "Piel sensible",
+    "crear": "Crear",
+    "errorNombre": "Por favor, introduce el nombre",
+    "errorApellido": "Por favor, introduce el apellido",
+    "errorTelefono": "Por favor, introduce un teléfono válido"
+  },
+  "cita": {
+    "nuevaTitulo": "Nueva Cita",
+    "detallesTitulo": "Detalles de la Cita",
+    "seleccionarCliente": "Selecciona un cliente",
+    "descripcion": "Descripción",
+    "descripcionPlaceholder": "Descripción de la cita",
+    "perteneceCentro": "¿Pertenece al centro?",
+    "verGaleria": "Ver Galería del Cliente",
+    "confirmar": "Confirmar Cita",
+    "cambiarCliente": "Cambiar cliente"
   }
 }

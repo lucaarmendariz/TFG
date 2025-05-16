@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonModal, LoadingController, ModalController } from '@ionic/angular';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 interface Servicio {
   id: number;
@@ -58,10 +59,9 @@ export class TratamenduakPage implements OnInit {
   isIkasle!: boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService,    private modalController: ModalController,
+  constructor(private translate: TranslateService,  private languageService: LanguageService,  private modalController: ModalController,
     private alertController: AlertController, private http: HttpClient, private loadingController: LoadingController, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
   ngOnInit() {
@@ -154,11 +154,8 @@ onImageSelectedEditar(event: any) {
 
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
 
 
   filtrarZerbitzuak() {

@@ -8,6 +8,16 @@
         "messageFail": "Erabiltzailea edo pasahitza okerra.",
         "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
     },
+    "historian": {
+        "alerta": {
+            "titulo": "Ezabatzeko berrespena",
+            "mensaje": "Ziur zaude historia hau ezabatu nahi duzula?"
+        }
+    },
+    "comun": {
+        "cancelar": "Utzi",
+        "eliminar": "Ezabatu"
+    },
     "menu": {
         "title": "Menua",
         "accesosRapidos": "Sarbide Azkarrak",
@@ -58,7 +68,9 @@
             "filtroCat": "Kategoriaren Izenaz Filtratu",
             "filtroProd": "Produktuaren Izenaz Filtratu",
             "stockBajo": "Stock Gutxiko Produktuak",
-            "gestionar": "Hitzordua gestionatu"
+            "gestionar": "Hitzordua gestionatu",
+            "Cancelar": "Ezeztatu",
+            "Aceptar": "Onartu"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -75,7 +87,10 @@
             "categoria": "Kategoria bat aukeratu"
         },
         "mensajes": {
-            "sinResultados": "No existen productos compatibles con esta búsqueda"
+            "sinResultados": "Ez dago bilaketa honekin bateragarria den produkturik"
+        },
+        "toast": {
+            "img": "Bezero honek ez dauka argazkiak galerian"
         }
     },
     "materiales": {
@@ -112,7 +127,8 @@
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
             "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
             "materiales": "Materialak",
-            "filtros": "Filtroak"
+            "filtros": "Filtroak",
+            "buscarCategoriaOMaterial": "Bilatu material edo kategoria"
         },
         "validaciones": {
             "seleccionaGrupoError": "Talde bat aukeratu behar duzu",
@@ -146,6 +162,8 @@
             "descargar": "Deskargatu"
         },
         "modal": {
+            "Tipo de cita": "Hitzordu mota",
+            "Seleccionar": "Aukeratu langile bat",
             "vacio": "Ez dago ordutegirik definituta gaurkorako",
             "nombre": "Izena",
             "descripcion": "Deskribapena",
@@ -191,17 +209,18 @@
     "historial": {
         "titulo": "Historiala",
         "botones": {
-            "abrirGaleria": "Abrir Galeria",
+            "abrirGaleria": "Galeria ireki",
             "productos": "Produktu mugimenduak",
             "materiales": "Material mugimenduak",
             "ticket": "Ticket-ak",
             "cliente": "Bezero historiala",
             "crear": "Sortu",
-            "añadir": "Añadir",
+            "añadir": "Gehitu",
             "guardar": "Gorde",
-            "editar": "Editar"
+            "editar": "Editatu"
         },
         "modal": {
+            "entrada": "Hitzordu historiala",
             "imagen": "Irudia",
             "proceso": "Erabiltzen",
             "trabajador": "Langilea",
@@ -224,7 +243,12 @@
             "comentarios": "Oharrak",
             "reset": "Reset",
             "filtroFecha": "Data Filtratu",
-            "filtroBezero": "Bilatu izena edo abizena"
+            "filtroBezero": "Bilatu izena edo abizena",
+            "buscar": "Bilatu",
+            "BuscarAlumnoGrupoProducto": "Bilatu ikasle, talde edo produktu",
+            "BuscarNombreId": "Bilatu izena, id edo prezio totala",
+            "BuscarTrabajadorGrupo": "Bilatu langile, talde edo materiala",
+            "seleccionarProducto": "Aukeratu produktu bat"
         },
         "validaciones": {
             "nombre": "Izena derrigorrezkoa da",
@@ -247,7 +271,9 @@
             "color": "Kolorea",
             "select": "Kategoria bat aukeratu",
             "categoria": "Kategoria",
-            "filtro": "Bilatu izena edo categorias"
+            "filtro": "Bilatu izena edo categorias",
+            "imagen": "Igo irudia",
+            "seleccionarimagen": "Hautatu zerbitzariko irudia"
         },
         "botones": {
             "crearServicio": "Zerbitzua gehitu",
@@ -266,6 +292,7 @@
         }
     },
     "ikaslePage": {
+        "precioExtra": "Precio Extra",
         "placeholderBusqueda": "Bezeroa, langilea, zerbitzua, tratamendua edo eserlekua bilatu",
         "cambio": "Aldaketak",
         "dineroRecibido": "Jasotako dirua",
@@ -363,6 +390,13 @@
             "insertarAlumno": "Ikasle bat esleitu behar duzu tiket bat sortu aurretik"
         }
     },
+    "seleccionarCliente": {
+        "titulo": "Bezeroa Hautatu",
+        "buscarPlaceholder": "Bilatu izenaren, abizenaren edo telefonoaren arabera",
+        "listaTitulo": "Bezeroen Zerrenda",
+        "asignarBtn": "Esleitu",
+        "crearNuevoBtn": "Bezero berria sortu"
+    },
     "txandakPage": {
         "titulo": "Txandak",
         "botonAñadir": "Txanda Gehitu",
@@ -402,5 +436,31 @@
         "title": "Grafikoak",
         "graf": "Zerbitzuen Grafikoa",
         "analisis": "Zerbitzuen Analisia"
+    },
+    "cliente": {
+        "alerta": {
+            "titulo": "Ezabatzeko berrespena",
+            "mensaje": "Ziur zaude bezero hau ezabatu nahi duzula?"
+        },
+        "crearTitulo": "Bezeroa Gehitu",
+        "nombre": "Izena",
+        "apellido": "Abizena",
+        "telefono": "Telefonoa",
+        "pielSensible": "Azala sentikorra",
+        "crear": "Sortu",
+        "errorNombre": "Mesedez, sartu izena",
+        "errorApellido": "Mesedez, sartu abizena",
+        "errorTelefono": "Mesedez, sartu telefono balioduna"
+    },
+    "cita": {
+        "nuevaTitulo": "Bisitari Berria",
+        "detallesTitulo": "Bisitariaren Xehetasunak",
+        "seleccionarCliente": "Bezero bat hautatu",
+        "descripcion": "Deskribapena",
+        "descripcionPlaceholder": "Bisitariaren deskribapena",
+        "perteneceCentro": "Zentrora dagozkion?",
+        "verGaleria": "Bezeroaren Galeria Ikusi",
+        "confirmar": "Baieztatu",
+        "cambiarCliente": "Aldatu bezeroa"
     }
 }

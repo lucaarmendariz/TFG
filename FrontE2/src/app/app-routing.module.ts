@@ -66,7 +66,11 @@ const routes: Routes = [
     path: 'nueva-cita-modal',
     loadChildren: () => import('./nueva-cita-modal/nueva-cita-modal.module').then(m => m.NuevaCitaModalPageModule),
     canLoad: [AuthGuard]
+  },  {
+    path: 'modal-seleccion',
+    loadChildren: () => import('./modal-seleccion/modal-seleccion.module').then( m => m.ModalSeleccionPageModule)
   }
+
 ];
 
 

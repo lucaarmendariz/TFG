@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nueva Cita</ion-title>
+    <ion-title>{{ 'cita.nuevaTitulo' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()" fill="clear">
         <ion-icon name="close" slot="icon-only"></ion-icon>
@@ -9,51 +9,56 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <!-- Card para asignar la cita -->
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Detalles de la Cita</ion-card-title>
+      <ion-card-title>{{ 'cita.detallesTitulo' | translate }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <!-- Selección de cliente existente -->
-      <ion-item>
-        <ion-label position="floating">Selecciona un cliente</ion-label>
-
-        <ion-select [(ngModel)]="clienteId" placeholder="Selecciona un cliente">
-          <ion-select-option *ngFor="let bezero of bezeroak" [value]="bezero.id">
-            {{ bezero.izena }} {{ bezero.abizena }}
-          </ion-select-option>
-        </ion-select>
-        <ion-button slot="end" (click)="crearNuevoCliente()">
-          <ion-icon name="add" slot="icon-only"></ion-icon>
+<ion-item *ngIf="clienteSeleccionado" lines="none">
+  <div class="cliente-card-container">
+    <ion-card color="light" class="cliente-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">
+          {{ clienteSeleccionado.izena }} {{ clienteSeleccionado.abizena }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <p><ion-icon name="call-outline"></ion-icon> {{ clienteSeleccionado.telefonoa }}</p>
+        <ion-button size="small" fill="outline" color="medium" (click)="abrirSelectorClientes()">
+          {{ 'cita.cambiarCliente' | translate }}
         </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-item>
+
+
+<ion-item *ngIf="!clienteSeleccionado">
+  <ion-label position="stacked">{{ 'cita.seleccionarCliente' | translate }}</ion-label>
+  <ion-button expand="block" (click)="abrirSelectorClientes()">
+    {{ 'cita.seleccionarCliente' | translate }}
+  </ion-button>
+</ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{ 'cita.descripcion' | translate }}</ion-label>
+        <ion-input [(ngModel)]="descripcion" [placeholder]="'cita.descripcionPlaceholder' | translate" type="text"></ion-input>
       </ion-item>
 
-
-      <!-- Descripción de la cita -->
       <ion-item>
-        <ion-label position="floating">Descripción</ion-label>
-        <ion-input [(ngModel)]="descripcion" placeholder="Descripción de la cita" type="text"></ion-input>
-      </ion-item>
-
-      <!-- ¿Pertenece al centro? -->
-      <ion-item>
-        <ion-label>¿Pertenece al centro?</ion-label>
+        <ion-label>{{ 'cita.perteneceCentro' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="esCentro"></ion-checkbox>
       </ion-item>
 
       <ion-button expand="block" color="medium" (click)="abrirGaleria()" [disabled]="!clienteId">
-        Ver Galería del Cliente
+        {{ 'cita.verGaleria' | translate }}
       </ion-button>
-
     </ion-card-content>
   </ion-card>
 
-  <!-- Botón para confirmar la cita -->
   <ion-button expand="full" (click)="confirmarCita()" [disabled]="!clienteId || !descripcion">
-    Confirmar Cita
+    {{ 'cita.confirmar' | translate }}
   </ion-button>
 </ion-content>

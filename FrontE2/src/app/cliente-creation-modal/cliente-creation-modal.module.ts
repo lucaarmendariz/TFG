@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ClienteCreationModalPageRoutingModule } from './cliente-creation-modal-routing.module';
 
 import { ClienteCreationModalPage } from './cliente-creation-modal.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ClienteCreationModalPageRoutingModule
+    ClienteCreationModalPageRoutingModule,
+    TranslateModule,
   ],
   declarations: [ClienteCreationModalPage]
 })

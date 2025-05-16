@@ -2,6 +2,7 @@
   background-color: transparent;
   overflow:scroll;
   margin: 20px;
+
 }
 
 table {
@@ -176,6 +177,14 @@ ion-label {
   justify-content: center;
   width: 100%;
 }
+
+.custom-input {
+  --color: white;             // color del texto
+  --placeholder-color: #999; // color del placeholder (solo en algunos casos)
+  border-radius: 8px;
+  padding: 8px;
+}
+
 
 .alargada-card {
   height: 250px; /* Ajusta según la altura que quieras */

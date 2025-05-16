@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/zerbitzuak/language.service';
 import { LoginServiceService } from 'src/app/zerbitzuak/login-service.service';
 
 @Component({
@@ -8,17 +9,28 @@ import { LoginServiceService } from 'src/app/zerbitzuak/login-service.service';
     styleUrls: ['./header.component.scss'],
     standalone: false
 })
-export class HeaderComponent implements OnInit {
-  public appPages: any[] = [];
 
-  constructor(private translate: TranslateService, private loginService: LoginServiceService) {}
+
+export class HeaderComponent implements OnInit, OnDestroy {
+  public appPages: any[] = [];
+  private langSubscription: any;
+
+  constructor(private languageService: LanguageService, private loginService: LoginServiceService) {}
 
   ngOnInit() {
-    this.loadTranslations();
+    this.langSubscription = this.languageService.currentLang$.subscribe(lang => {
+      this.loadTranslations();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   public loadTranslations() {
-    this.translate.get([
+    this.languageService.get([
       'menu.home', 'menu.hitzorduak', 'menu.txandak', 'menu.grafikoak', 
       'menu.materialak', 'menu.produktuak', 'menu.historiala', 
       'menu.ikasleak', 'menu.zerbitzuak'
@@ -40,7 +52,7 @@ export class HeaderComponent implements OnInit {
         { title: translations['menu.ikasleak'], url: '/ikasleak', icon: 'people' },
         { title: translations['menu.zerbitzuak'], url: '/tratamenduak', icon: 'color-palette' }
       ];
-      this.appPages = this.loginService.isAlumno() ? commonPages : adminPages;
-    });
+      this.appPages = this.loginService.isAlumno() ? commonPages : adminPages;    });
   }
 }
+

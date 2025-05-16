@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Txanda } from '../txandak/txandak.page';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
     selector: 'app-ikasleak',
@@ -62,9 +63,9 @@ export class IkasleakPage implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private navCtrl: NavController,
+    private languageService: LanguageService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+      this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
   cerrarModalAlumno() {
@@ -115,11 +116,11 @@ export class IkasleakPage implements OnInit {
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
-  }
+  this.languageService.setLanguage(this.selectedLanguage);
+}
+
+
+
 
   getHorarios(): void {
     this.ikasleService.getHorariosFilter(this.fechaInicioFilter, this.fechaFinFilter).subscribe(

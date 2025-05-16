@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LanguageService } from './zerbitzuak/language.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,8 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private languageService: LanguageService) {
+  // Inicializa idioma (usa localStorage o 'es' por defecto)
+  this.languageService.initLanguage();
+  }
 }
