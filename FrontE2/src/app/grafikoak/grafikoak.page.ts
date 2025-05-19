@@ -147,6 +147,7 @@ export class GrafikoakPage implements OnInit {
 
     if (trabajador) {
       servicios = trabajador.servicios;
+      console.log(servicios)
     }
 
     this.chart = new Chart(ctx, {

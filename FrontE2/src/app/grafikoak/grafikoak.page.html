@@ -41,8 +41,7 @@
 
   <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
     <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)" class="card-interactiva">
-      <ion-label>{{ langile.izena }}</ion-label>
-      <ion-label>{{ langile.abizenak }}</ion-label>
+      <ion-label>{{ langile.izena }} {{ langile.abizenak }}</ion-label>
     </ion-item>
   </ion-list>
 </ion-card>
@@ -51,7 +50,7 @@
     </ion-card>
 
     <!-- 📊 Modal con gráfico -->
-    <ion-modal [isOpen]="isGraphOpen" (ionModalDidDismiss)="closeGraphModal()" trigger="openGraphModal">
+    <ion-modal [isOpen]="isGraphOpen" (ionModalDidDismiss)="closeGraphModal()">
       <ng-template>
         <ion-header>
           <ion-toolbar>
