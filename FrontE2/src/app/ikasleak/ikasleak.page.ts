@@ -306,7 +306,7 @@ grupoArray: Taldea[] = [];
     });
     // Limpiar la selección después de eliminar
     this.selectedIkasleak.clear();
-    this.mostrarToast('Alumnos eliminados', 'danger');
+this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger');
   }
 
   // Abre el modal para editar un talde

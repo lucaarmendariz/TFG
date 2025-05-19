@@ -118,7 +118,7 @@
             <ion-item>
               <ion-select [(ngModel)]="crearServicio.idKategoria" name="categoria" required #categoria="ngModel"
                 label="{{ 'servicios.modal.categoria' | translate }}"
-                placeholder="{{ 'servicios.modal.select' | translate }}">
+                placeholder="{{ 'servicios.modal.select' | translate }}" interface="popover">
                 <ion-select-option *ngFor="let cat of zerbitzuak" [value]="cat.id">{{ cat.izena }}</ion-select-option>
               </ion-select>
             </ion-item>
