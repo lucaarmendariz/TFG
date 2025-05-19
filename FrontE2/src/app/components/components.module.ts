@@ -17,7 +17,7 @@ import { GaleriaComponent } from './galeria/galeria.component';
     TranslateModule,
   ],
   exports: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastsComponent, GaleriaComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
 })
 

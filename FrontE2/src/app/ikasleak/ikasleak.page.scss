@@ -1,3 +1,12 @@
 ion-list{
     background-color: rgb(255,2555,255,0);
 }
+
+.clickable-item {
+  cursor: pointer; /* Cambia el cursor para indicar clic */
+  transition: background-color 0.3s ease;
+}
+
+.clickable-item:hover {
+  background-color: lightblue; /* Color suave al pasar el mouse */
+}
