@@ -645,23 +645,14 @@ export class HitzorduakPage implements OnInit {
   }
 
   startCronometros(citas: any[]) {
-    citas.forEach((cita: any) => {
-      if (cita.hasieraOrduaErreala) {
-        // Combinar la fecha con la hora real de inicio para formar un timestamp completo
-        const startTimeReal = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
+  citas.forEach((cita: any) => {
+    if (cita.hasieraOrduaErreala) {
+      const startTimeReal = new Date(`${cita.data}T${cita.hasieraOrduaErreala}`).getTime();
+      this.startTimer(cita, startTimeReal);
+    }
+  });
+}
 
-        // Calcular el tiempo transcurrido desde la hora real de inicio
-        const now = Date.now();
-        const elapsedTime = now - startTimeReal;
-
-        // Asignar el tiempo formateado a timeElapsedMap
-        this.timeElapsedMap[cita.id] = this.formatTime(elapsedTime);
-
-        // Iniciar el cronómetro para esta cita
-        this.startTimer(cita, startTimeReal, elapsedTime);
-      }
-    });
-  }
 
   // Método para calcular el tiempo transcurrido en minutos y segundos
   calculateElapsedTime(cita: any): string {
@@ -678,36 +669,44 @@ export class HitzorduakPage implements OnInit {
     }
     return '';
   }
-  // Método para empezar el cronómetro
-  startTimer(cita: any, startTime?: number, elapsedTime?: number) {
-    if (this.intervals[cita.id]) return; // Evitar duplicación del cronómetro
 
-    // Si no existe el cronómetro, lo inicializamos
-    const timerStartTime = startTime || Date.now();
-    this.intervals[cita.id] = setInterval(() => {
-      const now = Date.now();
-      const diff = now - timerStartTime + (elapsedTime || 0); // Añadir el tiempo ya transcurrido
-      this.timeElapsedMap[cita.id] = this.formatTime(diff);
-    }, 1000);
-  }
+  startTimer(cita: any, startTime?: number) {
+  if (this.intervals[cita.id]) return;
+
+  const timerStartTime = startTime || Date.now();
+  this.intervals[cita.id] = setInterval(() => {
+    const now = Date.now();
+    const diff = now - timerStartTime; // ❌ elimina `+ elapsedTime`
+    this.timeElapsedMap[cita.id] = this.formatTime(diff);
+  }, 1000);
+}
+
 
   divideTimeByTwo(time: string): string {
-    // Convertir el tiempo de formato 'MM:SS' a minutos y segundos
-    const [minutes, seconds] = time.split(':').map(num => parseInt(num, 10));
+  // Convertir el tiempo de formato 'HH:MM:SS' o 'MM:SS' a horas, minutos y segundos
+  const parts = time.split(':').map(num => parseInt(num, 10));
+  let hours = 0, minutes = 0, seconds = 0;
 
-    // Calcular el total de segundos
-    const totalSeconds = (minutes * 60) + seconds;
-
-    // Dividir entre 2
-    const dividedSeconds = totalSeconds / 2;
-
-    // Obtener los minutos y segundos del resultado
-    const dividedMinutes = Math.floor(dividedSeconds / 60);
-    const dividedSecs = Math.floor(dividedSeconds % 60);
-
-    // Formatear el tiempo como 'MM:SS'
-    return `${this.pad(dividedMinutes)}:${this.pad(dividedSecs)}`;
+  if (parts.length === 3) {
+    [hours, minutes, seconds] = parts;
+  } else if (parts.length === 2) {
+    [minutes, seconds] = parts;
   }
+
+  // Calcular el total de segundos
+  const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+
+  // Dividir entre 2
+  const dividedSeconds = Math.floor(totalSeconds / 2);
+
+  // Obtener horas, minutos y segundos del resultado
+  const newHours = Math.floor(dividedSeconds / 3600);
+  const newMinutes = Math.floor((dividedSeconds % 3600) / 60);
+  const newSecs = dividedSeconds % 60;
+
+  return `${this.pad(newHours)}:${this.pad(newMinutes)}:${this.pad(newSecs)}`;
+}
+
 
   // Método para detener el cronómetro
   stopTimer(cita: any) {
@@ -720,10 +719,12 @@ export class HitzorduakPage implements OnInit {
 
   // Método para formatear el tiempo (minutos:segundos)
   formatTime(diff: number) {
-    const minutes = Math.floor(diff / 60000);
-    const seconds = Math.floor((diff % 60000) / 1000);
-    return `${this.pad(minutes)}:${this.pad(seconds)}`;
-  }
+  const hours = Math.floor(diff / 3600000); // 1 hora = 3.6 millones de ms
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+}
+
 
   // Método para rellenar con ceros en caso de que los minutos o segundos sean menores a 10
   pad(num: number) {

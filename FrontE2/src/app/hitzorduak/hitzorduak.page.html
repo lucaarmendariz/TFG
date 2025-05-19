@@ -80,8 +80,9 @@
                               <div *ngIf="cita.hasieraOrduaErreala && !cita.prezioTotala">
                                 <ion-badge color="warning">{{ 'ikaslePage.enProceso' | translate }}</ion-badge>
                                 <span *ngIf="cita.langilea && !cita.prezioTotala">
-                                  {{ divideTimeByTwo(timeElapsedMap[cita.id] || '00:00') }}
-                                </span>
+  {{ timeElapsedMap[cita.id] || '00:00:00' }}
+</span>
+
                               </div>
 
                               <div *ngIf="cita.amaieraOrduaErreala">
@@ -206,7 +207,7 @@
                         <!-- Campos editables -->
                         <ion-item>
                           <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
-                          <ion-input [(ngModel)]="citaEditar.deskribapena" name="descripcion" required
+                          <ion-input [(ngModel)]="citaEditar.deskribapena" name="descripcion" 
                             #descripcion="ngModel"></ion-input>
                         </ion-item>
                         <ion-text color="danger" *ngIf="descripcion.invalid && descripcion.touched">
