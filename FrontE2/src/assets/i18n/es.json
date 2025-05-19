@@ -157,7 +157,7 @@
   "citas": {
     "titulo": "Citas",
     "horas": "Horas",
-    "asientos": "Asientos",
+    "asientos": "Asiento",
     "botones": {
       "confirmar": "Confirmar",
       "editar": "Editar",
@@ -178,7 +178,7 @@
       "fecha": "Fecha",
       "horaInicio": "Hora de Inicio",
       "horaFin": "Hora de Fin",
-      "asiento": "Asientos",
+      "asiento": "Asiento",
       "cliente": "Cliente",
       "telefono": "Teléfono",
       "casa": "Del centro",
