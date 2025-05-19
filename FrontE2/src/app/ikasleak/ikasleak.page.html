@@ -257,28 +257,28 @@
             <ion-card>
               <ion-card-content>
                 <form #grupoForm="ngForm" (ngSubmit)="agregarGrupo()" novalidate>
-                  <!-- Mensaje de error si el nombre del grupo no está lleno -->
-                  <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
-                    {{ 'ikaslePage.Validaciones.izena' | translate }}
-                  </ion-text>
+
                   <ion-item>
                     <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
                     <ion-input [(ngModel)]="nuevoGrupo.izena" name="taldeIzena"
                       placeholder="{{ 'ikaslePage.TaldeIzena' | translate }}" required
                       #taldeIzena="ngModel"></ion-input>
                   </ion-item>
-
-                  <!-- Mensaje de error si el código del grupo no está lleno -->
-                  <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">
-                    {{ 'ikaslePage.Validaciones.kodea' | translate }}
+                  <!-- Mensaje de error si el nombre del grupo no está lleno -->
+                  <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
+                    {{ 'ikaslePage.Validaciones.izena' | translate }}
                   </ion-text>
+
                   <ion-item>
                     <ion-label position="stacked">{{ 'ikaslePage.TaldeKodea' | translate }}</ion-label>
                     <ion-input [(ngModel)]="nuevoGrupo.kodea" maxlength="5" name="taldeKodea"
                       placeholder="{{ 'ikaslePage.TaldeKodea' | translate }}" required
                       #taldeKodea="ngModel"></ion-input>
                   </ion-item>
-
+                  <!-- Mensaje de error si el código del grupo no está lleno -->
+                  <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">
+                    {{ 'ikaslePage.Validaciones.kodea' | translate }}
+                  </ion-text>
                   <!-- El botón se deshabilita si los campos no están completos -->
                   <ion-button expand="full" type="submit" [disabled]="grupoForm.invalid">
                     {{ 'ikaslePage.SortuTaldea' | translate }}
@@ -394,11 +394,11 @@
                     <ion-col size="2">
                       <!-- Botón para actualizar -->
                       <ion-button color="primary" (click)="openModal(horario, egutegiaEguneratuModal)">
-                        <ion-icon slot="start" name="create-outline"></ion-icon>
+                        <ion-icon name="create-outline"></ion-icon>
                       </ion-button>
                       <!-- Botón para eliminar -->
                       <ion-button color="danger" (click)="deleteHorario(horario)">
-                        <ion-icon slot="start" name="trash-outline"></ion-icon>
+                        <ion-icon name="trash-outline"></ion-icon>
                       </ion-button>
                     </ion-col>
                   </ion-row>
@@ -420,7 +420,6 @@
         </ion-card>
       </ion-content>
 
-      <!-- Modal para crear un nuevo horario -->
       <!-- Modal para crear un nuevo horario -->
       <ion-modal trigger="egutegia">
         <ng-template>
