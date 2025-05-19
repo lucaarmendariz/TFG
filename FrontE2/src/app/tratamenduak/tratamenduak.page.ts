@@ -334,47 +334,6 @@ onImageSelectedEditar(event: any) {
     this.zerbiztuakLortu();
   }
 
-  async eliminarServicio(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Confirmación',
-      message: '¿Estás seguro de que deseas eliminar este servicio?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Eliminación del servicio cancelada');
-          }
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            // Proceder con la eliminación del servicio si el usuario confirma
-            const url = `${environment.url}zerbitzuak/${id}`;
-    
-            this.http.delete(url, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-              }
-            }).subscribe(
-              (response) => {
-                console.log('Servicio eliminado correctamente');
-                this.zerbiztuakLortu();  
-              },
-              (error) => {
-                console.error('Error al eliminar el servicio:', error);
-              }
-            );
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
-  }
-  
 
   crearKategoria() {
     const categoriaData = {
@@ -465,49 +424,84 @@ onImageSelectedEditar(event: any) {
       }
     );
   }
-  
-  
-  
-  
-
   async eliminarKategoria(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Confirmación',
-      message: '¿Estás seguro de que deseas eliminar esta categoría?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Eliminación cancelada');
-          }
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            // Proceder con la eliminación si el usuario confirma
-            this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-              }
-            }).subscribe(
-              (response) => {
-                console.log('Categoría eliminada correctamente');
-                this.zerbiztuakLortu(); // Actualizar la lista de servicios
-              },
-              (error) => {
-                console.error('Error al eliminar la categoría:', error);
-              }
-            );
-          }
+  const alert = await this.alertController.create({
+    header: this.translate.instant('alertas.eliminarCategoria.header'),
+    message: this.translate.instant('alertas.eliminarCategoria.message'),
+    buttons: [
+      {
+        text: this.translate.instant('alertas.eliminarCategoria.cancelar'),
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log(this.translate.instant('alertas.eliminarCategoria.cancelado'));
         }
-      ]
-    });
-  
-    await alert.present();
-  }
+      },
+      {
+        text: this.translate.instant('alertas.eliminarCategoria.eliminar'),
+        handler: () => {
+          this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          }).subscribe(
+            () => {
+              console.log(this.translate.instant('alertas.eliminarCategoria.eliminado'));
+              this.zerbiztuakLortu();
+            },
+            (error) => {
+              console.error(this.translate.instant('alertas.eliminarCategoria.error'), error);
+            }
+          );
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+async eliminarServicio(id: number) {
+  const alert = await this.alertController.create({
+    header: this.translate.instant('alertas.eliminarServicio.header'),
+    message: this.translate.instant('alertas.eliminarServicio.message'),
+    buttons: [
+      {
+        text: this.translate.instant('alertas.eliminarServicio.cancelar'),
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log(this.translate.instant('alertas.eliminarServicio.cancelado'));
+        }
+      },
+      {
+        text: this.translate.instant('alertas.eliminarServicio.eliminar'),
+        handler: () => {
+          const url = `${environment.url}zerbitzuak/${id}`;
+
+          this.http.delete(url, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          }).subscribe(
+            () => {
+              console.log(this.translate.instant('alertas.eliminarServicio.eliminado'));
+              this.zerbiztuakLortu();
+            },
+            (error) => {
+              console.error(this.translate.instant('alertas.eliminarServicio.error'), error);
+            }
+          );
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
   
 
 }

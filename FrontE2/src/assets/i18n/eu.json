@@ -95,6 +95,11 @@
     },
     "materiales": {
         "titulo": "Materialen kudeaketa",
+        "estado": {
+            "Libre": "Libre",
+            "Ocupado": "Lanpetuta",
+            "Reservado": "Erreserbatuta"
+        },
         "botones": {
             "gestionarMateriales": "Materialak Kudeatu",
             "devolverMateriales": "Materialak Bueltatu",
@@ -105,7 +110,10 @@
             "crearCategoria": "Kategoria Sortu",
             "editarCategoria": "Kategoria editatu",
             "borrar": "Ezabatu",
-            "cancelar": "Ezeztatu"
+            "cancelar": "Ezeztatu",
+            "editar": "Editatu",
+            "crear": "Sortu",
+            "devolver": "Bueltatu"
         },
         "modal": {
             "sacarMateriales": "Materialak Atera",
@@ -292,6 +300,7 @@
         }
     },
     "ikaslePage": {
+        "Itxi": "Itxi",
         "precioExtra": "Precio Extra",
         "placeholderBusqueda": "Bezeroa, langilea, zerbitzua, tratamendua edo eserlekua bilatu",
         "cambio": "Aldaketak",
@@ -358,20 +367,20 @@
         "MensajeEliminarAlumno": "Ziur al zaude ikasle hau ezabatu nahi duzula?",
         "MensajeEliminarGrupo": "Ziur al zaude taldea ezabatu nahi duzula?",
         "MensajeEliminarHorario": "Taldearen ordutegia ezabatu nahi duzu ",
-        "AlumnoEliminado": "Ikaslea behar bezala ezabatuta",
-        "GrupoEliminado": "Taldea behar bezala ezabatuta",
-        "HorarioEliminado": "Ordutegia behar bezala ezabatuta",
-        "AlumnoAgregado": "Ikaslea behar bezala gehituta",
-        "GrupoAgregado": "Taldea behar bezala gehituta",
-        "AlumnoActualizado": "Ikaslea behar bezala eguneratuta",
-        "GrupoActualizado": "Taldea behar bezala eguneratuta",
-        "HorarioGuardado": "Ordutegia behar bezala gorde da",
+        "AlumnoEliminado": "Ikaslea ezabatuta",
+        "GrupoEliminado": "Taldea ezabatuta",
+        "HorarioEliminado": "Ordutegia ezabatuta",
+        "AlumnoAgregado": "Ikaslea gehituta",
+        "GrupoAgregado": "Taldea gehituta",
+        "AlumnoActualizado": "Ikaslea eguneratuta",
+        "GrupoActualizado": "Taldea eguneratuta",
+        "HorarioGuardado": "Ordutegia gorde da",
         "ErrorGuardarHorario": "Errorea ordutegia gordetzerakoan",
         "ErrorConexion": "Konexioan arazo bat egon da",
         "ErrorActualizarHorario": "Errorea ordutegia eguneratzerakoan",
         "Cancelar": "Ezeztatu",
         "GuardarCambios": "Aldaketak gorde",
-        "EliminarAlumnos": "Ikaslea/k behar bezala ezabatuta",
+        "EliminarAlumnos": "Ikaslea/k ezabatuta",
         "enProceso": "Prozesuan...",
         "finalizada": "Amaituta",
         "enEspera": "Ikasleren zain...",
@@ -427,15 +436,26 @@
         "MessageEliminar": "Txanda ezabatu",
         "MessageSeguroEliminar": "¿Ziur zaude txanda hau ezabatu nahi duzula?",
         "MessageEliminado": "Taldea ezabatuta",
-        "TxandaGuardada": "Txanda behar bezala gordeta",
+        "TxandaGuardada": "Txanda gordeta",
         "TxandaEzGuardada": "Ez da txanda gorde",
-        "TxandaEzabatuta": "Txanda behar bezala ezabatuta",
+        "TxandaEzabatuta": "Txanda ezabatuta",
         "TxandaEzabatutaArazoa": "Arazoa Txanda ezabatzeraoan"
     },
     "graficos": {
         "title": "Grafikoak",
         "graf": "Zerbitzuen Grafikoa",
-        "analisis": "Zerbitzuen Analisia"
+        "analisis": "Zerbitzuen Analisia",
+        "descargarPDF": "PDF deskargatu",
+        "buscarAlumnoGrupo": "Ikaslea edo taldea bilatu",
+        "contenidos": "Edukia",
+        "canvasNoEncontrado": "Ez da canvas elementua aurkitu irudia sortzeko",
+        "desconocido": "Ezezaguna",
+        "sinCodigo": "Kodearik gabe",
+        "tituloAnalisis": "Zerbitzuen azterketa",
+        "nombre": "Izena",
+        "grupo": "Taldea",
+        "sinServicios": "Zerbitzu osaturik gabe",
+        "servicios": "Zerbitzuak"
     },
     "cliente": {
         "alerta": {
@@ -463,5 +483,40 @@
         "confirmar": "Baieztatu",
         "cambiarCliente": "Aldatu bezeroa",
         "noHistorial": "Ez dago bezero honetako irudirik"
+    },
+    "alertas": {
+        
+  "eliminarTitulo": "Ezabapena berretsi",
+  "eliminarMensaje": "Ziur zaude honako ikasle(ak) ezabatu nahi dituzula? {{nombres}}",
+  "cancelar": "Utzi",
+  "eliminar": "Ezabatu",
+  "cancelado": "Ezabaketa utzita",
+        "eliminarCategoria": {
+            "header": "Berrespena",
+            "message": "Ziur zaude kategoria hau ezabatu nahi duzula?",
+            "cancelar": "Ezeztatu",
+            "cancelado": "Ezabaketa bertan behera utzi da",
+            "eliminar": "Ezabatu",
+            "eliminado": "Kategoria zuzenki ezabatu da",
+            "error": "Errorea kategoriaren ezabaketan:"
+        },
+        "eliminarServicio": {
+            "header": "Berrespena",
+            "message": "Ziur zaude zerbitzu hau ezabatu nahi duzula?",
+            "cancelar": "Ezeztatu",
+            "cancelado": "Zerbitzuaren ezabaketa bertan behera utzi da",
+            "eliminar": "Ezabatu",
+            "eliminado": "Zerbitzua zuzenki ezabatu da",
+            "error": "Errorea zerbitzuaren ezabaketan:"
+        }
+    },
+    "mensajes": {
+        "txandas": {
+            "noDisponibles": "Ez dago txandarik data hauetarako eskuragarri."
+        },
+        "turnos": {
+            "limpiezaMax": "Egun honetan jada 2 garbiketa txanda daude.",
+            "mostradorMax": "Egun honetan jada mahaia txanda bat dago."
+        }
     }
 }

@@ -13,12 +13,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content [fullscreen]="true">
 
     <!-- 🔍 Tarjeta de búsqueda -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>🔎 Buscar alumno o grupo</ion-card-title>
+<ion-card-title>🔎 {{ 'graficos.buscarAlumnoGrupo' | translate }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-searchbar
@@ -32,7 +31,7 @@
     <!-- 📦 Tarjeta de contenidos -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>📦 Contenidos</ion-card-title>
+<ion-card-title>📦 {{ 'graficos.contenidos' | translate }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
 <ng-container *ngFor="let taldea of langileak">
@@ -67,21 +66,20 @@
           </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding">
           <ion-card>
             <ion-card-header>
-              <ion-card-title>📈 {{ 'graficos.analisis' | translate }} </ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <canvas #graph *ngIf="isGraphOpen" id="myChart"></canvas>
-            </ion-card-content>
-          </ion-card>
-          <ion-button expand="full" color="success" (click)="descargarGrafico()">
-            <ion-icon name="download-outline"></ion-icon> Descargar PDF
-          </ion-button>
-        </ion-content>
+  <ion-card-title>📈 {{ 'graficos.analisis' | translate }} </ion-card-title>
+</ion-card-header>
+<ion-card-content>
+  <canvas #graph *ngIf="isGraphOpen" id="myChart"></canvas>
+  <ion-button expand="full" color="success" (click)="descargarGrafico()">
+  <ion-icon name="download-outline"></ion-icon> {{ 'graficos.descargarPDF' | translate }}
+</ion-button>
+</ion-card-content>
+</ion-card>
+
+
       </ng-template>
     </ion-modal>
 
-  </ion-content>
 </ion-content>

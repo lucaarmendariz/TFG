@@ -53,43 +53,35 @@ export class GrafikoakPage implements OnInit {
 
 
   descargarGrafico() {
-    const canvasElement = document.getElementById('myChart') as HTMLCanvasElement;
+  const canvasElement = document.getElementById('myChart') as HTMLCanvasElement;
 
-    if (!canvasElement) {
-      console.error('No se encontró el canvas para generar la imagen');
-      return;
-    }
-
-    // Convertir el canvas a una imagen en formato PNG
-    const imgData = canvasElement.toDataURL('image/png');
-
-    // Crear un documento PDF con jsPDF
-    const pdf = new jsPDF();
-
-    // Obtener el trabajador seleccionado
-    const trabajador = this.langileSelec;
-    const trabajadorNombre = trabajador ? trabajador.izena : "Desconocido";
-    const trabajadorApellido = trabajador ? trabajador.abizenak : "";
-    const grupoCodigo = trabajador ? trabajador.taldeKodea : "Sin código";
-
-    // Añadir logo en la parte superior (ajusta la URL o base64 según tu logo)
-    const logoUrl = 'assets/IMP_Logotipoa.png'; // Ruta del logo en tu proyecto
-    pdf.addImage(logoUrl, 'PNG', 10, 5, 40, 25);
-
-    // Agregar información del trabajador al PDF
-    pdf.setFontSize(16);
-    pdf.text(`Análisis de Servicios`, 60, 20);
-
-    pdf.setFontSize(12);
-    pdf.text(`Nombre: ${trabajadorNombre} ${trabajadorApellido}`, 10, 40);
-    pdf.text(`Grupo: ${grupoCodigo}`, 10, 50);
-
-    // Insertar la imagen del gráfico en el PDF
-    pdf.addImage(imgData, 'PNG', 15, 60, 180, 100);
-
-    // Descargar el archivo con el nombre del trabajador
-    pdf.save(`grafico_${trabajadorNombre}.pdf`);
+  if (!canvasElement) {
+    console.error(this.translate.instant('graficos.canvasNoEncontrado'));
+    return;
   }
+
+  const imgData = canvasElement.toDataURL('image/png');
+  const pdf = new jsPDF();
+
+  const trabajador = this.langileSelec;
+  const trabajadorNombre = trabajador ? trabajador.izena : this.translate.instant('graficos.desconocido');
+  const trabajadorApellido = trabajador ? trabajador.abizenak : "";
+  const grupoCodigo = trabajador ? trabajador.taldeKodea : this.translate.instant('graficos.sinCodigo');
+
+  const logoUrl = 'assets/IMP_Logotipoa.png';
+  pdf.addImage(logoUrl, 'PNG', 10, 5, 40, 25);
+
+  pdf.setFontSize(16);
+  pdf.text(this.translate.instant('graficos.tituloAnalisis'), 60, 20);
+
+  pdf.setFontSize(12);
+  pdf.text(`${this.translate.instant('graficos.nombre')}: ${trabajadorNombre} ${trabajadorApellido}`, 10, 40);
+  pdf.text(`${this.translate.instant('graficos.grupo')}: ${grupoCodigo}`, 10, 50);
+
+  pdf.addImage(imgData, 'PNG', 15, 60, 180, 100);
+  pdf.save(`grafico_${trabajadorNombre}.pdf`);
+}
+
 
 
 
@@ -138,48 +130,49 @@ export class GrafikoakPage implements OnInit {
   }
 
   mostrarDatos(trabajadorId: string) {
-    setTimeout(() => {
-      const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-      if (!ctx) {
-        console.error('No se encontró el canvas');
-        return;
-      }
+  setTimeout(() => {
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    if (!ctx) {
+      console.error(this.translate.instant('graficos.canvasNoEncontrado'));
+      return;
+    }
 
-      if (this.chart) {
-        this.chart.destroy(); // Destruir gráfico anterior si existe
-      }
+    if (this.chart) {
+      this.chart.destroy();
+    }
 
-      const trabajador = this.langileService.find(t => t.id == trabajadorId);
-      let servicios = { "Sin servicios completados": 0 };
-      let trabajadorNombre = trabajador ? trabajador.nombre : "Desconocido";
+    const trabajador = this.langileService.find(t => t.id == trabajadorId);
+    let servicios = { [this.translate.instant('graficos.sinServicios')]: 0 };
+    let trabajadorNombre = trabajador ? trabajador.nombre : this.translate.instant('graficos.desconocido');
 
-      if (trabajador) {
-        servicios = trabajador.servicios;
-      }
+    if (trabajador) {
+      servicios = trabajador.servicios;
+    }
 
-      this.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: Object.keys(servicios),
-          datasets: [{
-            label: `${trabajadorNombre} - Servicios`,
-            data: Object.values(servicios),
-            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true
-            }
+    this.chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(servicios),
+        datasets: [{
+          label: `${trabajadorNombre} - ${this.translate.instant('graficos.servicios')}`,
+          data: Object.values(servicios),
+          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
           }
         }
-      });
-    }, 500);
-  }
+      }
+    });
+  }, 500);
+}
+
 
 
 

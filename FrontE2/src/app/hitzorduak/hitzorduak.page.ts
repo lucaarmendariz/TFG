@@ -835,27 +835,43 @@ export class HitzorduakPage implements OnInit {
     return filteredCitas;
   }
 
-  // Función: cargar_dia_seleccionado
   cargar_dia_seleccionado() {
-    const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
-    const egunaDate = new Date(eguna);
-    let diaSemana = egunaDate.getDay();
-    diaSemana = diaSemana === 0 ? 7 : diaSemana;
-    this.cargarHitzordu();
-    const langileak = this.ordutegiak.filter((ordu: any) => {
-      const hasieraDate = new Date(ordu.hasieraData);
-      const amaieraDate = new Date(ordu.amaieraData);
-      return (
-        hasieraDate <= egunaDate && amaieraDate >= egunaDate && ordu.eguna === diaSemana
-      );
-    });
-    if (this.langileArray.length == 0 && langileak.length > 0) {
-      this.langileArray = langileak[0].taldea.langileak.filter((langile: any) => !langile.ezabatzeData);
-    }
-    this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 4 : 0;
-    this.resetSelection();
-    this.citaCrear = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
+  const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
+  const egunaDate = new Date(eguna);
+  let diaSemana = egunaDate.getDay();
+  diaSemana = diaSemana === 0 ? 7 : diaSemana;
+
+  this.cargarHitzordu();
+
+  const langileak = this.ordutegiak.filter((ordu: any) => {
+    const hasieraDate = new Date(ordu.hasieraData);
+    const amaieraDate = new Date(ordu.amaieraData);
+    return (
+      hasieraDate <= egunaDate && amaieraDate >= egunaDate && ordu.eguna === diaSemana
+    );
+  });
+
+  if (langileak.length > 0) {
+    const langileVivos = langileak[0].taldea.langileak.filter((l: any) => !l.ezabatzeData);
+    this.langileArray = langileVivos;
+    this.asientos = langileVivos.length;
+  } else {
+    this.asientos = 0;
   }
+
+  this.resetSelection();
+  this.citaCrear = {
+    data: null,
+    hasieraOrdua: null,
+    amaieraOrdua: null,
+    eserlekua: 0,
+    izena: '',
+    telefonoa: '',
+    deskribapena: '',
+    etxekoa: false
+  };
+}
+
 
 
   // Función: getHoursInRange

@@ -269,31 +269,30 @@ grupoArray: Taldea[] = [];
     this.showDeleteConfirmation(nombresAlumnos);
   }
 
-  // Función para mostrar alerta de confirmación
   async showDeleteConfirmation(nombresAlumnos: string[]) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar Eliminación',
-      message: `¿Estás seguro de que deseas eliminar los siguientes alumno(s)?: ${nombresAlumnos.join(', ')}`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Eliminación cancelada');
-          }
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            // Proceder con la eliminación
-            this.proceedToDelete();
-          }
+  const alert = await this.alertController.create({
+    header: this.translate.instant('alertas.eliminarTitulo'),
+    message: this.translate.instant('alertas.eliminarMensaje', { nombres: nombresAlumnos.join(', ') }),
+    buttons: [
+      {
+        text: this.translate.instant('alertas.cancelar'),
+        role: 'cancel',
+        handler: () => {
+          console.log(this.translate.instant('alertas.cancelado'));
         }
-      ]
-    });
+      },
+      {
+        text: this.translate.instant('alertas.eliminar'),
+        handler: () => {
+          this.proceedToDelete();
+        }
+      }
+    ]
+  });
 
-    await alert.present();
-  }
+  await alert.present();
+}
+
 
   // Función para eliminar los alumnos seleccionados
   proceedToDelete() {
@@ -303,12 +302,11 @@ grupoArray: Taldea[] = [];
         this.getAlumnos();
         this.getGrupos();
         this.closeModal();
-        this.mostrarToast('Alumnos eliminados', 'danger');
       });
     });
-
     // Limpiar la selección después de eliminar
     this.selectedIkasleak.clear();
+    this.mostrarToast('Alumnos eliminados', 'danger');
   }
 
   // Abre el modal para editar un talde
@@ -571,29 +569,27 @@ grupoArray: Taldea[] = [];
     
       // Si no hay txandas, mostrar aviso pero continuar
       if (!hayTxandas) {
-        const alert = await this.alertController.create({
-          header: 'No hay txandas',
-          message: 'No se han encontrado txandas para estas fechas. ¿Quieres ir a la página de txandas para crearlas?',
-          buttons: [
-            {
-              text: 'Continuar',
-              role: 'cancel'
-            },
-            {
-              text: 'Ir a Txandas',
-              handler: () => {
-                // Redirigir a la página de txandas
-                this.router.navigate(['/txandak']).then(() => {
-                  window.location.reload();
-                });
-                // Descomenta esta línea si usas Router
-                
-              }
-            }
-          ]
-        });
-        await alert.present();
+  const alert = await this.alertController.create({
+    header: this.translate.instant('alertas.txandas.header'),
+    message: this.translate.instant('alertas.txandas.message'),
+    buttons: [
+      {
+        text: this.translate.instant('alertas.txandas.continuar'),
+        role: 'cancel'
+      },
+      {
+        text: this.translate.instant('alertas.txandas.ir'),
+        handler: () => {
+          this.router.navigate(['/txandak']).then(() => {
+            window.location.reload();
+          });
+        }
       }
+    ]
+  });
+  await alert.present();
+}
+
       // Guardar horario aunque no haya txandas
       this.ordutegia = {
         taldea: {

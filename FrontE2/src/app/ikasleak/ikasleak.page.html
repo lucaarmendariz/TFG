@@ -428,9 +428,12 @@
             <ion-toolbar>
               <ion-title>{{ 'ikaslePage.Egutegia' | translate }}</ion-title>
               <ion-buttons slot="end">
-                <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
+                <ion-button (click)="closeModal()">
+                  <ion-icon slot="icon-only" name="close"></ion-icon>
+                </ion-button>
               </ion-buttons>
             </ion-toolbar>
+
           </ion-header>
           <ion-content>
             <!-- Card que contiene el formulario para crear un nuevo horario -->
@@ -535,10 +538,13 @@
             <ion-toolbar>
               <ion-title>{{ 'ikaslePage.Eguneratzen' | translate }}: {{ idHorario }}</ion-title>
               <ion-buttons slot="end">
-                <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
+                <ion-button (click)="closeModal()">
+                  <ion-icon slot="icon-only" name="close"></ion-icon>
+                </ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
+
           <ion-content>
             <!-- Card que contiene el formulario para actualizar el horario -->
             <ion-card>

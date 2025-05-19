@@ -95,6 +95,11 @@
   },
   "materiales": {
     "titulo": "Gestion de materiales",
+    "estado": {
+      "Libre": "Libre",
+      "Ocupado": "Ocupado",
+      "Reservado": "Reservado"
+    },
     "botones": {
       "gestionarMateriales": "Gestionar Materiales",
       "devolverMateriales": "Devolver Materiales",
@@ -106,7 +111,9 @@
       "crearCategoria": "Crear Categoria",
       "editarCategoria": "Editar Categoria",
       "borrar": "Borrar",
-      "cancelar": "Cancelar"
+      "cancelar": "Cancelar",
+      "editar": "Editar",
+      "crear": "Crear"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
@@ -453,7 +460,18 @@
   "graficos": {
     "title": "Graficos",
     "graf": "Gráfico de Servicios",
-    "analisis": "Análisis de Servicios"
+    "analisis": "Análisis de Servicios",
+    "descargarPDF": "Descargar PDF",
+    "buscarAlumnoGrupo": "Buscar alumno o grupo",
+    "contenidos": "Contenidos",
+    "canvasNoEncontrado": "No se encontró el canvas para generar la imagen",
+    "desconocido": "Desconocido",
+    "sinCodigo": "Sin código",
+    "tituloAnalisis": "Análisis de Servicios",
+    "nombre": "Nombre",
+    "grupo": "Grupo",
+    "sinServicios": "Sin servicios completados",
+    "servicios": "Servicios"
   },
   "cliente": {
     "alerta": {
@@ -481,5 +499,46 @@
     "confirmar": "Confirmar Cita",
     "cambiarCliente": "Cambiar cliente",
     "noHistorial": "No hay imagenes de este cliente"
+  },
+  "alertas": {
+    
+  "eliminarTitulo": "Confirmar eliminación",
+  "eliminarMensaje": "¿Estás seguro de que deseas eliminar a los siguientes alumno(s)? {{nombres}}",
+  "cancelar": "Cancelar",
+  "eliminar": "Eliminar",
+  "cancelado": "Eliminación cancelada",
+    "txandas": {
+      "header": "No hay txandas",
+      "message": "No se han encontrado txandas para estas fechas. ¿Quieres ir a la página de txandas para crearlas?",
+      "continuar": "Continuar",
+      "ir": "Ir a Txandas"
+    },
+    "eliminarCategoria": {
+      "header": "Confirmación",
+      "message": "¿Estás seguro de que deseas eliminar esta categoría?",
+      "cancelar": "Cancelar",
+      "cancelado": "Eliminación cancelada",
+      "eliminar": "Eliminar",
+      "eliminado": "Categoría eliminada correctamente",
+      "error": "Error al eliminar la categoría:"
+    },
+    "eliminarServicio": {
+      "header": "Confirmación",
+      "message": "¿Estás seguro de que deseas eliminar este servicio?",
+      "cancelar": "Cancelar",
+      "cancelado": "Eliminación del servicio cancelada",
+      "eliminar": "Eliminar",
+      "eliminado": "Servicio eliminado correctamente",
+      "error": "Error al eliminar el servicio:"
+    },
+    "mensajes": {
+      "txandas": {
+        "noDisponibles": "No hay txandas disponibles para estas fechas."
+      },
+      "turnos": {
+        "limpiezaMax": "Ya hay 2 turnos de limpieza en este día.",
+        "mostradorMax": "Ya hay un turno de mostrador en este día."
+      }
+    }
   }
 }

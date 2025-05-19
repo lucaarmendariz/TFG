@@ -29,7 +29,7 @@ export interface Ikaslea {
 }
 
 export interface Horario {
-  id?:number;
+  id?: number;
   taldea: {
     kodea: string;
     langileak?: Ikaslea[];
@@ -45,18 +45,18 @@ export interface Horario {
 }
 
 @Component({
-    selector: 'app-txandak',
-    templateUrl: './txandak.page.html',
-    styleUrls: ['./txandak.page.scss'],
-    standalone: false
+  selector: 'app-txandak',
+  templateUrl: './txandak.page.html',
+  styleUrls: ['./txandak.page.scss'],
+  standalone: false
 })
 
 export class TxandakPage implements OnInit {
-    @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
 
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
-  filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
+  filteredTxandak: Txanda[] = [];  // Lista filtrada de txandas
   ordutegiArray: Horario[] = [];
   ordutegiArrayFiltered: Horario[] = [];
   ikasleak: Ikaslea[] = [];
@@ -72,23 +72,23 @@ export class TxandakPage implements OnInit {
   fechaFin: string = '';
 
 
-  
-  constructor(private translate: TranslateService, 
-              private http: HttpClient,
-              private toastController: ToastController,              
-              private alertCtrl: AlertController,
-              private ikasleService: IkasleZerbitzuakService,
-              private languageService: LanguageService
-              ) { 
-                  this.selectedLanguage = this.languageService.getCurrentLanguage();
-              }
+
+  constructor(private translate: TranslateService,
+    private http: HttpClient,
+    private toastController: ToastController,
+    private alertCtrl: AlertController,
+    private ikasleService: IkasleZerbitzuakService,
+    private languageService: LanguageService
+  ) {
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
+  }
 
   ngOnInit() {
     this.fechaInicio = this.lortuData();
     this.fechaFin = this.lortuData();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
-    
+
     // Llamar al método para obtener los txandas
     this.getTxandak();
     this.getHorarios();
@@ -97,21 +97,21 @@ export class TxandakPage implements OnInit {
   }
 
   changeLanguage() {
-  this.languageService.setLanguage(this.selectedLanguage);
-}
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
 
   getAlumno(id: number) {
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);
   }
 
-  array: any[]= [];
+  array: any[] = [];
 
   lortuData(): string {
     const gaur = new Date();
     const urtea = gaur.getFullYear();
     let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
     let eguna: string | number = gaur.getDate();
-  
+
     if (eguna < 10) {
       eguna = '0' + eguna;
     }
@@ -133,12 +133,12 @@ export class TxandakPage implements OnInit {
         })
         this.ordutegiArrayFiltered = this.ordutegiArray;
         this.filteredAlumnos = this.ordutegiArray
-        .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
-        .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
-        .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) => 
-          self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
-          !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
-        );
+          .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
+          .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
+          .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) =>
+            self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
+            !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
+          );
         const today = this.lortuData();
         const eguna = formatDate(today, 'yyyy-MM-dd', 'en-US');
         const egunaDate = new Date(eguna);
@@ -157,7 +157,7 @@ export class TxandakPage implements OnInit {
       }
     );
   }
-  
+
   // Función para filtrar txandas por tipo
   filterTxandas() {
     if (this.txandak && Array.isArray(this.txandak) && this.txandak.length > 0) {
@@ -176,20 +176,20 @@ export class TxandakPage implements OnInit {
       (data) => {
         // Verificar que los datos no sean null o undefined
         if (!data || data.length === 0) {
-          this.mostrarToast('No hay txandas disponibles para estas fechas.', 'warning');
+          this.mostrarToast(this.translate.instant('mensajes.txandas.noDisponibles'), 'warning');
           this.txandak = []; // Asignar un array vacío si no hay txandas
         } else {
           this.txandak = data
             .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
-            .map(txanda => {  
+            .map(txanda => {
               const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
-    
+
               if (alumno) {
                 txanda.alumno = alumno;  // Asignamos el alumno a txanda
               } else {
                 console.log(`Alumno no encontrado para el id: ${txanda.langileak?.id}`);
               }
-    
+
               return {
                 mota: txanda.mota,
                 data: txanda.data,
@@ -198,7 +198,7 @@ export class TxandakPage implements OnInit {
               };
             });
         }
-  
+
         this.filterTxandas();  // Llamar a la función para filtrar las txandas después de recibir los datos
       },
       (error) => {
@@ -208,7 +208,7 @@ export class TxandakPage implements OnInit {
     );
   }
 
-  
+
   async deleteTxanda(txandaId: number) {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('txandakPage.MessageEliminar'),
@@ -240,16 +240,16 @@ export class TxandakPage implements OnInit {
     });
     await alert.present();
   }
-  
-  
+
+
   openModal() {
     this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear el formulario
   }
 
   // Función para cerrar el modal (se puede utilizar el modalController también)
   closeModal() {
-    this.nuevaTxanda = { mota: '', data: '', alumno: null }; 
-  }  
+    this.nuevaTxanda = { mota: '', data: '', alumno: null };
+  }
 
   // Función para guardar la nueva txanda
   guardarTxanda() {
@@ -277,7 +277,7 @@ export class TxandakPage implements OnInit {
           this.getTxandak();
           this.closeModal();
           this.mostrarToast(this.translate.instant('txandakPage.TxandaGuardada'), 'success');
-        } 
+        }
       },
       (error) => {
         this.mostrarToast(this.translate.instant('txandakPage.TxandaEzGuardada'), 'danger');
@@ -313,39 +313,40 @@ export class TxandakPage implements OnInit {
   filterToday() {
     const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
     this.fechaInicio = today;
-    this.fechaFin=today;
+    this.fechaFin = today;
     this.getTxandak();
   }
   // Método para obtener los alumnos asignados en un día específico
-getAlumnosAsignados(data: string): any[] {
-  return this.txandak
-    .filter(txanda => txanda.data === data && !txanda.ezabatzeData) // Filtrar por fecha y eliminar txandas eliminadas
-    .map(txanda => txanda.alumno); // Devolver los alumnos de los turnos
-}
+  getAlumnosAsignados(data: string): any[] {
+    return this.txandak
+      .filter(txanda => txanda.data === data && !txanda.ezabatzeData) // Filtrar por fecha y eliminar txandas eliminadas
+      .map(txanda => txanda.alumno); // Devolver los alumnos de los turnos
+  }
 
-// Función modificada para filtrar alumnos disponibles sin necesidad de la fecha
-filterAlumnosDisponibles(alumnos: Ikaslea[], turnosAsignados: Txanda[]): Ikaslea[] {
-  // Filtrar y devolver los alumnos que no están asignados a ningún turno
-  return alumnos.filter(alumno => !turnosAsignados.some(txanda => txanda.alumno?.id === alumno.id));
-}
+  // Función modificada para filtrar alumnos disponibles sin necesidad de la fecha
+  filterAlumnosDisponibles(alumnos: Ikaslea[], turnosAsignados: Txanda[]): Ikaslea[] {
+    // Filtrar y devolver los alumnos que no están asignados a ningún turno
+    return alumnos.filter(alumno => !turnosAsignados.some(txanda => txanda.alumno?.id === alumno.id));
+  }
 
-// Método para contar cuántos turnos de un tipo existen en una fecha determinada
-countTurnosPorTipo(data: string, tipo: string): number {
-  return this.txandak.filter(txanda => txanda.data === data && txanda.mota === tipo && !txanda.ezabatzeData).length;
-}
+  // Método para contar cuántos turnos de un tipo existen en una fecha determinada
+  countTurnosPorTipo(data: string, tipo: string): number {
+    return this.txandak.filter(txanda => txanda.data === data && txanda.mota === tipo && !txanda.ezabatzeData).length;
+  }
 
-// Lógica para verificar si es posible crear el turno
-puedeCrearTurno(data: string, tipo: string): boolean {
+  // Lógica para verificar si es posible crear el turno
+ puedeCrearTurno(data: string, tipo: string): boolean {
   if (tipo === 'G' && this.countTurnosPorTipo(data, 'G') >= 2) {
-    this.mostrarToast('Ya hay 2 turnos de limpieza en este día.', 'danger');
+    this.mostrarToast(this.translate.instant('mensajes.turnos.limpiezaMax'), 'danger');
     return false;
   }
   if (tipo === 'M' && this.countTurnosPorTipo(data, 'M') >= 1) {
-    this.mostrarToast('Ya hay un turno de mostrador en este día.', 'danger');
+    this.mostrarToast(this.translate.instant('mensajes.turnos.mostradorMax'), 'danger');
     return false;
   }
   return true;
 }
+
 
 
 }
