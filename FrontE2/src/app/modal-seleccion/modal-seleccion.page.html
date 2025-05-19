@@ -29,19 +29,20 @@
       </ion-button>
       <ion-list>
         <ion-item 
-          *ngFor="let cliente of filteredClientes" 
-          [color]="cliente.id === clienteId ? 'tertiary' : ''"
-          (click)="seleccionarCliente(cliente)">
-          
-          <ion-label>
-            <h2>{{ cliente.izena }} {{ cliente.abizena }}</h2>
-            <p>{{ cliente.telefonoa }}</p>
-          </ion-label>
+  *ngFor="let cliente of filteredClientes" 
+  [color]="cliente.id === clienteId ? 'tertiary' : ''"
+  (click)="asignarCliente(cliente)">
 
-          <ion-button slot="end" (click)="asignarCliente(cliente); $event.stopPropagation();">
-            {{ 'seleccionarCliente.asignarBtn' | translate }}
-          </ion-button>
-        </ion-item>
+  <ion-label>
+    <h2>{{ cliente.izena }} {{ cliente.abizena }}</h2>
+    <p>{{ cliente.telefonoa }}</p>
+  </ion-label>
+
+  <ion-button slot="end" (click)="$event.stopPropagation(); asignarCliente(cliente);">
+    {{ 'seleccionarCliente.asignarBtn' | translate }}
+  </ion-button>
+</ion-item>
+
       </ion-list>
 
       

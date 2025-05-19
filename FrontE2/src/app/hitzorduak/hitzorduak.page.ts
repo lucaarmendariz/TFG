@@ -659,9 +659,6 @@ export class HitzorduakPage implements OnInit {
 
         // Iniciar el cronómetro para esta cita
         this.startTimer(cita, startTimeReal, elapsedTime);
-
-        console.log("Start Time Real:", startTimeReal);
-        console.log("Elapsed Time:", elapsedTime);
       }
     });
   }

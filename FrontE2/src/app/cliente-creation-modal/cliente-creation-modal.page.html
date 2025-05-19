@@ -30,8 +30,13 @@
         <!-- Teléfono -->
         <ion-item>
           <ion-label position="stacked">{{ 'cliente.telefono' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearTelefono" name="telefono" pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
-        </ion-item>
+<ion-input 
+    [(ngModel)]="crearTelefono" 
+    name="telefono" 
+    pattern="^[0-9]{9}$" 
+    maxlength="9"       
+    #telefono="ngModel">
+  </ion-input>        </ion-item>
         <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ 'cliente.errorTelefono' | translate }}</ion-text>
 
         <!-- Piel -->
