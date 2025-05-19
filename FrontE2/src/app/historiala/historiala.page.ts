@@ -410,7 +410,6 @@ filtrarTickets() {
   loadHistorial() {
     this.getHistorialPorCliente(this.bezeroId).subscribe((data) => {
       this.historial = data;
-      console.log('Historial del cliente:', this.historial);
     });
   }
 
@@ -475,7 +474,6 @@ filtrarTickets() {
   openBezero(bezero: any) {
     this.isEditingBezero = true;
     this.editingBezero = bezero;
-    console.log(this.editingBezero)
   }
 
   isEditingBezeroHistoriala = false;
@@ -483,7 +481,6 @@ filtrarTickets() {
   openBezeroHistoriala(bezero: any) {
     this.isEditingBezeroHistoriala = true;
     this.editingBezero = bezero;
-    console.log(this.editingBezero.historiala)
   }
 
   cerrarModalHistoriala() {
@@ -511,7 +508,6 @@ filtrarTickets() {
       console.warn('Historial sin ID, no se puede editar');
       return;
     }
-    console.log(historial)
 
     historial.eguneratzeData = new Date(); // O puedes dejar que el backend lo genere
 
@@ -520,9 +516,6 @@ filtrarTickets() {
         'Content-Type': 'application/json'
       }
     }).subscribe({
-      next: (res) => {
-        console.log('Historial editado con éxito', res);
-      },
       error: (err) => {
         console.error('Error al editar historial:', err);
       }
@@ -574,14 +567,12 @@ filtrarTickets() {
             this.editingBezero.historiala = this.editingBezero.historiala.filter(
               (h: any) => h !== historial
             );
-            console.log('Historial eliminado localmente.');
             return;
           }
 
           // Eliminar del backend y frontend
           this.delete(historial.id).subscribe({
             next: () => {
-              console.log('Historial eliminado del backend:', historial.id);
               this.editingBezero.historiala = this.editingBezero.historiala.filter(
                 (h: any) => h.id !== historial.id
               );
@@ -611,7 +602,6 @@ historialCompleto(historial: any): boolean {
 
 
   guardarBezero() {
-    console.log(this.editingBezero);
     const json_data = {
       "id": this.editingBezero.id,  // Ensure the ID is included
       "izena": this.editingBezero.izena,
@@ -640,7 +630,6 @@ historialCompleto(historial: any): boolean {
 compareWithFn = (o1: any, o2: any) => o1 == o2;
 
 guardarBezeroHistoriala(){
-  console.log(this.editingBezero)
   this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
       headers: {
         'Content-Type': 'application/json',
