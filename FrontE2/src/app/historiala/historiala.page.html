@@ -347,7 +347,7 @@
               <ion-card-content>
                 <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
                 <p>
-                  {{ "historial.modal.piel" | translate }}:
+                  Azal Sentikorra:
                   <ion-icon *ngIf="bezero.azalSentikorra === 'B'" name="checkmark-circle" color="success"></ion-icon>
                   <ion-icon *ngIf="bezero.azalSentikorra === 'E'" name="close-circle" color="danger"></ion-icon>
                 </p>
@@ -379,6 +379,7 @@
           <ion-title>{{ 'historial.modal.añadir_cliente' | translate }}</ion-title>
         </ion-toolbar>
       </ion-header>
+      <ion-content>
         <ion-card>
           <ion-card-header>
             <ion-card-title>{{ 'historial.modal.añadir_cliente' | translate }}</ion-card-title>
@@ -423,6 +424,7 @@
             </form>
           </ion-card-content>
         </ion-card>
+      </ion-content>
     </ng-template>
   </ion-modal>
 
@@ -440,6 +442,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
+      <ion-content>
         <form #formCliente="ngForm" (ngSubmit)="guardarBezero()" novalidate>
           <ion-card>
             <ion-card-header>
@@ -482,12 +485,14 @@
             </ion-card-content>
           </ion-card>
         </form>
+      </ion-content>
     </ng-template>
   </ion-modal>
 
 
   <ion-modal [isOpen]="isEditingBezeroHistoriala" cssClass="modal-grande" backdropDismiss="false">
     <ng-template>
+      <ion-content>
         <ion-header>
           <ion-toolbar>
             <ion-title>
@@ -606,6 +611,7 @@
           </div>
         </form>
 
+      </ion-content>
     </ng-template>
   </ion-modal>
 

@@ -611,13 +611,13 @@ historialCompleto(historial: any): boolean {
 
 
   guardarBezero() {
-    console.log(this.editingBezero.id);
+    console.log(this.editingBezero);
     const json_data = {
       "id": this.editingBezero.id,  // Ensure the ID is included
       "izena": this.editingBezero.izena,
       "abizena": this.editingBezero.abizena,
       "telefonoa": this.editingBezero.telefonoa,
-      "azalSentikorra": this.editingBezero.azalSentikorra ? "B" : "E",
+      "azalSentikorra": this.editingBezero.azalSentikorra,
     };
 
     this.http.put(`${environment.url}bezero_fitxak/update`, json_data, {
