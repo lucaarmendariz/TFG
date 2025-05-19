@@ -1,0 +1,8 @@
+ion-item {
+  transition: background-color 0.3s ease;
+}
+
+ion-item:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}

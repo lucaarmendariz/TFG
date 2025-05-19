@@ -26,24 +26,7 @@
     <img src="assets/IMP_Logotipoa.png" alt="Santurtzi Logo" class="logo" />
   </div>
 
-  <ion-card *ngIf="getProductosBajoStock().length > 0" class="stock-alert-card">
-    <ion-item lines="none" color="danger">
-      <ion-icon slot="start" name="warning" color="light"></ion-icon>
-      <ion-label class="ion-text-wrap">
-        <b>{{ 'menu.productosBajoStock' | translate }}</b>
-      </ion-label>
-    </ion-item>
-    <ion-list>
-      <ion-item *ngFor="let producto of getProductosBajoStock()">
-        <ion-label>
-          <h2>{{ producto.izena }}</h2>
-          <p>{{ 'menu.Stock' | translate }}: {{ producto.stock }}</p>
-          <p>{{ 'menu.Alerta' | translate }}: {{ producto.stockAlerta }}</p>
-        </ion-label>
-        <ion-badge color="danger">{{ 'menu.bajoStock' | translate }}</ion-badge>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+  
 
   <div class="cards-container" [ngClass]="{ 'dos-columnas': ikasle, 'tres-columnas': !ikasle }">
   
@@ -85,7 +68,26 @@
         <app-home-botoiak-konponentea kolorea="light" botoiTitulua="{{ 'menu.grafikoak' | translate }}" iconIzena="stats-chart" routerLink="/grafikoak"></app-home-botoiak-konponentea>
       </ion-card-content>
     </ion-card>
+
+    
   
   </div>
-  
+  <ion-card *ngIf="getProductosBajoStock().length > 0" class="stock-alert-card">
+    <ion-item lines="none" color="danger">
+      <ion-icon slot="start" name="warning" color="light"></ion-icon>
+      <ion-label class="ion-text-wrap">
+        <b>{{ 'menu.productosBajoStock' | translate }}</b>
+      </ion-label>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let producto of getProductosBajoStock()">
+        <ion-label>
+          <h2>{{ producto.izena }}</h2>
+          <p>{{ 'menu.Stock' | translate }}: {{ producto.stock }}</p>
+          <p>{{ 'menu.Alerta' | translate }}: {{ producto.stockAlerta }}</p>
+        </ion-label>
+        <ion-badge color="danger">{{ 'menu.bajoStock' | translate }}</ion-badge>
+      </ion-item>
+    </ion-list>
+  </ion-card>
 </ion-content>

@@ -270,19 +270,24 @@ kategoriaSortu(categoriaForm: NgForm) {
   
 
   async eliminarProducto(id: number) {
+  const header = await this.translate.get('alert.confirmation').toPromise();
+  const message = await this.translate.get('alert.deleteProductMessage').toPromise();
+  const cancelText = await this.translate.get('alert.cancel').toPromise();
+  const deleteText = await this.translate.get('alert.delete').toPromise();
+
   const alert = await this.alertController.create({
-    header: 'Confirmación',
-    message: '¿Estás seguro de que quieres eliminar este producto?',
+    header,
+    message,
     buttons: [
       {
-        text: 'Cancelar',
+        text: cancelText,
         role: 'cancel',
         handler: () => {
           console.log('Operación cancelada por el usuario.');
         }
       },
       {
-        text: 'Eliminar',
+        text: deleteText,
         handler: () => {
           const json_data = { "id": id };
           console.log(json_data);
@@ -311,19 +316,24 @@ kategoriaSortu(categoriaForm: NgForm) {
 
 
   async eliminarKategoriaProducto(id: number) {
+  const header = await this.translate.get('alert.confirmation').toPromise();
+  const message = await this.translate.get('alert.deleteCategoryMessage').toPromise();
+  const cancelText = await this.translate.get('alert.cancel').toPromise();
+  const deleteText = await this.translate.get('alert.delete').toPromise();
+
   const alert = await this.alertController.create({
-    header: 'Confirmación',
-    message: '¿Estás seguro de que quieres eliminar esta categoría?',
+    header,
+    message,
     buttons: [
       {
-        text: 'Cancelar',
+        text: cancelText,
         role: 'cancel',
         handler: () => {
           console.log('Operación cancelada por el usuario.');
         }
       },
       {
-        text: 'Eliminar',
+        text: deleteText,
         handler: () => {
           const json_data = { "id": id };
           console.log(json_data);

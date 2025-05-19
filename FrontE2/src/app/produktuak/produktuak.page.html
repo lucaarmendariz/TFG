@@ -152,7 +152,7 @@
         <ion-content>
           <ion-card>
             <ion-card-header>
-              <ion-card-title>{{ 'productos.tituloFormulario' | translate }}</ion-card-title>
+              <ion-card-title>{{ 'productos.title' | translate }}</ion-card-title>
 
             </ion-card-header>
             <ion-card-content>
@@ -175,7 +175,7 @@
                   <ion-select interface="popover" [(ngModel)]="selecAlumno" name="selecAlumno" required
                     [disabled]="!selecTaldea" #alumnoCtrl="ngModel" label="Alumno" placeholder="Selecciona a un alumno">
                     <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno.id">
-                      {{ alumno.id }} : {{ alumno.izena }}
+                      {{ alumno.izena }}
                     </ion-select-option>
                   </ion-select>
                 </ion-item>

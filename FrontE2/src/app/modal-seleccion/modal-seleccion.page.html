@@ -10,16 +10,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar 
-      [(ngModel)]="searchTerm" 
-      (ionInput)="filterClientes()" 
-      debounce="300" 
-      [placeholder]="'seleccionarCliente.buscarPlaceholder' | translate">
-    </ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterClientes()" debounce="300"
+    [placeholder]="'seleccionarCliente.buscarPlaceholder' | translate">
+  </ion-searchbar>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{ 'seleccionarCliente.listaTitulo' | translate }}</ion-card-title>
-      
     </ion-card-header>
 
     <ion-card-content>
@@ -27,25 +24,28 @@
         <ion-icon name="add" slot="start"></ion-icon>
         {{ 'seleccionarCliente.crearNuevoBtn' | translate }}
       </ion-button>
-      <ion-list>
-        <ion-item 
-  *ngFor="let cliente of filteredClientes" 
-  [color]="cliente.id === clienteId ? 'tertiary' : ''"
-  (click)="asignarCliente(cliente)">
 
-  <ion-label>
-    <h2>{{ cliente.izena }} {{ cliente.abizena }}</h2>
-    <p>{{ cliente.telefonoa }}</p>
-  </ion-label>
-
-  <ion-button slot="end" (click)="$event.stopPropagation(); asignarCliente(cliente);">
-    {{ 'seleccionarCliente.asignarBtn' | translate }}
-  </ion-button>
-</ion-item>
-
-      </ion-list>
-
-      
+      <div *ngFor="let cliente of filteredClientes" (click)="asignarCliente(cliente)"
+        [style.background-color]="cliente.id === clienteId ? 'var(--ion-color-tertiary)' : 'transparent'" style="
+              margin: 8px 0;
+              padding: 12px 16px;
+              border-radius: 8px;
+              cursor: pointer;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              transition: background-color 0.3s ease;
+           " (mouseover)="hover = cliente.id" (mouseout)="hover = null" [style.background-color]="
+             cliente.id === clienteId ? 'var(--ion-color-tertiary)' : (hover === cliente.id ? 'lightblue' : 'transparent')
+           ">
+        <div>
+          <h2 style="margin: 0;">{{ cliente.izena }} {{ cliente.abizena }}</h2>
+          <p style="margin: 0;">{{ cliente.telefonoa }}</p>
+        </div>
+        <ion-button fill="clear" color="primary" (click)="$event.stopPropagation(); asignarCliente(cliente);">
+          {{ 'seleccionarCliente.asignarBtn' | translate }}
+        </ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

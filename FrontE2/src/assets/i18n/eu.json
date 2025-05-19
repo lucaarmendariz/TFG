@@ -518,5 +518,12 @@
             "limpiezaMax": "Egun honetan jada 2 garbiketa txanda daude.",
             "mostradorMax": "Egun honetan jada mahaia txanda bat dago."
         }
-    }
+    },
+    "alert": {
+    "confirmation": "Berrespena",
+    "deleteProductMessage": "Ziur zaude produktu hau ezabatu nahi duzula?",
+    "deleteCategoryMessage": "Ziur zaude kategoria hau ezabatu nahi duzula?",
+    "cancel": "Utzi",
+    "delete": "Ezabatu"
+  }
 }

@@ -54,6 +54,7 @@ selectedLanguage: string = 'es';
   dismiss() {
     this.modalController.dismiss(null, 'cancel');
   }
+  hover: number | null = null;
 
   async crearNuevoCliente() {
     const modal = await this.modalController.create({

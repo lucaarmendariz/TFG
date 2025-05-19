@@ -540,5 +540,12 @@
         "mostradorMax": "Ya hay un turno de mostrador en este día."
       }
     }
+  },
+  "alert": {
+    "confirmation": "Confirmación",
+    "deleteProductMessage": "¿Estás seguro de que quieres eliminar este producto?",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleteCategoryMessage": "¿Estás seguro de que quieres eliminar esta categoría?"
   }
 }
