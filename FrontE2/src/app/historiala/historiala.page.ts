@@ -408,10 +408,22 @@ filtrarTickets() {
   }
 
   loadHistorial() {
-    this.getHistorialPorCliente(this.bezeroId).subscribe((data) => {
+  this.getHistorialPorCliente(this.bezeroId).subscribe({
+    next: (data) => {
       this.historial = data;
-    });
-  }
+    },
+    error: (err) => {
+      if (err.status === 404) {
+        // No hay historial, asignamos array vacío para que no haya error
+        this.historial = [];
+      } else {
+        // Aquí puedes manejar otros errores si quieres
+        console.error('Error cargando historial:', err);
+      }
+    }
+  });
+}
+
 
   cargarClientes() {
     this.bezeroak = [];

@@ -201,7 +201,7 @@
       "asiento": "El asiento es obligatorio",
       "cliente": "El nombre del cliente es obligatorio",
       "descripcion": "La descripción es obligatoria",
-      "telefono": "Introduce un teléfono válido de al menos 9 dígitos",
+      "telefono": "Introduce un teléfono válido de 9 dígitos",
       "seleccion": "Selecciona una opcion",
       "iniciada": "No puedes editar esta cita porque ya está iniciada.",
       "selectTrabajador": "Es obligatorio seleccionar un trabajador.",
@@ -261,7 +261,7 @@
     "validaciones": {
       "nombre": "El nombre es obligatorio",
       "apellido": "El apellido es obligatorio",
-      "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
+      "telefono": "Introduce un teléfono válido con 9 dígitos",
       "producto": "El producto es obligatorio",
       "fecha": "La fecha es obligatoria",
       "cantidad": "La cantidad es obligatoria",

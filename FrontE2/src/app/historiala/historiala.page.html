@@ -1,31 +1,31 @@
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
   <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ "historial.titulo" | translate }}</ion-title>
-    <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
-      <ion-select-option value="es">Español</ion-select-option>
-      <ion-select-option value="eu">Euskera</ion-select-option>
-    </ion-select>
-  </ion-toolbar>
-  <ion-segment>
-    <ion-segment-button value="prod" content-id="prod">
-      <ion-label>{{ "historial.botones.productos" | translate }}</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="material" content-id="material">
-      <ion-label>{{ "historial.botones.materiales" | translate }}</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="ticket" content-id="ticket">
-      <ion-label>{{ "historial.botones.ticket" | translate }}</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="cliente" content-id="cliente">
-      <ion-label>{{ "historial.botones.cliente" | translate }}</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ "historial.titulo" | translate }}</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()" interface="popover">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
+    </ion-toolbar>
+    <ion-segment>
+      <ion-segment-button value="prod" content-id="prod">
+        <ion-label>{{ "historial.botones.productos" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="material" content-id="material">
+        <ion-label>{{ "historial.botones.materiales" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ticket" content-id="ticket">
+        <ion-label>{{ "historial.botones.ticket" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="cliente" content-id="cliente">
+        <ion-label>{{ "historial.botones.cliente" | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-header>
   <ion-segment-view>
     <ion-segment-content id="prod">
       <ion-card>
@@ -347,7 +347,7 @@
               <ion-card-content>
                 <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
                 <p>
-                  Azal Sentikorra:
+                  {{ "historial.modal.piel" | translate }}:
                   <ion-icon *ngIf="bezero.azalSentikorra === 'B'" name="checkmark-circle" color="success"></ion-icon>
                   <ion-icon *ngIf="bezero.azalSentikorra === 'E'" name="close-circle" color="danger"></ion-icon>
                 </p>
@@ -406,9 +406,12 @@
 
               <ion-item>
                 <ion-label position="stacked">{{ 'historial.modal.telefono' | translate }}</ion-label>
-                <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$"
-                  #telefono="ngModel"></ion-input>
+                <ion-input [(ngModel)]="crearTelefono" name="telefono" placeholder="123456789" pattern="^[0-9]{9}$"
+                  maxlength="9" #telefono="ngModel">
+                </ion-input>
               </ion-item>
+
+
               <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">
                 {{ 'historial.validaciones.telefono' | translate }}
               </ion-text>
@@ -466,7 +469,8 @@
               <ion-item>
                 <ion-label position="stacked">{{ 'historial.modal.telefono' | translate }}</ion-label>
                 <ion-input [(ngModel)]="editingBezero.telefonoa" name="telefono" placeholder="123456789"
-                  pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
+                  pattern="^[0-9]{9}$" maxlength="9" #telefono="ngModel">
+                </ion-input>
               </ion-item>
               <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{
                 'historial.validaciones.telefono' | translate }}</ion-text>

@@ -201,7 +201,7 @@
             "asiento": "Eserlekua derrigorrezkoa da",
             "cliente": "Bezeroaren izena derrigorrezkoa da",
             "descripcion": "Deskribapena derrigorrezkoa da",
-            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "telefono": "Sartu 9 digitu dituen telefono baliodun bat",
             "seleccion": "Aukera bat hautatu",
             "iniciada": "Ezin duzu hitzordu hau editatu, dagoeneko hasita dagoelako.",
             "selectTrabajador": "Langile bat hautatzea derrigorrezkoa da.",
@@ -261,7 +261,7 @@
         "validaciones": {
             "nombre": "Izena derrigorrezkoa da",
             "apellido": "Abizena derrigorrezkoa da",
-            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "telefono": "Sartu 9 digitu dituen telefono baliodun bat",
             "producto": "Produktua derrigorrezkoa da",
             "fecha": "Data derrigorrezkoa da",
             "cantidad": "Kantitatea derrigorrezkoa da",
