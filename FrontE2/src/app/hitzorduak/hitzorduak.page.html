@@ -240,9 +240,6 @@
                   <ion-card class="ion-margin">
                     <ion-card-content>
                       <form #asignarCitaForm="ngForm" (ngSubmit)="asignar_cita()" novalidate>
-                        <ion-text color="danger" *ngIf="!citaValida()">{{ "citas.validaciones.selectCita" | translate
-                          }}</ion-text>
-
                         <ion-item>
                           <ion-label position="stacked">{{ "citas.modal.trabajador" | translate }}</ion-label>
                           <ion-select [(ngModel)]="idLangile" name="trabajador"
@@ -273,10 +270,6 @@
                   <ion-card class="ion-margin">
                     <ion-card-content>
                       <form #ticketForm="ngForm" (ngSubmit)="generar_ticket(); ticketForm.resetForm()" novalidate>
-                        <ion-text color="danger" *ngIf="!citaValida()">
-                          {{ "citas.validaciones.selectCita" | translate }}
-                        </ion-text>
-
                         <ion-card>
                           <ion-card-header>
                             <ion-card-title>{{ 'citas.modal.Tipo de cita' | translate }}</ion-card-title>

@@ -207,7 +207,6 @@
       "selectTrabajador": "Es obligatorio seleccionar un trabajador.",
       "asignarTicket": "No puedes asignar una cita con ticket ya generado.",
       "fechaDiferente": "No puedes generar ni asignar una cita en una fecha diferente a hoy.",
-      "selectCita": "Debe seleccionar una cita",
       "precioValido": "Todos los servicios extra deben tener un precio válido.",
       "generado": "Esta cita ya tiene el ticket generado.",
       "noAsignada": "No puede generar un ticket de una cita no asignada.",
