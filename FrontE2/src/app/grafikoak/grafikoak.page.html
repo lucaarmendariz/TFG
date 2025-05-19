@@ -33,21 +33,20 @@
         <ion-card-title>📦 {{ 'graficos.contenidos' | translate }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ng-container *ngFor="let taldea of langileak">
-          <ion-card>
-            <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
-              <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
-              <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
-            </ion-item>
+        <ion-card *ngFor="let taldea of langileak">
+  <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
+    <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
+    <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+  </ion-item>
 
-            <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
-              <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)">
-                <ion-label>{{ langile.izena }}</ion-label>
-                <ion-label>{{ langile.abizenak }}</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card>
-        </ng-container>
+  <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
+    <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile)" class="card-interactiva">
+      <ion-label>{{ langile.izena }}</ion-label>
+      <ion-label>{{ langile.abizenak }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-card>
+
       </ion-card-content>
     </ion-card>
 
