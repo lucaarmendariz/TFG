@@ -308,10 +308,12 @@
                                         <ion-label style="color: black;">
                                           <div style="display: flex; justify-content: space-between; width: 100%;">
                                             <span>{{ trat.izena }}</span>
-                                            <span>{{ trat.precio | currency: 'EUR' }}</span>
+                                            <span>{{ (citaEditar.etxekoa ? trat.etxekoPrezioa : trat.kanpokoPrezioa) | currency:'EUR' }}</span>
+
                                           </div>
                                         </ion-label>
                                       </ion-item>
+
 
                                       <!-- Input de extra dentro del mismo ngFor, ahora sí tiene acceso a 'trat' -->
                                       <ion-item *ngIf="trat.selected && katTrat.extra">
@@ -331,46 +333,54 @@
                           </ion-row>
                         </ion-grid>
 
-                        <!-- Mostrar el precio total -->
-                        <ion-card>
-                          <ion-card-header>
-                            <ion-card-title>{{ 'ikaslePage.precioTotal' | translate }}</ion-card-title>
-                          </ion-card-header>
-                          <ion-card-content>
-                            <div>
-                              <span>{{ 'ikaslePage.total' | translate }}</span>
-                              <strong>{{ precioTotal | currency:'EUR' }}</strong>
-                            </div>
-                          </ion-card-content>
-                        </ion-card>
+                        <ion-grid>
+                          <ion-row>
+                            <!-- Columna izquierda: Dinero recibido y cambio en una misma card -->
+                            <ion-col size="12" size-md="6">
+                              <ion-card>
+                                <ion-card-header>
+                                  <ion-card-title>{{ 'ikaslePage.dineroRecibido' | translate }}</ion-card-title>
+                                </ion-card-header>
+                                <ion-card-content>
+                                  <!-- Dinero recibido -->
+                                  <ion-item>
+                                    <ion-label position="stacked">{{ 'ikaslePage.dineroRecibido' | translate
+                                      }}</ion-label>
+                                    <ion-input style="color: black;" type="number" [(ngModel)]="dineroCliente"
+                                      name="dineroCliente" (ionInput)="actualizarDineroCliente($event)"
+                                      [min]="precioTotal" required>
+                                    </ion-input>
+                                  </ion-item>
 
-                        <!-- Input para ingresar el dinero que el cliente ha dado -->
-                        <ion-card>
-                          <ion-card-header>
-                            <ion-card-title>{{ 'ikaslePage.dineroRecibido' | translate }}</ion-card-title>
-                          </ion-card-header>
-                          <ion-card-content>
-                            <ion-item>
-                              <ion-label position="stacked">{{ 'ikaslePage.dineroRecibido' | translate }}</ion-label>
-                              <ion-input style="color: black;" type="number" [(ngModel)]="dineroCliente"
-                                name="dineroCliente" (ionInput)="actualizarDineroCliente($event)" [min]="precioTotal"
-                                required></ion-input>
-                            </ion-item>
-                          </ion-card-content>
-                        </ion-card>
+                                  <!-- Cambio -->
+                                  <div style="margin-top: 20px;">
+                                    <strong>{{ 'ikaslePage.cambio' | translate }}</strong>
+                                    <div>
+                                      <span>{{ 'ikaslePage.cambioAdevolver' | translate }}</span>
+                                      <strong>{{ cambio | currency:'EUR' }}</strong>
+                                    </div>
+                                  </div>
+                                </ion-card-content>
+                              </ion-card>
+                            </ion-col>
 
-                        <!-- Mostrar el cambio -->
-                        <ion-card>
-                          <ion-card-header>
-                            <ion-card-title>{{ 'ikaslePage.cambio' | translate }}</ion-card-title>
-                          </ion-card-header>
-                          <ion-card-content>
-                            <div>
-                              <span>{{ 'ikaslePage.cambioAdevolver' | translate }}</span>
-                              <strong>{{ cambio | currency:'EUR' }}</strong>
-                            </div>
-                          </ion-card-content>
-                        </ion-card>
+                            <!-- Columna derecha: Precio total en otra card -->
+                            <ion-col size="12" size-md="6" class="ion-text-end">
+                              <ion-card
+                                style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                                <ion-card-header>
+                                  <ion-card-title>{{ 'ikaslePage.precioTotal' | translate }}</ion-card-title>
+                                </ion-card-header>
+                                <ion-card-content>
+                                  <div style="font-size: 2.2rem; color: var(--ion-color-primary); font-weight: bold;">
+                                    {{ precioTotal | currency:'EUR' }}
+                                  </div>
+                                </ion-card-content>
+                              </ion-card>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+
 
                         <ion-button type="submit" [disabled]="isGenerarTicketDisabled()">
                           {{ "citas.botones.generar" | translate }}

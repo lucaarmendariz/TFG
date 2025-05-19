@@ -1071,18 +1071,23 @@ export class HitzorduakPage implements OnInit {
   dineroCliente: number = 0;
   cambio: number = 0;
 
-  // Función para actualizar el precio total de los servicios seleccionados
   actualizarServiciosSeleccionados(trat: any, extraFlag: boolean, color: string) {
+  console.log(trat);
   const index = this.serviciosSeleccionados.findIndex(s => s.id === trat.id);
 
   if (trat.selected) {
+    // ✅ Usamos las claves correctas: etxekoPrezioa y kanpokoPrezioa
+    const precioBase = this.citaEditar.etxekoa ? trat.etxekoPrezioa : trat.kanpokoPrezioa;
+
     if (index === -1) {
       this.serviciosSeleccionados.push({
         ...trat,
+        precioBase: precioBase ?? 0,
         extraPrecio: trat.extraPrecio ?? 0,
         color: color
       });
     } else {
+      this.serviciosSeleccionados[index].precioBase = precioBase ?? 0;
       this.serviciosSeleccionados[index].extraPrecio = trat.extraPrecio ?? 0;
     }
   } else {
@@ -1094,6 +1099,8 @@ export class HitzorduakPage implements OnInit {
   this.calcularPrecioTotal();
   this.actualizarCambio();
 }
+
+
 
 
 
@@ -1129,11 +1136,12 @@ export class HitzorduakPage implements OnInit {
 
   calcularPrecioTotal() {
   this.precioTotal = this.serviciosSeleccionados.reduce((acc, servicio) => {
-    const base = servicio.precio ?? 0;
-    const extra = servicio.extraPrecio ?? 0;  // Aquí sumas el extra solo para el total
+    const base = servicio.precioBase ?? 0;     // Usamos el precio correcto (etxeko o kanpoko)
+    const extra = servicio.extraPrecio ?? 0;   // Sumamos el extra si aplica
     return acc + base + extra;
   }, 0);
 }
+
   actualizarDineroCliente(event: any) {
   this.dineroCliente = Number(event.target.value) || 0;
   this.actualizarCambio();
@@ -1165,25 +1173,24 @@ actualizarCambio() {
     this.cerrarFormulario();
   }
 
-  // Función: generar_ticket
   generar_ticket() {
   const color = this.serviciosSeleccionados.some(s => s.color === true);
 
   this.stopTimer(this.citaEditar);
 
-  // Preparamos los datos para el PDF (con extra separado)
+  // Preparamos los datos para el PDF (usando precioBase)
   const lineasPDF = this.serviciosSeleccionados.map(servicio => ({
     izena: servicio.izena,
-    precioBase: servicio.precio ?? 0,
+    precioBase: servicio.precioBase ?? 0,
     extra: servicio.extraPrecio ?? 0,
-    precioTotal: (servicio.precio ?? 0) + (servicio.extraPrecio ?? 0)
+    precioTotal: (servicio.precioBase ?? 0) + (servicio.extraPrecio ?? 0)
   }));
 
-  // Datos a enviar al backend (solo el total, sin campo extra)
+  // Datos a enviar al backend (precio total por servicio)
   const json_data = this.serviciosSeleccionados.map(servicio => ({
     "hitzordua": { "id": this.citaEditar.id },
     "zerbitzuak": { "id": servicio.id },
-    "prezioa": (servicio.precio ?? 0) + (servicio.extraPrecio ?? 0)
+    "prezioa": (servicio.precioBase ?? 0) + (servicio.extraPrecio ?? 0)
   }));
 
   this.http.post(`${environment.url}ticket_lerroak`, json_data, {
