@@ -546,5 +546,10 @@
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "deleteCategoryMessage": "¿Estás seguro de que quieres eliminar esta categoría?"
+  },
+  "mensajes": {
+      "txandas": {
+        "noDisponibles": "No hay txandas disponibles para estas fechas."
+      }
+    }
   }
-}

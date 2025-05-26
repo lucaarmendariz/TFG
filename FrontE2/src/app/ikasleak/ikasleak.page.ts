@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal, ModalController, NavController, ToastController } from '@ionic/angular';
-import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { IkasleZerbitzuakService, Ikaslea, Taldea, Horario, } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
@@ -11,10 +11,10 @@ import { Txanda } from '../txandak/txandak.page';
 import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
-    selector: 'app-ikasleak',
-    templateUrl: './ikasleak.page.html',
-    styleUrls: ['./ikasleak.page.scss'],
-    standalone: false
+  selector: 'app-ikasleak',
+  templateUrl: './ikasleak.page.html',
+  styleUrls: ['./ikasleak.page.scss'],
+  standalone: false
 })
 
 
@@ -27,7 +27,7 @@ export class IkasleakPage implements OnInit {
   filteredAlumnos: any[] = [];
   selectedAlumno: any = null;
   selectedIkasleak: Set<number> = new Set();
-  nuevoAlumno: any = {izena: '', abizenak: '', taldea: { kodea: '' },};
+  nuevoAlumno: any = { izena: '', abizenak: '', taldea: { kodea: '' }, };
   isEditModalOpen: boolean = false;
   nuevoGrupo: any = { kodea: '', izena: '' };
   selectedTalde: any = null;
@@ -44,10 +44,10 @@ export class IkasleakPage implements OnInit {
   idHorario: any = null;
   grupoSeleccionado: Taldea = { kodea: '', izena: '' };
   diaSeleccionado: number = 0;
-  ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
-  selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
+  ordutegia: Horario = { taldea: { kodea: '', }, eguna: 0, hasieraData: '', amaieraData: '', hasieraOrdua: '', amaieraOrdua: '', };
+  selectedHorario: Horario = { id: 0, hasieraData: '', hasieraOrdua: '', amaieraData: '', amaieraOrdua: '', eguna: 0, taldea: { kodea: '' }, };
   filteredGroups: any[] = [];
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
   modalAlumnoCrear: any;
 
@@ -65,7 +65,7 @@ export class IkasleakPage implements OnInit {
     private navCtrl: NavController,
     private languageService: LanguageService
   ) {
-      this.selectedLanguage = this.languageService.getCurrentLanguage();
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
   cerrarModalAlumno() {
@@ -76,7 +76,7 @@ export class IkasleakPage implements OnInit {
     const urtea = gaur.getFullYear();
     let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
     let eguna: string | number = gaur.getDate();
-  
+
     if (eguna < 10) {
       eguna = '0' + eguna;
     }
@@ -93,7 +93,7 @@ export class IkasleakPage implements OnInit {
 
       // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
       this.isIkasle = this.loginService.isAlumno();
-      
+
       // Si es Ikasle, redirigir a '/home'
       if (this.isIkasle) {
         this.router.navigate(['/home']);
@@ -116,11 +116,8 @@ export class IkasleakPage implements OnInit {
   }
 
   changeLanguage() {
-  this.languageService.setLanguage(this.selectedLanguage);
-}
-
-
-
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
 
   getHorarios(): void {
     this.ikasleService.getHorariosFilter(this.fechaInicioFilter, this.fechaFinFilter).subscribe(
@@ -136,8 +133,7 @@ export class IkasleakPage implements OnInit {
     );
   }
 
-  filterHorarios()
-  {
+  filterHorarios() {
     this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
       ...ordutegi,
       // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
@@ -147,7 +143,7 @@ export class IkasleakPage implements OnInit {
       const horarioFecha = new Date(ordutegi.hasieraData); // Convertir a objeto Date
       const inicio = this.fechaInicioFilter ? new Date(this.fechaInicioFilter) : null;
       const fin = this.fechaFinFilter ? new Date(this.fechaFinFilter) : null;
-  
+
       return (
         (!inicio || horarioFecha >= inicio) &&
         (!fin || horarioFecha <= fin)
@@ -156,33 +152,26 @@ export class IkasleakPage implements OnInit {
   }
 
   resetFilters() {
-    const today = new Date().toISOString().split('T')[0];  
+    const today = new Date().toISOString().split('T')[0];
     this.fechaInicioFilter = today;
     this.fechaFinFilter = today;
-  
     this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
       ...ordutegi,
-      
     }));
-    this.getHorarios(); 
+    this.getHorarios();
   }
-  
-  
 
   filterGroups() {
-  
+
     if (this.searchQuery.trim() === '') {
       this.filteredGroups = [...this.grupoArray];
     } else {
       this.filteredGroups = this.grupoArray.filter(grupo =>
-        (grupo.izena && grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase())) || 
+        (grupo.izena && grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase())) ||
         (grupo.kodea && grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase()))
-      );      
+      );
     }
   }
-  
-
-
 
   resetFilterGroup() {
     this.searchQuery = '';
@@ -213,10 +202,10 @@ export class IkasleakPage implements OnInit {
       this.filteredAlumnos = this.ikasleArray.filter(
         (ikaslea) => !ikaslea.ezabatzeData
       );
-    });    
-}
+    });
+  }
 
-grupoArray: Taldea[] = [];
+  grupoArray: Taldea[] = [];
 
   getGrupos() {
     this.ikasleService.getGrupos().subscribe((data: any[]) => {
@@ -226,11 +215,11 @@ grupoArray: Taldea[] = [];
           ...grupo,
           langileak: grupo.langileak.filter((ikaslea: any) => !ikaslea.ezabatzeData) // 🔥 Filtrar alumnos eliminados
         }));
-  
-      this.filteredGroups = [...this.grupoArray]; 
+
+      this.filteredGroups = [...this.grupoArray];
     });
   }
-  
+
 
   openEditModal(ikaslea: any) {
     this.selectedAlumno = ikaslea;
@@ -243,21 +232,18 @@ grupoArray: Taldea[] = [];
 
   filterAlumnos() {
     const query = this.searchQuery.trim().toLowerCase();
-    if(this.searchQuery !== ''){
+    if (this.searchQuery !== '') {
       this.filteredAlumnos = query
-      ? this.filteredAlumnos.filter((ikaslea) =>
+        ? this.filteredAlumnos.filter((ikaslea) =>
           `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldeKodea} ${ikaslea.taldeIzena}`
             .toLowerCase()
             .includes(query)
         )
-      : [...this.filteredAlumnos];
-    }else{
+        : [...this.filteredAlumnos];
+    } else {
       this.getAlumnos();
     }
-    
   }
-
-  
 
   eliminarAlumnos() {
     // Obtener los nombres de los alumnos seleccionados
@@ -270,28 +256,28 @@ grupoArray: Taldea[] = [];
   }
 
   async showDeleteConfirmation(nombresAlumnos: string[]) {
-  const alert = await this.alertController.create({
-    header: this.translate.instant('alertas.eliminarTitulo'),
-    message: this.translate.instant('alertas.eliminarMensaje', { nombres: nombresAlumnos.join(', ') }),
-    buttons: [
-      {
-        text: this.translate.instant('alertas.cancelar'),
-        role: 'cancel',
-        handler: () => {
-          console.log(this.translate.instant('alertas.cancelado'));
+    const alert = await this.alertController.create({
+      header: this.translate.instant('alertas.eliminarTitulo'),
+      message: this.translate.instant('alertas.eliminarMensaje', { nombres: nombresAlumnos.join(', ') }),
+      buttons: [
+        {
+          text: this.translate.instant('alertas.cancelar'),
+          role: 'cancel',
+          handler: () => {
+            console.log(this.translate.instant('alertas.cancelado'));
+          }
+        },
+        {
+          text: this.translate.instant('alertas.eliminar'),
+          handler: () => {
+            this.proceedToDelete();
+          }
         }
-      },
-      {
-        text: this.translate.instant('alertas.eliminar'),
-        handler: () => {
-          this.proceedToDelete();
-        }
-      }
-    ]
-  });
+      ]
+    });
 
-  await alert.present();
-}
+    await alert.present();
+  }
 
 
   // Función para eliminar los alumnos seleccionados
@@ -306,7 +292,7 @@ grupoArray: Taldea[] = [];
     });
     // Limpiar la selección después de eliminar
     this.selectedIkasleak.clear();
-this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger');
+    this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger');
   }
 
   // Abre el modal para editar un talde
@@ -320,9 +306,9 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
     this.isEditTaldeModalOpen = false;
   }
 
- 
 
-  
+
+
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos
     this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
@@ -350,7 +336,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       }
     }
   }
-  
+
 
   // Función para formatear la fecha a 'yyyy-MM-dd'
   formatDate(date: string): string {
@@ -405,7 +391,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
     });
     toast.present();
   }
-  
+
   deleteHorario(horario: any): void {
     // Crear la alerta de confirmación
     this.alertController
@@ -432,7 +418,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       })
       .then((alert) => alert.present());
   }
-  
+
   async confirmarEliminacionAlumno(alumnoId: number) {
     const alert = await this.alertController.create({
       header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
@@ -452,10 +438,10 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
         },
       ],
     });
-  
+
     await alert.present();
   }
-  
+
   async confirmarEliminacionGrupo(grupoKodea: string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
@@ -475,10 +461,10 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
         },
       ],
     });
-  
+
     await alert.present();
   }
-  
+
   async agregarAlumno() {
     let data = {
       izena: this.nuevoAlumno.izena,
@@ -487,47 +473,47 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
         kodea: this.nuevoAlumno.taldea.kodea,
       },
     };
-  
+
     this.ikasleService.agregarAlumno(data).subscribe(() => {
       this.getAlumnos();
       this.getGrupos();
       this.modalController.dismiss();
       this.mostrarToast(this.translate.instant('ikaslePage.AlumnoAgregado'), 'success');
     });
-  
+
     this.nuevoAlumno = {
       izena: '',
       abizenak: '',
       taldea: { kodea: '', izena: '' },
     };
   }
-  
+
   async agregarGrupo() {
     let data = {
       kodea: this.nuevoGrupo.kodea,
       izena: this.nuevoGrupo.izena,
     };
-  
+
     this.ikasleService.agregarGrupo(data).subscribe(() => {
       this.getGrupos();
       this.getAlumnos();
       this.modalController.dismiss();
       this.mostrarToast(this.translate.instant('ikaslePage.GrupoAgregado'), 'success');
     });
-  
+
     this.nuevoGrupo = { kodea: '', izena: '' };
   }
-  
+
   updateAlumno() {
     const updatedAlumno = {
       id: this.selectedAlumno.id,
       izena: this.selectedAlumno.izena,
       abizenak: this.selectedAlumno.abizenak,
-      taldea: { 
+      taldea: {
         kodea: this.selectedAlumno.taldeKodea
       },
     };
-  
+
     this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
       this.getGrupos();
       this.getAlumnos();
@@ -535,13 +521,13 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       this.mostrarToast(this.translate.instant('ikaslePage.AlumnoActualizado'), 'success');
     });
   }
-  
+
   updateTalde() {
     const updatedTalde = {
       kodea: this.selectedTalde.kodea,
       izena: this.selectedTalde.izena,
     };
-  
+
     this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
       this.getAlumnos();
       this.getGrupos();
@@ -549,13 +535,13 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       this.mostrarToast(this.translate.instant('ikaslePage.GrupoActualizado'), 'success');
     });
   }
-  
+
   async guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
     const formattedHoraInicio = this.horaInicio + ':00';
     const formattedHoraFin = this.horaFin + ':00';
-  
+
     // Comprobar si hay txandas para esas fechas
     const url = `${environment.url}txandak/${formattedFechaInicio}/${formattedFechaFin}`;
     this.http.get<Txanda[]>(url).subscribe(async (txandas: Txanda[]) => {
@@ -563,32 +549,32 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       if (!txandas) {
         txandas = [];
       }
-    
+
       // Ahora podemos usar .some() sin que falle
       const hayTxandas = txandas.some(tx => !tx.ezabatzeData);
-    
+
       // Si no hay txandas, mostrar aviso pero continuar
       if (!hayTxandas) {
-  const alert = await this.alertController.create({
-    header: this.translate.instant('alertas.txandas.header'),
-    message: this.translate.instant('alertas.txandas.message'),
-    buttons: [
-      {
-        text: this.translate.instant('alertas.txandas.continuar'),
-        role: 'cancel'
-      },
-      {
-        text: this.translate.instant('alertas.txandas.ir'),
-        handler: () => {
-          this.router.navigate(['/txandak']).then(() => {
-            window.location.reload();
-          });
-        }
+        const alert = await this.alertController.create({
+          header: this.translate.instant('alertas.txandas.header'),
+          message: this.translate.instant('alertas.txandas.message'),
+          buttons: [
+            {
+              text: this.translate.instant('alertas.txandas.continuar'),
+              role: 'cancel'
+            },
+            {
+              text: this.translate.instant('alertas.txandas.ir'),
+              handler: () => {
+                this.router.navigate(['/txandak']).then(() => {
+                  window.location.reload();
+                });
+              }
+            }
+          ]
+        });
+        await alert.present();
       }
-    ]
-  });
-  await alert.present();
-}
 
       // Guardar horario aunque no haya txandas
       this.ordutegia = {
@@ -601,7 +587,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
         hasieraOrdua: formattedHoraInicio,
         amaieraOrdua: formattedHoraFin,
       };
-  
+
       this.ikasleService.guardarHorario(this.ordutegia).subscribe(
         (data) => {
           this.getHorarios();
@@ -619,7 +605,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
           this.fechaFin = '';
           this.horaInicio = null;
           this.horaFin = null;
-  
+
           if (data && data.id) {
             this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 'success');
           } else {
@@ -631,14 +617,14 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
           this.mostrarToast(this.translate.instant('ikaslePage.ErrorConexion'), 'danger');
         }
       );
-  
+
       this.closeModal();
     });
   }
-  
-  
 
-  
+
+
+
   actualizarHorario() {
     if (this.selectedHorario) {
       const horarioActualizado = {
@@ -651,7 +637,7 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
         amaieraOrdua: this.horaFin,
         eguneratzeData: new Date().toISOString(),
       };
-  
+
       if (horarioActualizado.id) {
         this.ikasleService.actualizarHorario(horarioActualizado).subscribe(() => {
           this.getHorarios();
@@ -672,6 +658,4 @@ this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger'
       }
     }
   }
-  
-  
 }
